@@ -45,7 +45,6 @@ namespace Projekt_MVC.Controllers
                     if (existingUser.Password == user.Password)
                     {
                         // Logowanie udane
-                        // Tutaj możesz dodać logikę związana z zalogowaniem użytkownika, np. ustawienie sesji
                         return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
                     }
                     else
@@ -59,7 +58,6 @@ namespace Projekt_MVC.Controllers
                 }
             }
 
-            // Jeśli ModelState.IsValid jest false lub logowanie nie powiodło się, zwróć widok z błędami
             return View("Logowanie", user);
         }
 
