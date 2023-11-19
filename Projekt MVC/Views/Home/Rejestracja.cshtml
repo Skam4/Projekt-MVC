@@ -1,4 +1,5 @@
-﻿
+﻿@model Projekt_MVC.Models.User
+
 @{
     ViewData["Title"] = "Rejestracja";
 }
@@ -6,14 +7,14 @@
     <div class="loginKontener">
         <div class="loginForma">
             <h2>Rejestracja</h2>
-            <form>
-                <input type="text" class="login" placeholder="Imię" required>
-                <input type="text" class="login" placeholder="Nazwisko" required>
-                <input type="email" class="login" placeholder="Adres email" required>
-                <input type="password" class="login" placeholder="Hasło" required>
-                <input type="password" class="login" placeholder="Powtórz hasło" required>
-                <button class="loginPrzycisk">Zarejestruj się</button>
-            </form>
+                <form method="post" asp-action="Rejestracja">
+                    @Html.AntiForgeryToken()
+                    <input type="text" class="login" placeholder="Nazwa" asp-for="NickName" required>
+                    <input type="email" class="login" placeholder="Adres email" asp-for="Email" required>
+                    <input type="password" class="login" placeholder="Hasło" asp-for="Password" required>
+                    <input type="password" class="login" placeholder="Powtórz hasło" name="ConfirmPassword" required>
+                    <button type="submit" class="loginPrzycisk">Zarejestruj się</button>
+                </form>
         </div>
     </div>
 

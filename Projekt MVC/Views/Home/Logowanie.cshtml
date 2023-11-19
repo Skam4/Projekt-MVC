@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Projekt_MVC.Models.User
+
+@{
     ViewData["Title"] = "Logowanie";
 }
 
@@ -8,8 +10,8 @@
     <div class="loginForma">
         <h2>Logowanie</h2>
         <form>
-            <input type="text" class="login" placeholder="Nazwa użytkownika" required>
-            <input type="password" class="login" placeholder="Hasło" required>
+            <input type="text" class="login" placeholder="Nazwa użytkownika" asp-for="Email" required>
+            <input type="password" class="login" placeholder="Hasło" asp-for="Password" required>
             <button class="loginPrzycisk">Zaloguj się</button>
         </form>
 
