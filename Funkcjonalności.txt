@@ -1,0 +1,69 @@
+Funkcjonalności:
+• forum z możliwością tworzenia wątków i dopisywania wiadomości do istniejących wątków
+– 4 pkt.
+
+• rejestracja użytkowników. Profil użytkownika. Możliwość zalogowania się do systemu – 4
+pkt.
+
+• panel administracyjny do zarządzania wiadomościami i użytkownikami – 4 pkt.
+
+• możliwość definiowania kategorii forów i samych forów. Funkcjonalność dostępna tylko dla
+administratora. Dane forum może należeć do dokładnie jednej kategorii – 4 pkt.
+
+• uprawnienia dla użytkowników anonimowych przydzielone poszczególnym forom. Istnieją
+dwa poziomy uprawnień: do oglądania wiadomości i do pisania własnych. Użytkownicy
+zalogowani mają pełne uprawnienia do oglądania i pisania – 2 pkt.
+
+• przydzielenie moderatorów dla każdego forum. Każde forum może mieć wielu moderatorów
+a każdy użytkownik może być moderatorem na wielu forach. Moderator ma prawo edycji i
+usuwania wiadomości – 4 pkt.
+
+• proste statystyki wyświetlane na stronach: liczba zarejestrowanych użytkowników, liczba
+wątków i wiadomości dla każdego z forów, liczba odsłon i odpowiedzi dla każdego wątku –
+2 pkt.
+
+• wątki przyklejone, wyświetlane zawsze na górze listy wątków. Wątki przyklejone może
+tworzyć tylko administrator – 2 pkt.
+
+• ogłoszenia administracyjne wyświetlane na stronie głównej forum – 2 pkt.
+
+• wysyłanie wiadomości prywatnych pomiędzy użytkownikami. Możliwość odczytu i
+usunięcia wiadomości po zalogowaniu – 2 pkt.
+
+• automatyczne wylogowanie po ustalonym w profilu czasie braku aktywności – 2 pkt.
+
+• awatary w profilu użytkownika. Ograniczenie na rozdzielczość i wielkość (w kB)
+wgrywanych obrazków – 2 pkt.
+
+• stronicowanie list wiadomości. Ustawienie liczby wiadomości na stronie w profilu
+użytkownika – 2 pkt.
+
+• wyszukiwanie według słów kluczowych w treściach wiadomości z danego forum – 2 pkt.
+
+• operatory typu and, or i not przy wyszukiwaniu – 2 pkt.
+
+• dołączanie załączników do wiadomości. Ograniczenie liczby załączników i wielkości
+pojedynczego załącznika – 2 pkt.
+
+• możliwość zgłoszenia wiadomości do moderacji. Zgłoszenie pokazuje się jako wiadomość u
+moderatora – 2 pkt.
+
+• słownik słów zakazanych. Automatyczne nieprzyjmowanie wiadomości zawierających takie
+słowa. Zarządzanie słownikiem przez administratora – 4 pkt.
+
+• emotikony w treściach wiadomości – 2 pkt.
+
+• możliwość umieszczania wiadomości w formacie HTML. Definiowanie przez
+administratora listy dozwolonych znaczników. Automatyczne usuwanie znaczników spoza
+listy – 4 pkt.
+
+• automatyczne nadawanie rangi użytkownikom w zależności od liczby wprowadzonych
+wiadomości. Możliwość ręcznej zmiany rangi przez administratora – 2 pkt.
+
+• bezpieczna procedura przypominania i zmiany hasła – 2 pkt.
+
+• wybór skórek dla interfejsu użytkownika – 2 pkt. za dwie istotnie różne skórki i 1 pkt. za
+trzecią.
+
+• dodatkowe wersje językowe interfejsu użytkownika – 2 pkt. za pierwszy dodatkowy język i
+1 pkt. za drugi.
