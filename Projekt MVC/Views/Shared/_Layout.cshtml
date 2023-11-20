@@ -9,8 +9,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <header style="border-bottom ;box-shadow">
+    <header style="border-bottom ; box-shadow">
         <a href="Index" class="ForumOdnosnik">Forum</a>
+
+        <form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
+            <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+        </form>
+
+        <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 800px; margin-right: 200px ; margin-left: 50px">
+
         <form asp-controller="Home" asp-action="Logowanie" method="post">
             <button type="submit" class="Wyloguj">Wyloguj</button>
         </form>

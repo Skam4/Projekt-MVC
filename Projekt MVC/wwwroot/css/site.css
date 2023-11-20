@@ -74,3 +74,13 @@ header {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.StworzDyskusje {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin-left: 15px;
+    padding: 10px;
+    margin-right: revert;
+    margin-left: 20px;
+}

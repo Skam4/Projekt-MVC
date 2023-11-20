@@ -21,6 +21,11 @@ namespace Projekt_MVC.Controllers
             return View();
         }
 
+        public IActionResult StwórzDyskusje()
+        {
+            return View("StwórzDyskusje");
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -32,20 +37,22 @@ namespace Projekt_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Logowanie(User user)
+        public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
         {
-            if (ModelState.IsValid)
-            {
-                // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-                var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == user.Email);
 
+            Console.WriteLine("0");
+                // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
+                var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
+                Console.WriteLine("1");
                 if (existingUser != null)
                 {
+                    Console.WriteLine("2");
                     // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
-                    if (existingUser.Password == user.Password)
+                    if (existingUser.Password == Password)
                     {
+                        Console.WriteLine("3");
                         // Logowanie udane
-                        return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
+                        return View("Index"); // Przekierowanie do strony głównej po zalogowaniu
                     }
                     else
                     {
@@ -56,9 +63,8 @@ namespace Projekt_MVC.Controllers
                 {
                     ModelState.AddModelError("Email", "Użytkownik o podanym emailu nie istnieje.");
                 }
-            }
 
-            return View("Logowanie", user);
+            return View("Logowanie");
         }
 
 

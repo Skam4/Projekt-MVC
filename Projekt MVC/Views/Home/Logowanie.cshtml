@@ -4,15 +4,13 @@
     ViewData["Title"] = "Logowanie";
 }
 
-
-
 <div class="loginKontener">
     <div class="loginForma">
         <h2>Logowanie</h2>
-        <form>
-            <input type="text" class="login" placeholder="Nazwa użytkownika" asp-for="Email" required>
-            <input type="password" class="login" placeholder="Hasło" asp-for="Password" required>
-            <button class="loginPrzycisk">Zaloguj się</button>
+        <form method="post" action="SprawdzanieDanychLogowania">
+            <input type="email" class="login" name="Email" placeholder="Nazwa użytkownika lub email" required>
+            <input type="password" class="login" name="Password" placeholder="Hasło" required>
+            <button type="submit" class="loginPrzycisk">Zaloguj się</button>
         </form>
 
         <a href="Rejestracja">Zarejestruj się</a>
