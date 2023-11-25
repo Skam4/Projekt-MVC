@@ -4,5 +4,26 @@
     ViewData["Title"] = "Stwórz Dyskusje";
 }
 
-<h1>Stwórz dyskusje</h1>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+</head>
+<body>
+    <h1>Stwóz Dyskusję</h1>
+
+    <form method="post">
+
+        <label for="topic">Temat dyskusji:</label>
+        <input type="text" id="topic" name="topic" required><br>
+
+        <label for="message">Twoja wiadomość:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Rozpocznij dyskusję</button>
+    </form>
+</body>
+</html>

@@ -21,6 +21,11 @@ namespace Projekt_MVC.Controllers
             return View();
         }
 
+        public IActionResult Profil()
+        {
+            return View("Profil");
+        }
+
         public IActionResult StwórzDyskusje()
         {
             return View("StwórzDyskusje");
