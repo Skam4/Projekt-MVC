@@ -14,5 +14,7 @@ namespace Projekt_MVC.Models
         public string Opis { get; set;}
 
         public List<string>? Odpowiedzi { get; set;}
+
+        public virtual User Owner { get; set; }
     }
 }

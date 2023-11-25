@@ -1,4 +1,4 @@
-﻿
+﻿@model Projekt_MVC.Models.Dyskusja
 
 @{
     ViewData["Title"] = "Stwórz Dyskusje";
@@ -13,17 +13,17 @@
     <title>Forum</title>
 </head>
 <body>
-    <h1>Stwóz Dyskusję</h1>
+    <h1 style="text-align: center">Stwórz Dyskusję</h1>
 
-    <form method="post">
+    <form method="post" class="formDyskusja">
 
-        <label for="topic">Temat dyskusji:</label>
-        <input type="text" id="topic" name="topic" required><br>
+        <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
+        <input type="text" asp-for="Temat" class="inputTematDyskusji" required><br>
 
-        <label for="message">Twoja wiadomość:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+        <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
+        <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
 
-        <button type="submit">Rozpocznij dyskusję</button>
+        <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
     </form>
 </body>
 </html>

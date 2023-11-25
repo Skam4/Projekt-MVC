@@ -5,8 +5,8 @@ namespace Projekt_MVC.Data
 {
     public class ForumDB : DbContext
     {
-        public DbSet<User> User { get; set; }
-
+        public DbSet<User> user { get; set; }
+        public DbSet<Dyskusja> dyskusja { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

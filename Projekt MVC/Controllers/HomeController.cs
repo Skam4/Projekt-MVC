@@ -47,7 +47,7 @@ namespace Projekt_MVC.Controllers
 
             Console.WriteLine("0");
                 // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-                var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
+                var existingUser = BazaDanych.user.FirstOrDefault(u => u.Email == Email);
                 Console.WriteLine("1");
                 if (existingUser != null)
                 {
@@ -89,7 +89,7 @@ namespace Projekt_MVC.Controllers
                     return View("Rejestracja", user);
                 }
 
-                BazaDanych.User.Add(user);
+                BazaDanych.user.Add(user);
                 BazaDanych.SaveChanges();
                 return RedirectToAction("Index");
             }
