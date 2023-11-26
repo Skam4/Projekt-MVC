@@ -19,6 +19,6 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Hasło jest wymagane")]
         public string Password { get; set; }
 
-
+        public ICollection<Dyskusja>? Dyskusje { get; set; }
     }
 }

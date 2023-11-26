@@ -81,8 +81,10 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult Rejestracja(User user, string confirmPassword)
         {
+            Console.WriteLine("4");
             if (ModelState.IsValid)
             {
+                Console.WriteLine("5");
                 if (user.Password != confirmPassword)
                 {
                     ModelState.AddModelError("ConfirmPassword", "Hasło i potwierdzenie hasła nie są identyczne.");
@@ -98,8 +100,21 @@ namespace Projekt_MVC.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult TworzenieDyskusji(Dyskusja dyskusja)
+        {
+            if (ModelState.IsValid)
+            {
+                BazaDanych.dyskusja.Add(dyskusja);
+                BazaDanych.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View("StwórzDyskusje");
+        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+
+            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

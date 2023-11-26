@@ -14,16 +14,17 @@
 </head>
 <body>
     <h1 style="text-align: center">Stwórz Dyskusję</h1>
+    <div class ="formDyskusja">
+        <form method="post" asp-action="TworzenieDyskusji">
 
-    <form method="post" class="formDyskusja">
+            <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
+            <input type="text" asp-for="Temat" class="inputTematDyskusji" required><br>
 
-        <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
-        <input type="text" asp-for="Temat" class="inputTematDyskusji" required><br>
+            <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
+            <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
 
-        <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
-        <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
-
-        <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
-    </form>
+            <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
+        </form>
+    </div>
 </body>
 </html>

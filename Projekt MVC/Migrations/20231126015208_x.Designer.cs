@@ -11,8 +11,8 @@ using Projekt_MVC.Data;
 namespace Projekt_MVC.Migrations
 {
     [DbContext(typeof(ForumDB))]
-    [Migration("20231119193019_Users1")]
-    partial class Users1
+    [Migration("20231126015208_x")]
+    partial class x
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,32 @@ namespace Projekt_MVC.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Projekt_MVC.Models.Dyskusja", b =>
+                {
+                    b.Property<int>("DyskusjaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DyskusjaId"));
+
+                    b.Property<string>("Opis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Temat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DyskusjaId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("dyskusja");
+                });
 
             modelBuilder.Entity("Projekt_MVC.Models.User", b =>
                 {
@@ -46,7 +72,23 @@ namespace Projekt_MVC.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User");
+                    b.ToTable("user");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Dyskusja", b =>
+                {
+                    b.HasOne("Projekt_MVC.Models.User", "Owner")
+                        .WithMany("Dyskusje")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.User", b =>
+                {
+                    b.Navigation("Dyskusje");
                 });
 #pragma warning restore 612, 618
         }
