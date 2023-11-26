@@ -2,6 +2,7 @@
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Projekt_MVC.Controllers
 {
@@ -26,6 +27,42 @@ namespace Projekt_MVC.Controllers
             return View("Profil");
         }
 
+        public IActionResult Dyskusja(int id)
+        {
+            Dyskusja Dyskusja = null;
+
+            foreach (var dyskusja in BazaDanych.dyskusja)
+            {
+                if(dyskusja.DyskusjaId == id)
+                {
+                    Dyskusja = dyskusja;
+                    break;
+                }
+            }
+
+            //Dyskusja Dyskusja = BazaDanych.dyskusja.FirstOrDefault(i => i.DyskusjaId == id);
+
+            //Console.WriteLine("asdaidaids: " + Dyskusja.DyskusjaId);
+            if(Dyskusja != null)
+            {
+                Console.WriteLine("WOOOWOWOWOWOWOWOW");
+                User Użytkownik = Dyskusja.Owner;
+                string Temat = Dyskusja.Temat;
+                string Opis = Dyskusja.Opis;
+
+                //Przekażemy te dane do widoku poprzez model
+                Dyskusja model = new Dyskusja
+                {
+                    Owner = Użytkownik,
+                    Temat = Temat,
+                    Opis = Opis
+                };
+
+                return View("Dyskusja", model);
+            }
+            return View("Index");
+        }
+
         public IActionResult StwórzDyskusje()
         {
             return View("StwórzDyskusje");
@@ -45,17 +82,13 @@ namespace Projekt_MVC.Controllers
         public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
         {
 
-            Console.WriteLine("0");
                 // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
                 var existingUser = BazaDanych.user.FirstOrDefault(u => u.Email == Email);
-                Console.WriteLine("1");
                 if (existingUser != null)
                 {
-                    Console.WriteLine("2");
                     // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
                     if (existingUser.Password == Password)
                     {
-                        Console.WriteLine("3");
                         // Logowanie udane
                         return View("Index"); // Przekierowanie do strony głównej po zalogowaniu
                     }
@@ -81,10 +114,8 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult Rejestracja(User user, string confirmPassword)
         {
-            Console.WriteLine("4");
             if (ModelState.IsValid)
             {
-                Console.WriteLine("5");
                 if (user.Password != confirmPassword)
                 {
                     ModelState.AddModelError("ConfirmPassword", "Hasło i potwierdzenie hasła nie są identyczne.");
@@ -103,18 +134,24 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult TworzenieDyskusji(Dyskusja dyskusja)
         {
+            Console.WriteLine("DISDKAIDJAIOS: " + dyskusja.DyskusjaId);
+
             if (ModelState.IsValid)
             {
                 BazaDanych.dyskusja.Add(dyskusja);
                 BazaDanych.SaveChanges();
-                return RedirectToAction("Index");
+
+                var savedDyskusja = BazaDanych.dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
+
+                return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
             }
             return View("StwórzDyskusje");
         }
 
 
 
-            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

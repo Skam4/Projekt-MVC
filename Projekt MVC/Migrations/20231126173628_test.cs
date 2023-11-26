@@ -5,7 +5,7 @@
 namespace Projekt_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class x : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace Projekt_MVC.Migrations
                 {
                     DyskusjaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     Temat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Opis = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -42,8 +42,7 @@ namespace Projekt_MVC.Migrations
                         name: "FK_dyskusja_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateIndex(
