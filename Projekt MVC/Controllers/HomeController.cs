@@ -75,6 +75,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Logowanie()
         {
+            HttpContext.Session.Clear();
             return View("Logowanie");
         }
 
@@ -90,6 +91,8 @@ namespace Projekt_MVC.Controllers
                     if (existingUser.Password == Password)
                     {
                         // Logowanie udane
+                        HttpContext.Session.SetInt32("UserId", existingUser.UserId);
+
                         return View("Index"); // Przekierowanie do strony głównej po zalogowaniu
                     }
                     else
@@ -124,6 +127,7 @@ namespace Projekt_MVC.Controllers
 
                 BazaDanych.user.Add(user);
                 BazaDanych.SaveChanges();
+                HttpContext.Session.SetInt32("UserId", user.UserId);
                 return RedirectToAction("Index");
             }
 
@@ -138,12 +142,21 @@ namespace Projekt_MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                BazaDanych.dyskusja.Add(dyskusja);
-                BazaDanych.SaveChanges();
+                if (HttpContext.Session.GetInt32("UserId") != null)
+                {
+                    dyskusja.UserId = (int)HttpContext.Session.GetInt32("UserId");
 
-                var savedDyskusja = BazaDanych.dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
+                    BazaDanych.dyskusja.Add(dyskusja);
+                    BazaDanych.SaveChanges();
 
-                return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
+                    var savedDyskusja = BazaDanych.dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
+
+                    return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
+                }
+                else
+                {
+                    return View("Index");
+                }
             }
             return View("StwórzDyskusje");
         }
