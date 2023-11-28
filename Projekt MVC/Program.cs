@@ -27,6 +27,27 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSession();
 
+app.Use(async (context, next) =>
+{
+    var userId = context.Session.GetInt32("UserId");
+    var path = context.Request.Path;
+
+    // Jeœli u¿ytkownik jest ju¿ na stronie logowania, nie wykonuj przekierowania
+    if (path.StartsWithSegments("/Home/Logowanie"))
+    {
+        await next();
+        return;
+    }
+
+    if (userId == null && !path.StartsWithSegments("/Home/Logowanie") && !path.StartsWithSegments("/Home/SprawdzanieDanychLogowania") && !path.StartsWithSegments("/Home/Rejestracja"))
+    {
+        // Brak sesji, przekieruj do strony logowania
+        context.Response.Redirect("/Home/Logowanie");
+    }
+
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
