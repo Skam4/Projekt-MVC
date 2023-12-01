@@ -117,7 +117,9 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult Rejestracja(User user, string confirmPassword)
         {
-            if (ModelState.IsValid)
+            var czyEmailByl = BazaDanych.user.FirstOrDefault(d => d.Email == user.Email);
+
+            if (ModelState.IsValid && czyEmailByl == null)
             {
                 if (user.Password != confirmPassword)
                 {
@@ -131,7 +133,8 @@ namespace Projekt_MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View("Rejestracja", user);
+
+            return View("Rejestracja");
         }
 
 
