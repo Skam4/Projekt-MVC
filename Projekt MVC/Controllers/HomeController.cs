@@ -19,7 +19,14 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var listaDyskusji = BazaDanych.dyskusja.ToList();
+
+            for(int i = 0; i < listaDyskusji.Count; i++)
+            {
+                Console.WriteLine(listaDyskusji[i].Temat);
+            }
+
+            return View("Index", listaDyskusji);
         }
 
         public IActionResult Profil()
@@ -42,7 +49,6 @@ namespace Projekt_MVC.Controllers
 
             //Dyskusja Dyskusja = BazaDanych.dyskusja.FirstOrDefault(i => i.DyskusjaId == id);
 
-            //Console.WriteLine("asdaidaids: " + Dyskusja.DyskusjaId);
             if(Dyskusja != null)
             {
                 Console.WriteLine("WOOOWOWOWOWOWOWOW");

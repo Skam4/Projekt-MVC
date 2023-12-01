@@ -1,17 +1,28 @@
-﻿@{
+﻿@Model List<Projekt_MVC.Models.Dyskusja>
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<h1> YO </h1>
-
-<span>Trzeba zrobić jakiś plan na wygląd tego forum</span>
+<h1> Dyskusje: </h1>
 
 <html>
-    <head>
+    @if (Model == null)
+    {
+        <p>Model is null!</p>
+    }
+    else
+    {
+        <p>Model is not null!</p>
+        <div class="list-group">
+            @foreach (var dyskusja in Model)
+            {
+                <a href="#" class="list-group-item list-group-item-action">
+                    @dyskusja.Temat
+                </a>
+            }
+        </div>
+    }
 
-    </head>
-
-    <body>
-        <img src="~/image.png" />
-    </body>
 </html>
