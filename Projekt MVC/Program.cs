@@ -12,7 +12,7 @@ builder.Services.AddSession(options =>
     //options.IdleTimeout = TimeSpan.FromSeconds(5);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    //options.Cookie.MaxAge = TimeSpan.FromSeconds(5);
+    options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
 });
 
 var app = builder.Build();

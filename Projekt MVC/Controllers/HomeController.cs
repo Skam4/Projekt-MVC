@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using System.Diagnostics;
@@ -36,23 +37,27 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
-            Dyskusja Dyskusja = null;
+            //Dyskusja Dyskusja = null;
 
-            foreach (var dyskusja in BazaDanych.dyskusja)
+
+            //po cholere to robić, skoro można to zrobić w jednej linijce
+            /*foreach (var dyskusja in BazaDanych.dyskusja)
             {
                 if(dyskusja.DyskusjaId == id)
                 {
                     Dyskusja = dyskusja;
                     break;
                 }
-            }
+            }*/
 
-            //Dyskusja Dyskusja = BazaDanych.dyskusja.FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.dyskusja.Include(x => x.Owner).FirstOrDefault(i => i.DyskusjaId == id);
 
-            if(Dyskusja != null)
+            if (Dyskusja != null)
             {
                 Console.WriteLine("WOOOWOWOWOWOWOWOW");
-                User Użytkownik = Dyskusja.Owner;
+
+                //to też jest niepotrzebne
+                /*User Użytkownik = Dyskusja.Owner;
                 string Temat = Dyskusja.Temat;
                 string Opis = Dyskusja.Opis;
 
@@ -62,9 +67,9 @@ namespace Projekt_MVC.Controllers
                     Owner = Użytkownik,
                     Temat = Temat,
                     Opis = Opis
-                };
+                };*/
 
-                return View("Dyskusja", model);
+                return View("Dyskusja", Dyskusja);
             }
             return View("Index");
         }
@@ -153,7 +158,8 @@ namespace Projekt_MVC.Controllers
             {
                 if (HttpContext.Session.GetInt32("UserId") != null)
                 {
-                    dyskusja.UserId = (int)HttpContext.Session.GetInt32("UserId");
+                    //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
+                    dyskusja.Owner = BazaDanych.user.FirstOrDefault(u => u.UserId == (int)HttpContext.Session.GetInt32("UserId"));
 
                     BazaDanych.dyskusja.Add(dyskusja);
                     BazaDanych.SaveChanges();
