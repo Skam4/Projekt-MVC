@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Projekt_MVC.Models
 {
@@ -19,6 +20,10 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Hasło jest wymagane")]
         public string Password { get; set; }
 
+        [InverseProperty("Owner")]
         public ICollection<Dyskusja>? Dyskusje { get; set; }
+
+        [InverseProperty("Owner")]
+        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; } //Polubione = zapisane
     }
 }

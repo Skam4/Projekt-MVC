@@ -1,8 +1,74 @@
-﻿﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Projekt_MVC.Models.ZmianaHasla
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="containerProfilu">
+        <header>
+            <h1 style="text-align: center">Profil użytkownika *Nazwa zwracana z sesji IMO*</h1>
+        </header>
+
+        <!-- sekcja dla dyskusji użytkownika -->
+        <section id="dyskusjeUzytkownika" class="sectionProfilu">
+            <h2 style="text-align: center">Twoje dyskusje</h2>
+            <ul>
+                @foreach (var dyskusja in ViewBag.User.Dyskusje)
+                {
+                    <li>
+                        <a href="Dyskusja" class="list-group-item list-group-item-action">
+                            @dyskusja.Temat
+                        </a>
+                    </li>
+                }
+            </ul>
+        </section>
 
 
-<h1>Profil</h1>
+        <!-- sekcja dla zapisanych dyskusji -->
+        <section id="dyskusjeZapisane" class="sectionProfilu">
+            <h2 style="text-align: center">Zapisane dyskusje</h2>
+            <ul>
+                @foreach (var dyskusja in ViewBag.User.PolubioneDyskusje)
+                {
+                    <li>
+                        <a href="Dyskusja" class="list-group-item list-group-item-action">
+                            @dyskusja.Temat
+                        </a>
+                    </li>
+                }
+            </ul>
+        </section>
+
+        <section id="informacje" class="sectionProfilu">
+            <h2 style="text-align: center">Zmiana danych</h2>
+            <!-- Formularz do zmiany informacji profilowych -->
+            <form asp-controller="ProfilUzytkownika" asp-action="ZmienDane" method="post" enctype="multipart/form-data" class="formProfilu">
+                <label for="nazwa-uzytkownika" class="labelProfilu">Nazwa użytkownika:</label>
+                <input class="inputProfilu" type="text" id="nazwa-uzytkownika" name="nazwa-uzytkownika" required>
+                <h2 style="text-align: center">Zmiana zdjęcia profilowego: </h2>
+                <input class="inputProfilu" type="file" id="plik-avataru" name="plik-avataru" accept="image/*">
+                <button type="submit" class="buttonProfilu">Zapisz zmiany</button>
+            </form>
+        </section>
+
+        <section id="haslo" class="profile-section" style="margin-top: 100px">
+            <h2 style="text-align: center">Zmiana hasła</h2>
+            <!-- Formularz do zmiany hasła -->
+            <form asp-controller="ProfilUzytkownika" asp-action="ZmienHaslo" method="post" enctype="multipart/form-data" class="formProfilu">
+                <label for="aktualne-haslo" class="labelProfilu">Aktualne hasło:</label>
+                <input class="inputProfilu" type="password" id="@Model.AktualneHaslo" name="aktualne-haslo" required>
+                <label for="nowe-haslo" class="labelProfilu">Nowe hasło:</label>
+                <input class="inputProfilu" type="password" id="@Model.NoweHaslo" name="nowe-haslo" required>
+                <label for="potwierdz-nowe-haslo" class="labelProfilu">Potwierdź nowe hasło:</label>
+                <input class="inputProfilu" type="password" id="@Model.PotwierdzHaslo" name="potwierdz-nowe-haslo" required>
+                <button type="submit" class="buttonProfilu">Zmień hasło</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>

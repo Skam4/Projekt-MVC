@@ -10,11 +10,11 @@
 <html>
     @if (Model == null)
     {
-        <p>Model is null!</p>
+        <p>Brak dyskusji na forum</p>
     }
     else
     {
-        <p>Model is not null!</p>
+        <p>Dyskusje: </p>
         <div class="list-group">
             @foreach (var dyskusja in Model)
             {

@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    font - family: Arial, sans - serif;
 }
 
 header {
@@ -29,6 +29,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
 }
 
 .ForumOdnosnik {
@@ -131,4 +132,53 @@ textarea {
 
     .buttonRozpocznijDyskusje:hover {
         background-color: #45a049;
+    }
+
+
+//CCS ODNOŒNIE PROFILU:
+
+.containerProfilu {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.sectionProfilu {
+    margin-top: 20px;
+}
+
+.formProfilu {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.labelProfilu {
+    display: block;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.inputProfilu {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.buttonProfilu {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+    .buttonProfilu:hover {
+        background-color: #0056b3;
     }
