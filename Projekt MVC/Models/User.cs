@@ -23,7 +23,8 @@ namespace Projekt_MVC.Models
         [InverseProperty("Owner")]
         public ICollection<Dyskusja>? Dyskusje { get; set; }
 
-        [InverseProperty("Owner")]
-        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; } //Polubione = zapisane
+        [InverseProperty("PolubiajacyUzytkownicy")]
+        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }
     }
+
 }

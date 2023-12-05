@@ -68,9 +68,28 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult ZmienDane(string aktualneHaslo, string noweHaslo, string potwierdzNoweHaslo)
         {
+            var userId = HttpContext.Session.GetString("UserId");
 
+            if (int.TryParse(userId, out int userIdInt))
+            {
+                var uzytkownik = BazaDanych.user.FirstOrDefault(x => x.UserId == userIdInt);
+
+                if (uzytkownik == null)
+                {
+                    return View(); //gdy użytkownik nie istnieje
+                }
+                else if (uzytkownik != null)
+                {
+                    uzytkownik.NickName = "NowaNazwaUzytkownika";
+
+                    BazaDanych.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Dane zostały pomyślnie zmienione.";
+                }
+            }
 
             return View();
         }
+
     }
 }

@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
 </head>
+
+
 <body>
     <div class="containerProfilu">
         <header>
@@ -17,29 +19,48 @@
         <section id="dyskusjeUzytkownika" class="sectionProfilu">
             <h2 style="text-align: center">Twoje dyskusje</h2>
             <ul>
-                @foreach (var dyskusja in ViewBag.User.Dyskusje)
+                @if (ViewBag.User != null && ViewBag.User.Dyskusje != null)
                 {
-                    <li>
-                        <a href="Dyskusja" class="list-group-item list-group-item-action">
-                            @dyskusja.Temat
-                        </a>
-                    </li>
+                    @foreach (var dyskusja in ViewBag.User.Dyskusje)
+                    {
+                        <li>
+
+                            <a href="Dyskusja" class="list-group-item list-group-item-action">
+                                @dyskusja.Temat
+                            </a>
+
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>Brak dostępnych dyskusji</li>
                 }
             </ul>
         </section>
 
 
+
         <!-- sekcja dla zapisanych dyskusji -->
-        <section id="dyskusjeZapisane" class="sectionProfilu">
-            <h2 style="text-align: center">Zapisane dyskusje</h2>
+        <section id="dyskusjeUzytkownika" class="sectionProfilu">
+            <h2 style="text-align: center">Twoje dyskusje</h2>
             <ul>
-                @foreach (var dyskusja in ViewBag.User.PolubioneDyskusje)
+                @if (ViewBag.User != null && ViewBag.User.Dyskusje != null)
                 {
-                    <li>
-                        <a href="Dyskusja" class="list-group-item list-group-item-action">
-                            @dyskusja.Temat
-                        </a>
-                    </li>
+                    @foreach (var dyskusja in ViewBag.User.PolubioneDyskusje)
+                    {
+                        <li>
+
+                            <a href="Dyskusja" class="list-group-item list-group-item-action">
+                                @dyskusja.Temat
+                            </a>
+
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>Brak dostępnych dyskusji</li>
                 }
             </ul>
         </section>
@@ -61,11 +82,11 @@
             <!-- Formularz do zmiany hasła -->
             <form asp-controller="ProfilUzytkownika" asp-action="ZmienHaslo" method="post" enctype="multipart/form-data" class="formProfilu">
                 <label for="aktualne-haslo" class="labelProfilu">Aktualne hasło:</label>
-                <input class="inputProfilu" type="password" id="@Model.AktualneHaslo" name="aktualne-haslo" required>
+                <input class="inputProfilu" type="password" id="aktualne-haslo" name="aktualne-haslo" required>
                 <label for="nowe-haslo" class="labelProfilu">Nowe hasło:</label>
-                <input class="inputProfilu" type="password" id="@Model.NoweHaslo" name="nowe-haslo" required>
+                <input class="inputProfilu" type="password" id="nowe-haslo" name="nowe-haslo" required>
                 <label for="potwierdz-nowe-haslo" class="labelProfilu">Potwierdź nowe hasło:</label>
-                <input class="inputProfilu" type="password" id="@Model.PotwierdzHaslo" name="potwierdz-nowe-haslo" required>
+                <input class="inputProfilu" type="password" id="potwierdz-nowe-haslo" name="potwierdz-nowe-haslo" required>
                 <button type="submit" class="buttonProfilu">Zmień hasło</button>
             </form>
         </section>

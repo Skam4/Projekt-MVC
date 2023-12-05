@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace Projekt_MVC.Models
 {
@@ -12,13 +13,14 @@ namespace Projekt_MVC.Models
         public int? UserId { get; set; }
 
         [Required(ErrorMessage = "Podaj temat dyskusji")]
-        public string Temat { get; set;}
+        public string Temat { get; set; }
 
         [Required(ErrorMessage = "Napisz treść wiadomości")]
-        public string Opis { get; set;}
+        public string Opis { get; set; }
 
-        //public List<string>? Odpowiedzi { get; set;}
+        public virtual User Owner { get; set; }
 
-        public virtual User? Owner { get; set; }
+        [InverseProperty("PolubioneDyskusje")]
+        public ICollection<User> PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
     }
 }
