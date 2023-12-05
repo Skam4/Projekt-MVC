@@ -104,7 +104,7 @@ namespace Projekt_MVC.Controllers
                         // Logowanie udane
                         HttpContext.Session.SetInt32("UserId", existingUser.UserId);
 
-                        return View("Index"); // Przekierowanie do strony głównej po zalogowaniu
+                        return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
                     }
                     else
                     {
