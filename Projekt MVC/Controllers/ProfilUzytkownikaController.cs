@@ -26,8 +26,6 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult WczytajDyskusje(Dyskusja dyskusja)
         {
-
-
             return View("Dyskusja", dyskusja);
         }
 
