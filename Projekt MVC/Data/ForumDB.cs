@@ -5,8 +5,9 @@ namespace Projekt_MVC.Data
 {
     public class ForumDB : DbContext
     {
-        public DbSet<User> user { get; set; }
-        public DbSet<Dyskusja> dyskusja { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Dyskusja> Dyskusja { get; set; }
+        public DbSet<Role> Role { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,10 +18,11 @@ namespace Projekt_MVC.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                        .HasMany(u => u.Dyskusje)
-                        .WithOne(d => d.Owner)
-                        .HasForeignKey(d => d.UserId)
-                        .OnDelete(DeleteBehavior.SetNull);
+                .HasMany(u => u.Dyskusje)
+                .WithOne(d => d.Owner)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.PolubioneDyskusje)

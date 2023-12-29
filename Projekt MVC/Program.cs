@@ -27,7 +27,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSession();
 
-app.Use(async (context, next) =>
+/*app.Use(async (context, next) =>
 {
     var userId = context.Session.GetInt32("UserId");
     var path = context.Request.Path;
@@ -46,7 +46,7 @@ app.Use(async (context, next) =>
     }
 
     await next();
-});
+});*/
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

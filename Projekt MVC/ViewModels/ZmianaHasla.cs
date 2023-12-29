@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Projekt_MVC.Models
+namespace Projekt_MVC.ViewModels
 {
     public class ZmianaHasla
     {

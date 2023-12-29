@@ -15,7 +15,7 @@ namespace Projekt_MVC.Controllers
 
             if (int.TryParse(userId, out int userIdInt))
             {
-                var uzytkownik = BazaDanych.user.Include(u => u.Dyskusje).FirstOrDefault(x => x.UserId == userIdInt);
+                var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
 
                 ViewBag.User = uzytkownik;
             }
@@ -36,7 +36,7 @@ namespace Projekt_MVC.Controllers
 
             if (int.TryParse(userId, out int userIdInt))
             {
-                var uzytkownik = BazaDanych.user.FirstOrDefault(x => x.UserId == userIdInt);
+                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
 
                 if(uzytkownik == null) 
                 {
@@ -44,10 +44,10 @@ namespace Projekt_MVC.Controllers
                 }
                 else if(uzytkownik != null)
                 {
-                    if(uzytkownik.Password == aktualneHaslo) 
+                    if(uzytkownik.Haslo == aktualneHaslo) 
                     {
                         //Aktualizacja nowego hasła
-                        uzytkownik.Password = noweHaslo;
+                        uzytkownik.Haslo = noweHaslo;
 
                         BazaDanych.SaveChanges();
 
@@ -62,7 +62,7 @@ namespace Projekt_MVC.Controllers
 
             return View();
         }
-
+/*
         [HttpPost]
         public IActionResult ZmienDane(string aktualneHaslo, string noweHaslo, string potwierdzNoweHaslo)
         {
@@ -70,7 +70,7 @@ namespace Projekt_MVC.Controllers
 
             if (int.TryParse(userId, out int userIdInt))
             {
-                var uzytkownik = BazaDanych.user.FirstOrDefault(x => x.UserId == userIdInt);
+                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
 
                 if (uzytkownik == null)
                 {
@@ -78,7 +78,7 @@ namespace Projekt_MVC.Controllers
                 }
                 else if (uzytkownik != null)
                 {
-                    uzytkownik.NickName = "NowaNazwaUzytkownika";
+                    uzytkownik.Nazwa = "NowaNazwaUzytkownika";
 
                     BazaDanych.SaveChanges();
 
@@ -87,7 +87,7 @@ namespace Projekt_MVC.Controllers
             }
 
             return View();
-        }
+        }*/
 
     }
 }

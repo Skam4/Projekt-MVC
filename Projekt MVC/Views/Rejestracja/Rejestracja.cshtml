@@ -1,0 +1,35 @@
+﻿@model Projekt_MVC.ViewModels.UserRejestracja
+
+@{
+    Layout = "_LayoutPusty";
+    ViewData["Title"] = "Rejestracja";
+}
+
+<link rel="stylesheet" href="~/css/style.css">
+
+<body>
+    <main>
+        <div class="loginKontener" style="max-width: 400px">
+            <h2 class="title"><b>Rejestracja</b></h2>
+            @Html.ValidationSummary(true)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <form class="loginForma" method="post" asp-action="Rejestracja" asp-controller="Rejestracja">
+                @Html.AntiForgeryToken()
+
+                <input type="text" class="login" placeholder="Nazwa" asp-for="Nazwa" required>
+                <span asp-validation-for="Nazwa" class="text-danger"></span>
+
+                <input type="email" class="login" placeholder="Adres email" asp-for="Email" required>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <input type="password" class="login" placeholder="Hasło" asp-for="Haslo" required>
+                <span asp-validation-for="Haslo" class="text-danger"></span>
+
+                <input type="password" class="login" placeholder="Powtórz hasło" name="HasloConfirm" required>
+                <span asp-validation-for="HasloConfirm" class="text-danger"></span>
+
+                <button type="submit" class="loginPrzycisk">Zarejestruj się</button>
+            </form>
+        </div>
+    </main>
+</body>

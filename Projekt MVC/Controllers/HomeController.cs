@@ -20,7 +20,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Index()
         {
-            var listaDyskusji = BazaDanych.dyskusja.ToList();
+            var listaDyskusji = BazaDanych.Dyskusja.ToList();
 
             for(int i = 0; i < listaDyskusji.Count; i++)
             {
@@ -50,7 +50,7 @@ namespace Projekt_MVC.Controllers
                 }
             }*/
 
-            Dyskusja Dyskusja = BazaDanych.dyskusja.Include(x => x.Owner).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Owner).FirstOrDefault(i => i.DyskusjaId == id);
 
             if (Dyskusja != null)
             {
@@ -84,7 +84,7 @@ namespace Projekt_MVC.Controllers
             return View();
         }
 
-        public IActionResult Logowanie()
+/*        public IActionResult Logowanie()
         {
             HttpContext.Session.Clear();
             return View("Logowanie");
@@ -95,7 +95,7 @@ namespace Projekt_MVC.Controllers
         {
 
                 // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-                var existingUser = BazaDanych.user.FirstOrDefault(u => u.Email == Email);
+                var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
                 if (existingUser != null)
                 {
                     // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
@@ -123,12 +123,12 @@ namespace Projekt_MVC.Controllers
         public IActionResult Rejestracja()
         {
             return View("Rejestracja");
-        }
+        }*/
 
-        [HttpPost]
+/*        [HttpPost]
         public IActionResult Rejestracja(User user, string confirmPassword)
         {
-            var czyEmailByl = BazaDanych.user.FirstOrDefault(d => d.Email == user.Email);
+            var czyEmailByl = BazaDanych.User.FirstOrDefault(d => d.Email == user.Email);
 
             if (ModelState.IsValid && czyEmailByl == null)
             {
@@ -146,7 +146,7 @@ namespace Projekt_MVC.Controllers
 
 
             return View("Rejestracja");
-        }
+        }*/
 
 
         [HttpPost]
@@ -159,12 +159,12 @@ namespace Projekt_MVC.Controllers
                 if (HttpContext.Session.GetInt32("UserId") != null)
                 {
                     //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
-                    dyskusja.Owner = BazaDanych.user.FirstOrDefault(u => u.UserId == (int)HttpContext.Session.GetInt32("UserId"));
+                    dyskusja.Owner = BazaDanych.User.FirstOrDefault(u => u.Id_uzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
-                    BazaDanych.dyskusja.Add(dyskusja);
+                    BazaDanych.Dyskusja.Add(dyskusja);
                     BazaDanych.SaveChanges();
 
-                    var savedDyskusja = BazaDanych.dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
+                    var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
 
                     return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
                 }

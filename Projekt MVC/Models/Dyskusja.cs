@@ -9,7 +9,7 @@ namespace Projekt_MVC.Models
         [Key]
         public int DyskusjaId { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey("Id_uzytkownika")]
         public int? UserId { get; set; }
 
         [Required(ErrorMessage = "Podaj temat dyskusji")]

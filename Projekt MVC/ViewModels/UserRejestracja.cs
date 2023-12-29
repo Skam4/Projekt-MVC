@@ -1,17 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Projekt_MVC.Models
+namespace Projekt_MVC.ViewModels
 {
-    public class User
+    public class UserRejestracja
     {
-        [Key]
-        [Required(ErrorMessage = "Identyfikator jest wymagany")]
-        [Range(0, 9999)]
-        public int Id_uzytkownika { get; set; }
 
         [Required(ErrorMessage = "Nazwa roli jest wymagana")]
         [StringLength(25, ErrorMessage = "Nazwa nie może przekraczać 25 znaków")]
+        [MinLength(3, ErrorMessage = "Nazwa jest za krótka")]
         public string Nazwa { get; set; }
 
         [Required(ErrorMessage = "Nazwa roli jest wymagana")]
@@ -19,18 +15,17 @@ namespace Projekt_MVC.Models
         [MinLength(5, ErrorMessage = "Hasło jest za krótkie")]
         public string Haslo { get; set; }
 
+        [Required(ErrorMessage = "Nazwa roli jest wymagana")]
+        [StringLength(255, ErrorMessage = "Hasło nie może przekraczać 255 znaków")]
+        [Compare("Haslo", ErrorMessage = "Hasło i potwierdzenie hasła nie są identyczne")]
+        public string HasloConfirm { get; set; }
+
 
         [Required(ErrorMessage = "Nazwa roli jest wymagana")]
         [StringLength(50, ErrorMessage = "Email nie może przekraczać 50 znaków")]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [InverseProperty("Owner")]
-        public ICollection<Dyskusja>? Dyskusje { get; set; }
 
-        [InverseProperty("PolubiajacyUzytkownicy")]
-        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }
-
-        public virtual Role Role { get; set; }
     }
-
 }
