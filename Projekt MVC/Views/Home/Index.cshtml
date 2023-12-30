@@ -3,6 +3,15 @@
 
 @{
     ViewData["Title"] = "Home Page";
+
+    if (ViewBag.UserId == null)
+    {
+        Layout = "_LayoutNieZalogowany";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
 }
 
 <h1> Dyskusje: </h1>

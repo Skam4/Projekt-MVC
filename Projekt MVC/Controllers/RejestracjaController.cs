@@ -93,7 +93,7 @@ namespace Projekt_MVC.Controllers
                     HttpContext.Session.SetInt32("UserId", existingUser.Id_uzytkownika);
                     HttpContext.Session.SetString("UserRole", existingUser.Role.Nazwa);
 
-                    return RedirectToAction("MainSite", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

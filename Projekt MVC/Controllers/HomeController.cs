@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
+using Projekt_MVC.ViewModels;
 using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -22,7 +23,11 @@ namespace Projekt_MVC.Controllers
         {
             var listaDyskusji = BazaDanych.Dyskusja.ToList();
 
-            for(int i = 0; i < listaDyskusji.Count; i++)
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            ViewBag.UserId = userId;
+
+            for (int i = 0; i < listaDyskusji.Count; i++)
             {
                 Console.WriteLine(listaDyskusji[i].Temat);
             }
@@ -150,21 +155,25 @@ namespace Projekt_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult TworzenieDyskusji(Dyskusja dyskusja)
+        public IActionResult TworzenieDyskusji(DodawanieDyskusji dyskusja)
         {
-            Console.WriteLine("DISDKAIDJAIOS: " + dyskusja.DyskusjaId);
 
             if (ModelState.IsValid)
             {
                 if (HttpContext.Session.GetInt32("UserId") != null)
                 {
-                    //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
-                    dyskusja.Owner = BazaDanych.User.FirstOrDefault(u => u.Id_uzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
+                    Dyskusja NowaDyskusja = new Dyskusja();
 
-                    BazaDanych.Dyskusja.Add(dyskusja);
+                    NowaDyskusja.Temat = dyskusja.Temat;
+                    NowaDyskusja.Opis = dyskusja.Opis;
+
+                    //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
+                    NowaDyskusja.Owner = BazaDanych.User.FirstOrDefault(u => u.Id_uzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
+
+                    BazaDanych.Dyskusja.Add(NowaDyskusja);
                     BazaDanych.SaveChanges();
 
-                    var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == dyskusja.DyskusjaId);
+                    var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == NowaDyskusja.DyskusjaId);
 
                     return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
                 }

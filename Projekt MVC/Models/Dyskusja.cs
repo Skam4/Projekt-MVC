@@ -9,8 +9,6 @@ namespace Projekt_MVC.Models
         [Key]
         public int DyskusjaId { get; set; }
 
-        [ForeignKey("Id_uzytkownika")]
-        public int? UserId { get; set; }
 
         [Required(ErrorMessage = "Podaj temat dyskusji")]
         public string Temat { get; set; }
@@ -18,9 +16,9 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Napisz treść wiadomości")]
         public string Opis { get; set; }
 
+        //[ForeignKey("Id_uzytkownika")]
         public virtual User Owner { get; set; }
 
-        [InverseProperty("PolubioneDyskusje")]
-        public ICollection<User> PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
+        //public virtual ICollection<User>? PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
     }
 }

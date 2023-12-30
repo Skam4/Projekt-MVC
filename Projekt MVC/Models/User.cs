@@ -24,11 +24,11 @@ namespace Projekt_MVC.Models
         [StringLength(50, ErrorMessage = "Email nie może przekraczać 50 znaków")]
         public string Email { get; set; }
 
-        [InverseProperty("Owner")]
+
         public ICollection<Dyskusja>? Dyskusje { get; set; }
 
-        [InverseProperty("PolubiajacyUzytkownicy")]
-        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }
+/*        [InverseProperty("PolubiajacyUzytkownicy")]
+        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }*/
 
         public virtual Role Role { get; set; }
     }

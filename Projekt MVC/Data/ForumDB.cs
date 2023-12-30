@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Models;
 
 namespace Projekt_MVC.Data
@@ -17,19 +17,9 @@ namespace Projekt_MVC.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Dyskusje)
-                .WithOne(d => d.Owner)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.PolubioneDyskusje)
-                .WithMany(d => d.PolubiajacyUzytkownicy)
-                .UsingEntity(j => j.ToTable("UlubioneDyskusje"));
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }

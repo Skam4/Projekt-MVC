@@ -27,26 +27,26 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSession();
 
-/*app.Use(async (context, next) =>
+app.Use(async (context, next) =>
 {
     var userId = context.Session.GetInt32("UserId");
     var path = context.Request.Path;
 
     // Jeœli u¿ytkownik jest ju¿ na stronie logowania, nie wykonuj przekierowania
-    if (path.StartsWithSegments("/Home/Logowanie"))
+    if (path.StartsWithSegments("/Rejestracja/Logowanie"))
     {
         await next();
         return;
     }
 
-    if (userId == null && !path.StartsWithSegments("/Home/Logowanie") && !path.StartsWithSegments("/Home/SprawdzanieDanychLogowania") && !path.StartsWithSegments("/Home/Rejestracja"))
+/*    if (userId == null && !path.StartsWithSegments("/Home/Index") && !path.StartsWithSegments("/Home/Dyskusja")) //Ten if jest git ale jeszcze to nie dzia³a poprawnie
     {
         // Brak sesji, przekieruj do strony logowania
-        context.Response.Redirect("/Home/Logowanie");
-    }
+        context.Response.Redirect("/Rejestracja/Logowanie");
+    }*/
 
     await next();
-});*/
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
