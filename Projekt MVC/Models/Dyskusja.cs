@@ -17,7 +17,9 @@ namespace Projekt_MVC.Models
         public string Opis { get; set; }
 
         //[ForeignKey("Id_uzytkownika")]
-        public virtual User Owner { get; set; }
+        public virtual User Owner { get; set; } //Można na "Właściciel" zmienić żeby wszystko po polsku już było
+
+        public virtual ICollection<Odpowiedz>? Odpowiedzi { get; set; }
 
         //public virtual ICollection<User>? PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
     }

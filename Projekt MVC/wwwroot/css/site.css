@@ -182,3 +182,15 @@ textarea {
     .buttonProfilu:hover {
         background-color: #0056b3;
     }
+
+
+/*//CSS DO DYSKUSJA:*/
+
+.OdpowiedzTextArea {
+    margin: 20px;
+    width: 40vw;
+    border-radius: 10px;
+    border: 1px solid #555;
+    box-sizing: border-box;
+    height: 100px;
+}

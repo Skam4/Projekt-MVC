@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    var userRole = Context.Session.GetString("UserRole");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,23 +15,68 @@
 </head>
 <body>
     <header style="border-bottom ; box-shadow">
-        <form asp-controller="Home" asp-action="Index" method="post">
-            <button type="submit" class="ForumOdnosnik">Forum</button>
-        </form>
 
-        <form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
-            <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
-        </form>
+        @if (userRole == "uzytkownik")
+        {
+            <form asp-controller="Home" asp-action="Index" method="post">
+                <button type="submit" class="ForumOdnosnik">Forum</button>
+            </form>
 
-        <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
+            <form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
+                <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+            </form>
 
-        <form asp-controller="Home" asp-action="Profil" method="post">
-            <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
-        </form>
+            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
 
-        <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
-            <button type="submit" class="Wyloguj">Wyloguj</button>
-        </form>
+            <form asp-controller="Home" asp-action="Profil" method="post">
+                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
+            </form>
+
+            <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
+                <button type="submit" class="Wyloguj">Wyloguj</button>
+            </form>
+        }
+        else if (userRole == "admin")
+        {
+            <form asp-controller="Home" asp-action="Index" method="post">
+                <button type="submit" class="ForumOdnosnik">Forum</button>
+            </form>
+
+            <form asp-controller="Admin" asp-action="ZarzadzajDyskusjami" method="post">
+                <button type="submit" class="StworzDyskusje">Zarządzaj Dyskusjami</button>
+            </form>
+
+            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
+
+            <form asp-controller="Home" asp-action="Profil" method="post">
+                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
+            </form>
+
+            <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
+                <button type="submit" class="Wyloguj">Wyloguj</button>
+            </form>
+        }
+        else
+        {
+            <form asp-controller="Home" asp-action="Index" method="post">
+                <button type="submit" class="ForumOdnosnik">Forum</button>
+            </form>
+
+            <form asp-controller="Rejestracja" asp-action="Index" method="post">
+                <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+            </form>
+
+            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
+
+            <form asp-controller="Rejestracja" asp-action="Index" method="post">
+                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
+            </form>
+
+            <form asp-controller="Rejestracja" asp-action="Index" method="post">
+                <button type="submit" class="loginPrzycisk">Zaloguj Się</button>
+            </form>
+
+        }
 
     </header>
     <div class="container">

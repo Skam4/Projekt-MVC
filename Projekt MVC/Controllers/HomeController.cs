@@ -4,7 +4,6 @@ using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using Projekt_MVC.ViewModels;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Projekt_MVC.Controllers
 {
@@ -40,6 +39,25 @@ namespace Projekt_MVC.Controllers
             return View("Profil");
         }
 
+        public IActionResult NapiszOdpowiedz(string odpowiedz, int IdDyskusji) 
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userId);
+
+            var dyskusja = BazaDanych.Dyskusja.FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
+
+            Odpowiedz odp = new Odpowiedz();
+            odp.Tresc = odpowiedz;
+            odp.Autor = user;
+            odp.Dyskusja = dyskusja;
+            odp.DataOdpowiedzi = DateTime.Now;
+
+            BazaDanych.Odpowiedzi.Add(odp);
+            BazaDanych.SaveChanges();
+
+            return RedirectToAction("Dyskusja", IdDyskusji);
+        }
+
         public IActionResult Dyskusja(int id)
         {
             //Dyskusja Dyskusja = null;
@@ -59,7 +77,6 @@ namespace Projekt_MVC.Controllers
 
             if (Dyskusja != null)
             {
-                Console.WriteLine("WOOOWOWOWOWOWOWOW");
 
                 //to też jest niepotrzebne
                 /*User Użytkownik = Dyskusja.Owner;

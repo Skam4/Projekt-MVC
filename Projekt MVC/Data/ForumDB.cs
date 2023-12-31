@@ -8,6 +8,7 @@ namespace Projekt_MVC.Data
         public DbSet<User> User { get; set; }
         public DbSet<Dyskusja> Dyskusja { get; set; }
         public DbSet<Role> Role { get; set; }
+        public DbSet<Odpowiedz> Odpowiedzi { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,9 +18,14 @@ namespace Projekt_MVC.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
+
+/*            modelBuilder.Entity<Odpowiedz>()
+                .HasOne(z => z.Autor)
+                .WithMany(z => z.Odpowiedzi)
+                .HasForeignKey(z => z.OdpowiedzId);*/
         }
+
 
     }
 }

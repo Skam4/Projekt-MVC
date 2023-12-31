@@ -25,10 +25,15 @@ namespace Projekt_MVC.Models
         public string Email { get; set; }
 
 
+        [ForeignKey("DyskusjaId")]
         public ICollection<Dyskusja>? Dyskusje { get; set; }
 
-/*        [InverseProperty("PolubiajacyUzytkownicy")]
-        public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }*/
+        [ForeignKey("AutorId_uzytkownika")]
+        public ICollection<Odpowiedz>? Odpowiedzi { get; set; }
+
+
+        /*        [InverseProperty("PolubiajacyUzytkownicy")]
+                public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }*/
 
         public virtual Role Role { get; set; }
     }
