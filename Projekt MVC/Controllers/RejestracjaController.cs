@@ -39,12 +39,12 @@ namespace Projekt_MVC.Controllers
                         role.Nazwa = "uzytkownik";
                         BazaDanych.Role.Add(role);
                         BazaDanych.SaveChanges();
-                        uzytkownicy.Role = role;
+                        uzytkownicy.Rola = role;
                     }
                     else
                     {
                         Role role = BazaDanych.Role.FirstOrDefault(r => r.Nazwa == "uzytkownik");
-                        uzytkownicy.Role = role;
+                        uzytkownicy.Rola = role;
                     }
 
                     uzytkownicy.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Haslo);
@@ -52,7 +52,7 @@ namespace Projekt_MVC.Controllers
                     uzytkownicy.Email = user.Email;
                     BazaDanych.User.Add(uzytkownicy);
                     BazaDanych.SaveChanges();
-                    HttpContext.Session.SetInt32("UserId", uzytkownicy.Id_uzytkownika);
+                    HttpContext.Session.SetInt32("UserId", uzytkownicy.IdUzytkownika);
 
                     return RedirectToAction("Logowanie");
                 }
@@ -83,15 +83,15 @@ namespace Projekt_MVC.Controllers
         {
 
             // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-            var existingUser = BazaDanych.User.Include(u => u.Role).FirstOrDefault(u => u.Email == Email);
+            var existingUser = BazaDanych.User.Include(u => u.Rola).FirstOrDefault(u => u.Email == Email);
             if (existingUser != null)
             {
                 // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
                 if (BCrypt.Net.BCrypt.EnhancedVerify(Password, existingUser.Haslo) == true)
                 {
                     // Logowanie udane
-                    HttpContext.Session.SetInt32("UserId", existingUser.Id_uzytkownika);
-                    HttpContext.Session.SetString("UserRole", existingUser.Role.Nazwa);
+                    HttpContext.Session.SetInt32("UserId", existingUser.IdUzytkownika);
+                    HttpContext.Session.SetString("UserRole", existingUser.Rola.Nazwa);
 
                     return RedirectToAction("Index", "Home");
                 }

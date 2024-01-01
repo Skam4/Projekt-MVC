@@ -10,14 +10,14 @@ namespace Projekt_MVC.Models
 
         [Required(ErrorMessage = "Napisz treść odpowiedzi")]
         public string Tresc { get; set; }
+
+        [DataType(DataType.DateTime)]
         public DateTime DataOdpowiedzi { get; set; }
-
-
-        /*        [ForeignKey("Dyskusja")]
-                public int DyskusjaId { get; set; }*/
 
         public virtual Dyskusja Dyskusja { get; set; }
 
+        [ForeignKey("AutorIdUzytkownika")]
         public virtual User Autor { get; set; }
+
     }
 }

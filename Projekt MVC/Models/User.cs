@@ -6,36 +6,30 @@ namespace Projekt_MVC.Models
     public class User
     {
         [Key]
-        [Required(ErrorMessage = "Identyfikator jest wymagany")]
-        [Range(0, 9999)]
-        public int Id_uzytkownika { get; set; }
+        [Required(ErrorMessage = "Identyfikator użytkownika jest wymagany")]
+        [Range(0, int.MaxValue, ErrorMessage = "Identyfikator użytkownika powinien być większy niż 0")]
+        public int IdUzytkownika { get; set; }
 
-        [Required(ErrorMessage = "Nazwa roli jest wymagana")]
-        [StringLength(25, ErrorMessage = "Nazwa nie może przekraczać 25 znaków")]
+        [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")]
+        [StringLength(25, ErrorMessage = "Nazwa użytkownika nie może przekraczać 25 znaków")]
         public string Nazwa { get; set; }
 
-        [Required(ErrorMessage = "Nazwa roli jest wymagana")]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
         [StringLength(255, ErrorMessage = "Hasło nie może przekraczać 255 znaków")]
         [MinLength(5, ErrorMessage = "Hasło jest za krótkie")]
         public string Haslo { get; set; }
 
-
-        [Required(ErrorMessage = "Nazwa roli jest wymagana")]
-        [StringLength(50, ErrorMessage = "Email nie może przekraczać 50 znaków")]
+        [Required(ErrorMessage = "Adres email jest wymagany")]
+        [StringLength(50, ErrorMessage = "Adres email nie może przekraczać 50 znaków")]
+        [EmailAddress(ErrorMessage = "Nieprawidłowy format adresu email")]
         public string Email { get; set; }
 
+        public virtual ICollection<Dyskusja> Dyskusje { get; set; }
 
-        [ForeignKey("DyskusjaId")]
-        public ICollection<Dyskusja>? Dyskusje { get; set; }
+        public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
+        public int LiczbaPolubien { get; set; }
 
-        [ForeignKey("AutorId_uzytkownika")]
-        public ICollection<Odpowiedz>? Odpowiedzi { get; set; }
-
-
-        /*        [InverseProperty("PolubiajacyUzytkownicy")]
-                public ICollection<Dyskusja>? PolubioneDyskusje { get; set; }*/
-
-        public virtual Role Role { get; set; }
+        public virtual Role Rola { get; set; }
     }
 
 }

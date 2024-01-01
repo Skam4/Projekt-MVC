@@ -42,7 +42,7 @@ namespace Projekt_MVC.Controllers
         public IActionResult NapiszOdpowiedz(string odpowiedz, int IdDyskusji) 
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            var user = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userId);
+            var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
             var dyskusja = BazaDanych.Dyskusja.FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
@@ -73,7 +73,7 @@ namespace Projekt_MVC.Controllers
                 }
             }*/
 
-            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Owner).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
 
             if (Dyskusja != null)
             {
@@ -185,7 +185,7 @@ namespace Projekt_MVC.Controllers
                     NowaDyskusja.Opis = dyskusja.Opis;
 
                     //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
-                    NowaDyskusja.Owner = BazaDanych.User.FirstOrDefault(u => u.Id_uzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
+                    NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
                     BazaDanych.Dyskusja.Add(NowaDyskusja);
                     BazaDanych.SaveChanges();

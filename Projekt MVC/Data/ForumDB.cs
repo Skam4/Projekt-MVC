@@ -20,10 +20,11 @@ namespace Projekt_MVC.Data
         {
             base.OnModelCreating(modelBuilder);
 
-/*            modelBuilder.Entity<Odpowiedz>()
-                .HasOne(z => z.Autor)
-                .WithMany(z => z.Odpowiedzi)
-                .HasForeignKey(z => z.OdpowiedzId);*/
+            modelBuilder.Entity<Odpowiedz>()
+                    .HasOne(o => o.Autor)
+                    .WithMany(u => u.Odpowiedzi)
+                    .HasForeignKey(o => o.OdpowiedzId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
 
 

@@ -15,7 +15,7 @@ namespace Projekt_MVC.Controllers
 
             if (int.TryParse(userId, out int userIdInt))
             {
-                var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
+                var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.IdUzytkownika == userIdInt);
 
                 ViewBag.User = uzytkownik;
             }
@@ -36,7 +36,7 @@ namespace Projekt_MVC.Controllers
 
             if (int.TryParse(userId, out int userIdInt))
             {
-                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
+                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userIdInt);
 
                 if(uzytkownik == null) 
                 {

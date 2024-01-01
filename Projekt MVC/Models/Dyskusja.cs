@@ -9,17 +9,17 @@ namespace Projekt_MVC.Models
         [Key]
         public int DyskusjaId { get; set; }
 
-
         [Required(ErrorMessage = "Podaj temat dyskusji")]
         public string Temat { get; set; }
 
         [Required(ErrorMessage = "Napisz treść wiadomości")]
         public string Opis { get; set; }
 
-        //[ForeignKey("Id_uzytkownika")]
-        public virtual User Owner { get; set; } //Można na "Właściciel" zmienić żeby wszystko po polsku już było
+        public virtual User Wlasciciel { get; set; }
 
-        public virtual ICollection<Odpowiedz>? Odpowiedzi { get; set; }
+        public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
+
+        public int LiczbaPolubien { get; set; }
 
         //public virtual ICollection<User>? PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
     }
