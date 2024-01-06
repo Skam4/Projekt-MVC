@@ -50,7 +50,7 @@ namespace Projekt_MVC.Controllers
             odp.Tresc = odpowiedz;
             odp.Autor = user;
             odp.Dyskusja = dyskusja;
-            odp.DataOdpowiedzi = DateTime.Now;
+            //odp.DataOdpowiedzi = DateTime.Now;
 
             BazaDanych.Odpowiedzi.Add(odp);
             BazaDanych.SaveChanges();

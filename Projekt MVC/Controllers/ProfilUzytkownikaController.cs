@@ -11,18 +11,21 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Index()
         {
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (int.TryParse(userId, out int userIdInt))
+            var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            if(uzytkownik != null)
             {
-                var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.IdUzytkownika == userIdInt);
-
-                ViewBag.User = uzytkownik;
+                ViewBag.UserId = userId;
+                ViewBag.Nazwa = uzytkownik.Nazwa;
+                ViewBag.Email = uzytkownik.Email;
+                ViewBag.Rola = uzytkownik.Rola;
+                ViewBag.Dyskusje = uzytkownik.Dyskusje;
             }
-
+            
             return View();
         }
-
 
         public IActionResult WczytajDyskusje(Dyskusja dyskusja)
         {
@@ -32,31 +35,28 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult ZmienHaslo(string aktualneHaslo, string noweHaslo)
         {
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (int.TryParse(userId, out int userIdInt))
+            var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            if(uzytkownik == null) 
             {
-                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userIdInt);
-
-                if(uzytkownik == null) 
+               return View(); //W sumie nwm co tu dać, bo to nie powinno sie wydarzyc                
+            }
+            else if(uzytkownik != null)
+            {
+                if(uzytkownik.Haslo == aktualneHaslo) 
                 {
-                    return View(); //W sumie nwm co tu dać, bo to nie powinno sie wydarzyc                
+                    //Aktualizacja nowego hasła
+                    uzytkownik.Haslo = noweHaslo;
+
+                    BazaDanych.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Hasło zostało pomyślnie zmienione.";
                 }
-                else if(uzytkownik != null)
+                else
                 {
-                    if(uzytkownik.Haslo == aktualneHaslo) 
-                    {
-                        //Aktualizacja nowego hasła
-                        uzytkownik.Haslo = noweHaslo;
-
-                        BazaDanych.SaveChanges();
-
-                        TempData["SuccessMessage"] = "Hasło zostało pomyślnie zmienione.";
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Błędne aktualne hasło");
-                    }
+                    ModelState.AddModelError(string.Empty, "Błędne aktualne hasło");
                 }
             }
 

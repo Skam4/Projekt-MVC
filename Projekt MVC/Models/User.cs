@@ -27,9 +27,17 @@ namespace Projekt_MVC.Models
         public virtual ICollection<Dyskusja> Dyskusje { get; set; }
 
         public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
-        public int LiczbaPolubien { get; set; }
 
+        public virtual ICollection<Ogloszenie> Ogloszenia { get; set; }
+
+
+        //public int LiczbaPolubien { get; set; }
+
+        [Required]
+        [ForeignKey("IdRoli")]
         public virtual Role Rola { get; set; }
+
+        public string? AvatarPath { get; set; }
     }
 
 }

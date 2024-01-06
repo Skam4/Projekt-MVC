@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Projekt_MVC.Data;
 
@@ -11,9 +12,11 @@ using Projekt_MVC.Data;
 namespace Projekt_MVC.Migrations
 {
     [DbContext(typeof(ForumDB))]
-    partial class ForumDBModelSnapshot : ModelSnapshot
+    [Migration("20240106163207_x")]
+    partial class x
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -15,11 +15,23 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Napisz treść wiadomości")]
         public string Opis { get; set; }
 
+        [Required]
+        [ForeignKey("IdUzytkownika")]
         public virtual User Wlasciciel { get; set; }
 
         public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
 
-        public int LiczbaPolubien { get; set; }
+        [Required]
+        [ForeignKey("IdForum")]
+        public virtual Forum Forum { get; set; }
+
+        public int? LiczbaOdwiedzen { get; set; }
+
+        public int? LiczbaOdpowiedzi { get; set; }
+
+        public bool? CzyPrzyklejony { get; set; }
+
+        //public int LiczbaPolubien { get; set; }
 
         //public virtual ICollection<User>? PolubiajacyUzytkownicy { get; set; } // Użytkownicy, którzy polubili daną dyskusję
     }

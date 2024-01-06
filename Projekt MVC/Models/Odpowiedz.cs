@@ -11,13 +11,19 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Napisz treść odpowiedzi")]
         public string Tresc { get; set; }
 
-        [DataType(DataType.DateTime)]
-        public DateTime DataOdpowiedzi { get; set; }
+        /*[DataType(DataType.DateTime)]
+        public DateTime DataOdpowiedzi { get; set; }*/
 
+        [Required]
+        [ForeignKey("IdDyskusji")]
         public virtual Dyskusja Dyskusja { get; set; }
 
-        [ForeignKey("AutorIdUzytkownika")]
+        [Required]
+        [ForeignKey("IdUzytkownika")]
         public virtual User Autor { get; set; }
+
+        //ścieżka do załącznika
+        public string ZalacznikPath { get; set; }
 
     }
 }
