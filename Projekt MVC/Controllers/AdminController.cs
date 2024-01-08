@@ -36,7 +36,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZedytowanaOdpowiedz(int IdOdpowiedzi, string Tresc)
         {
-            var odpowiedz = BazaDanych.Odpowiedzi.FirstOrDefault(x => x.OdpowiedzId == IdOdpowiedzi);
+            var odpowiedz = BazaDanych.Odpowiedz.FirstOrDefault(x => x.OdpowiedzId == IdOdpowiedzi);
 
             odpowiedz.Tresc = Tresc;
             BazaDanych.SaveChanges();

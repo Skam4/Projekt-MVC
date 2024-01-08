@@ -52,7 +52,7 @@ namespace Projekt_MVC.Controllers
             odp.Dyskusja = dyskusja;
             //odp.DataOdpowiedzi = DateTime.Now;
 
-            BazaDanych.Odpowiedzi.Add(odp);
+            BazaDanych.Odpowiedz.Add(odp);
             BazaDanych.SaveChanges();
 
             return RedirectToAction("Dyskusja", IdDyskusji);
