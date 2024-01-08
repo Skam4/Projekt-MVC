@@ -11,8 +11,8 @@ namespace Projekt_MVC.Models
         [Required(ErrorMessage = "Napisz treść odpowiedzi")]
         public string Tresc { get; set; }
 
-        /*[DataType(DataType.DateTime)]
-        public DateTime DataOdpowiedzi { get; set; }*/
+        [DataType(DataType.DateTime)]
+        public DateTime DataOdpowiedzi { get; set; }
 
         [Required]
         [ForeignKey("IdDyskusji")]

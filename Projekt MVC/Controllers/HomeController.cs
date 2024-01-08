@@ -39,7 +39,7 @@ namespace Projekt_MVC.Controllers
             return View("Profil");
         }
 
-        public IActionResult NapiszOdpowiedz(string odpowiedz, int IdDyskusji) 
+        public IActionResult NapiszOdpowiedz(string odpowiedz, int IdDyskusji)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
@@ -50,7 +50,7 @@ namespace Projekt_MVC.Controllers
             odp.Tresc = odpowiedz;
             odp.Autor = user;
             odp.Dyskusja = dyskusja;
-            //odp.DataOdpowiedzi = DateTime.Now;
+            odp.DataOdpowiedzi = DateTime.Now;
 
             BazaDanych.Odpowiedz.Add(odp);
             BazaDanych.SaveChanges();
@@ -106,69 +106,69 @@ namespace Projekt_MVC.Controllers
             return View();
         }
 
-/*        public IActionResult Logowanie()
-        {
-            HttpContext.Session.Clear();
-            return View("Logowanie");
-        }
-
-        [HttpPost]
-        public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
-        {
-
-                // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-                var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
-                if (existingUser != null)
+        /*        public IActionResult Logowanie()
                 {
-                    // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
-                    if (existingUser.Password == Password)
+                    HttpContext.Session.Clear();
+                    return View("Logowanie");
+                }
+
+                [HttpPost]
+                public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
+                {
+
+                        // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
+                        var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
+                        if (existingUser != null)
+                        {
+                            // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
+                            if (existingUser.Password == Password)
+                            {
+                                // Logowanie udane
+                                HttpContext.Session.SetInt32("UserId", existingUser.UserId);
+
+                                return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("Password", "Nieprawidłowe hasło.");
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Email", "Użytkownik o podanym emailu nie istnieje.");
+                        }
+
+                    return View("Logowanie");
+                }
+
+
+                public IActionResult Rejestracja()
+                {
+                    return View("Rejestracja");
+                }*/
+
+        /*        [HttpPost]
+                public IActionResult Rejestracja(User user, string confirmPassword)
+                {
+                    var czyEmailByl = BazaDanych.User.FirstOrDefault(d => d.Email == user.Email);
+
+                    if (ModelState.IsValid && czyEmailByl == null)
                     {
-                        // Logowanie udane
-                        HttpContext.Session.SetInt32("UserId", existingUser.UserId);
+                        if (user.Password != confirmPassword)
+                        {
+                            ModelState.AddModelError("ConfirmPassword", "Hasło i potwierdzenie hasła nie są identyczne.");
+                            return View("Rejestracja", user);
+                        }
 
-                        return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
+                        BazaDanych.user.Add(user);
+                        BazaDanych.SaveChanges();
+                        HttpContext.Session.SetInt32("UserId", user.UserId);
+                        return RedirectToAction("Index");
                     }
-                    else
-                    {
-                        ModelState.AddModelError("Password", "Nieprawidłowe hasło.");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("Email", "Użytkownik o podanym emailu nie istnieje.");
-                }
-
-            return View("Logowanie");
-        }
 
 
-        public IActionResult Rejestracja()
-        {
-            return View("Rejestracja");
-        }*/
-
-/*        [HttpPost]
-        public IActionResult Rejestracja(User user, string confirmPassword)
-        {
-            var czyEmailByl = BazaDanych.User.FirstOrDefault(d => d.Email == user.Email);
-
-            if (ModelState.IsValid && czyEmailByl == null)
-            {
-                if (user.Password != confirmPassword)
-                {
-                    ModelState.AddModelError("ConfirmPassword", "Hasło i potwierdzenie hasła nie są identyczne.");
-                    return View("Rejestracja", user);
-                }
-
-                BazaDanych.user.Add(user);
-                BazaDanych.SaveChanges();
-                HttpContext.Session.SetInt32("UserId", user.UserId);
-                return RedirectToAction("Index");
-            }
-
-
-            return View("Rejestracja");
-        }*/
+                    return View("Rejestracja");
+                }*/
 
 
         [HttpPost]
@@ -184,11 +184,10 @@ namespace Projekt_MVC.Controllers
                     NowaDyskusja.Temat = dyskusja.Temat;
                     NowaDyskusja.Opis = dyskusja.Opis;
 
-                    //tu musi być Owner, a nie UserId, bo id dodawane jest automatycznie (jak tego nie ma Owner jest null)
                     NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
                     BazaDanych.Dyskusja.Add(NowaDyskusja);
-                    BazaDanych.SaveChanges();
+                    BazaDanych.SaveChanges(); //Tu wywala bo nie podajemy forum jakie to jest
 
                     var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == NowaDyskusja.DyskusjaId);
 

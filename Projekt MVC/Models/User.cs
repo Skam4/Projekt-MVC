@@ -30,6 +30,8 @@ namespace Projekt_MVC.Models
 
         public virtual ICollection<Ogloszenie> Ogloszenia { get; set; }
 
+        public virtual ICollection<Moderator> Moderatorzy { get; set; }
+
 
         //public int LiczbaPolubien { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Projekt_MVC.Models
@@ -9,11 +10,14 @@ namespace Projekt_MVC.Models
         public int IdModeratora { get; set; }
 
         [Required]
-        [ForeignKey("IdUzytkownika")]
-        public User Uzytkownik { get; set; }
+        public int IdUzytkownika { get; set; }
 
         [Required]
-        [ForeignKey("IdForum")]
-        public Forum Forum { get; set; }
+        public int IdForum { get; set; }
+
+        public virtual User Uzytkownik { get; set; }
+
+        public virtual Forum Forum { get; set; }
     }
+
 }

@@ -33,8 +33,22 @@ namespace Projekt_MVC.Data
                     .WithMany(u => u.Odpowiedzi)
                     .HasForeignKey(o => o.OdpowiedzId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Dyskusja>()
+                .HasOne(d => d.Wlasciciel)
+                .WithMany(u => u.Dyskusje)
+                .HasForeignKey(d => d.DyskusjaId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Moderator>()
+                .HasOne(m => m.Uzytkownik)
+                .WithMany(u => u.Moderatorzy)
+                .HasForeignKey(m => m.IdUzytkownika)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
 
     }
+
+
 }
