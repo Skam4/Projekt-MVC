@@ -21,5 +21,9 @@ namespace Projekt_MVC.Models
         [ForeignKey("IdUprawnien")]
         public virtual UprawnienieAnonimowych UprawnienieAnonimowych { get; set; }
 
+        [Required]
+        [ForeignKey("IdKategorii")]
+        public virtual Kategoria Kategoria { get; set; }
+
     }
 }

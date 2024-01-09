@@ -11,7 +11,6 @@ namespace Projekt_MVC.Data
         public DbSet<Odpowiedz> Odpowiedz { get; set; }
         public DbSet<Forum> Forum { get; set; }
         public DbSet<Kategoria> Kategoria { get; set; }
-        public DbSet<KategoriaForum> KategoriaForum { get; set; }
         public DbSet<Moderator> Moderator { get; set; }
         public DbSet<Ogloszenie> Ogloszenie { get; set; }
         public DbSet<Ranga> Ranga { get; set; }
