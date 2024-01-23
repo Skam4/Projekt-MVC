@@ -23,7 +23,7 @@ namespace Projekt_MVC.Models
         public virtual User Autor { get; set; }
 
         //ścieżka do załącznika
-        public string ZalacznikPath { get; set; }
+        public string? ZalacznikPath { get; set; }
 
     }
 }

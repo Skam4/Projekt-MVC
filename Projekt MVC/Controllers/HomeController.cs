@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
@@ -21,10 +22,13 @@ namespace Projekt_MVC.Controllers
         public IActionResult Index()
         {
             var listaDyskusji = BazaDanych.Dyskusja.ToList();
+            var fora = BazaDanych.Forum.ToList();
 
             var userId = HttpContext.Session.GetInt32("UserId");
 
             ViewBag.UserId = userId;
+
+            ViewBag.ForumList = BazaDanych.Forum.ToList();
 
             for (int i = 0; i < listaDyskusji.Count; i++)
             {
@@ -33,6 +37,7 @@ namespace Projekt_MVC.Controllers
 
             return View("Index", listaDyskusji);
         }
+
 
         public IActionResult Profil()
         {

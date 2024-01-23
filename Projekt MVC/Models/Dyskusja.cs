@@ -17,13 +17,12 @@ namespace Projekt_MVC.Models
 
         [Required]
         [ForeignKey("IdUzytkownika")]
-        public virtual User Wlasciciel { get; set; }
+        public virtual User? Wlasciciel { get; set; }
 
-        public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
+        public virtual ICollection<Odpowiedz>? Odpowiedzi { get; set; }
 
-        [Required]
         [ForeignKey("IdForum")]
-        public virtual Forum Forum { get; set; }
+        public virtual Forum? Forum { get; set; }
 
         public int? LiczbaOdwiedzen { get; set; }
 

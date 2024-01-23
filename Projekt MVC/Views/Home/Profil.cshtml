@@ -12,16 +12,16 @@
 <body>
     <div class="containerProfilu">
         <header>
-            <h1 style="text-align: center">Profil użytkownika *Nazwa zwracana z sesji IMO*</h1>
+            <h1 style="text-align: center">Profil użytkownika @ViewBag.Nazwa</h1>
         </header>
 
         <!-- sekcja dla dyskusji użytkownika -->
         <section id="dyskusjeUzytkownika" class="sectionProfilu">
             <h2 style="text-align: center">Twoje dyskusje</h2>
             <ul>
-                @if (ViewBag.User != null && ViewBag.User.Dyskusje != null)
+                @if (ViewBag.User != null && ViewBag.Dyskusje != null)
                 {
-                    @foreach (var dyskusja in ViewBag.User.Dyskusje)
+                    @foreach (var dyskusja in ViewBag.Dyskusje)
                     {
                         <li>
 
@@ -45,7 +45,7 @@
         <section id="dyskusjeUzytkownika" class="sectionProfilu">
             <h2 style="text-align: center">Twoje dyskusje</h2>
             <ul>
-                @if (ViewBag.User != null && ViewBag.User.Dyskusje != null)
+                @if (ViewBag.User != null && ViewBag.Dyskusje != null)
                 {
                     @foreach (var dyskusja in ViewBag.User.PolubioneDyskusje)
                     {

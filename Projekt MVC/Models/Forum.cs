@@ -17,9 +17,7 @@ namespace Projekt_MVC.Models
 
         public int? LiczbaWiadomosci { get; set; }
 
-        public virtual User Tworca { get; set; }
-
-        public virtual ICollection<Moderator> Moderatorzy { get; set; }
+        public virtual ICollection<Moderator>? Moderatorzy { get; set; }
 
         [Required]
         [ForeignKey("IdUprawnien")]

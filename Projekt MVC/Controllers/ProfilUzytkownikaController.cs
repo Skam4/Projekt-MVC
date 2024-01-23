@@ -23,8 +23,8 @@ namespace Projekt_MVC.Controllers
                 ViewBag.Rola = uzytkownik.Rola;
                 ViewBag.Dyskusje = uzytkownik.Dyskusje;
             }
-            
-            return View();
+
+            return View("../Home/Profil");
         }
 
         public IActionResult WczytajDyskusje(Dyskusja dyskusja)

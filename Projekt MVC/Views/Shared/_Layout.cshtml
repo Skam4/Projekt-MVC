@@ -28,7 +28,19 @@
 
             <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
 
-            <form asp-controller="Home" asp-action="Profil" method="post">
+@*            <form asp-controller="Home" asp-action="ZobaczDyskusjeFora" method="post">
+
+                <label style="color: white">Fora:</label>
+                <select name="idFora">
+                    @foreach (var forum in @ViewBag.ForumList)
+                    {
+                        <option value="@forum.IdForum">@forum.Nazwa</option>
+                    }
+                </select>
+                <button type="submit">Wyświetl dyskusje</button>
+            </form>*@
+
+            <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
                 <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
             </form>
 
