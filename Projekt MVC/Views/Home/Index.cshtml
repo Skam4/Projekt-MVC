@@ -1,4 +1,4 @@
-﻿@model List<Projekt_MVC.Models.Dyskusja>
+﻿@model List<Projekt_MVC.Models.Forum>
 
 
 @{
@@ -6,41 +6,33 @@
 
     if (ViewBag.UserId == null)
     {
-        Layout = "_LayoutNieZalogowany";
+        Layout = "_LayoutNieZalogowanyINieWForum";
     }
     else
     {
-        Layout = "_Layout";
+        Layout = "_LayoutNieWForum";
     }
 }
 
-<h1> Dyskusje: </h1>
+<h1> Fora: </h1>
 
 <html>
-    @if (Model == null)
-    {
-        <p>Brak dyskusji na forum</p>
-    }
-    else
-    {
-        <p>Dyskusje: </p>
-        <div class="list-group">
-            @foreach (var dyskusja in Model)
-            {
-                <a href="Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
-                    @dyskusja.Temat
-                </a>
-            }
-        </div>
-    }
+@if (Model == null)
+{
+    <p>Brak forów xd</p>
+}
+else
+{
+    <p>Fora: </p>
+    <div class="list-group">
+        @foreach (var forum in Model)
+        {
+            <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action">
+                @forum.Nazwa - @forum.Opis
+            </a>
+        }
+    </div>
+
+}
 
 </html>
-
-<script>
-
-    function f()
-    {
-
-    }
-
-</script>

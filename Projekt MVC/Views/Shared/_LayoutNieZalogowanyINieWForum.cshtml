@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MVC_Projekt</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header style="border-bottom ; box-shadow">
+        <form asp-controller="Home" asp-action="Index" method="post">
+            <button type="submit" class="ForumOdnosnik">Forum</button>
+        </form>
+
+        <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
+
+        <form asp-controller="Rejestracja" asp-action="Index" method="post">
+            <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
+        </form>
+
+        <form asp-controller="Rejestracja" asp-action="Index" method="post">
+            <button type="submit" class="loginPrzycisk">Zaloguj Się</button>
+        </form>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

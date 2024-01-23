@@ -1,0 +1,46 @@
+﻿@model List<Projekt_MVC.Models.Dyskusja>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    if (ViewBag.UserId == null)
+    {
+        Layout = "_LayoutNieZalogowany";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+}
+
+<h1> Dyskusje: </h1>
+
+<html>
+@if (Model == null)
+{
+    <p>Brak dyskusji na forum</p>
+}
+else
+{
+    <p>Dyskusje: </p>
+    <div class="list-group">
+        @foreach (var dyskusja in Model)
+        {
+            <a href="Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
+                @dyskusja.Temat
+            </a>
+        }
+    </div>
+
+}
+
+</html>
+
+<script>
+
+    function f() {
+
+    }
+
+</script>
