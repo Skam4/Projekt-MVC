@@ -33,12 +33,6 @@ namespace Projekt_MVC.Data
                     .HasForeignKey(o => o.UzytkownikId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Dyskusja>()
-                .HasOne(d => d.Wlasciciel)
-                .WithMany(u => u.Dyskusje)
-                .HasForeignKey(d => d.UzytkownikId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<Moderator>()
                 .HasOne(m => m.Uzytkownik)
                 .WithMany(u => u.Moderatorzy)

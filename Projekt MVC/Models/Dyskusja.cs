@@ -17,9 +17,7 @@ namespace Projekt_MVC.Models
 
         [Required]
         [ForeignKey("IdUzytkownika")]
-        public int UzytkownikId { get; set; }
-
-        public virtual User? Wlasciciel { get; set; }
+        public virtual User Wlasciciel { get; set; }
 
         [Required]
         public virtual ICollection<Odpowiedz>? Odpowiedzi { get; set; }

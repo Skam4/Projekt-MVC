@@ -19,42 +19,14 @@
         <section id="dyskusjeUzytkownika" class="sectionProfilu">
             <h2 style="text-align: center">Twoje dyskusje</h2>
             <ul>
-                @if (ViewBag.User != null && ViewBag.Dyskusje != null)
+                @if (ViewBag.Dyskusje != null)
                 {
-                    @foreach (var dyskusja in ViewBag.Dyskusje)
+                    foreach (var dyskusja in ViewBag.Dyskusje)
                     {
                         <li>
-
                             <a href="Dyskusja" class="list-group-item list-group-item-action">
                                 @dyskusja.Temat
                             </a>
-
-                        </li>
-                    }
-                }
-                else
-                {
-                    <li>Brak dostępnych dyskusji</li>
-                }
-            </ul>
-        </section>
-
-
-
-        <!-- sekcja dla zapisanych dyskusji -->
-        <section id="dyskusjeUzytkownika" class="sectionProfilu">
-            <h2 style="text-align: center">Twoje dyskusje</h2>
-            <ul>
-                @if (ViewBag.User != null && ViewBag.Dyskusje != null)
-                {
-                    @foreach (var dyskusja in ViewBag.User.PolubioneDyskusje)
-                    {
-                        <li>
-
-                            <a href="Dyskusja" class="list-group-item list-group-item-action">
-                                @dyskusja.Temat
-                            </a>
-
                         </li>
                     }
                 }

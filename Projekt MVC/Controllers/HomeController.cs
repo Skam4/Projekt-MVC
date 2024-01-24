@@ -226,6 +226,8 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult TworzenieDyskusji(DodawanieDyskusji dyskusja)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
             if (ModelState.IsValid)
             {
@@ -236,12 +238,17 @@ namespace Projekt_MVC.Controllers
                     NowaDyskusja.Temat = dyskusja.Temat;
                     NowaDyskusja.Opis = dyskusja.Opis;
                     NowaDyskusja.Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
-                    NowaDyskusja.UzytkownikId = (int)HttpContext.Session.GetInt32("UserId");
+                    NowaDyskusja.Wlasciciel = user;
 
                     NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
                     BazaDanych.Dyskusja.Add(NowaDyskusja);
+
+                    user.Dyskusje.Add(NowaDyskusja);
+
                     BazaDanych.SaveChanges();
+
+
 
                     var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == NowaDyskusja.DyskusjaId);
 
