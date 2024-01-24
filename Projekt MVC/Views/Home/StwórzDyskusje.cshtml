@@ -23,6 +23,8 @@
             <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
             <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
 
+            <input type="hidden" name="ForumId" value="@ViewBag.ForumId"/>
+
             <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
         </form>
     </div>

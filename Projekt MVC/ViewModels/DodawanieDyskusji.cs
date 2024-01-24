@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Projekt_MVC.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Projekt_MVC.ViewModels
 {
@@ -10,6 +11,8 @@ namespace Projekt_MVC.ViewModels
 
         [Required(ErrorMessage = "Napisz treść wiadomości")]
         public string Opis { get; set; }
+
+        public int ForumId { get; set; }
 
     }
 }

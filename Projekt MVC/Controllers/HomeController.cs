@@ -70,9 +70,6 @@ namespace Projekt_MVC.Controllers
             return View("Forum", listaDyskusji);
         }
 
-
-
-
         public IActionResult Profil()
         {
             return View("Profil");
@@ -135,8 +132,9 @@ namespace Projekt_MVC.Controllers
             return View("Index");
         }
 
-        public IActionResult StwórzDyskusje()
+        public IActionResult StwórzDyskusje(int ForumId)
         {
+            ViewBag.ForumId = ForumId;
             return View("StwórzDyskusje");
         }
 
@@ -222,6 +220,7 @@ namespace Projekt_MVC.Controllers
 
                     NowaDyskusja.Temat = dyskusja.Temat;
                     NowaDyskusja.Opis = dyskusja.Opis;
+                    NowaDyskusja.Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
 
                     NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
