@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 
@@ -8,6 +9,12 @@ namespace Projekt_MVC.Controllers
     public class ProfilUzytkownikaController : Controller
     {
         ForumDB BazaDanych = new ForumDB();
+        /*private readonly IOptionsMonitor<SessionOptions> _sessionOptionsMonitor;
+
+        public ProfilUzytkownikaController(IOptionsMonitor<SessionOptions> sessionOptionsMonitor)
+        {
+            _sessionOptionsMonitor = sessionOptionsMonitor;
+        }*/
 
         public IActionResult Index()
         {
@@ -62,31 +69,37 @@ namespace Projekt_MVC.Controllers
 
             return View();
         }
-/*
-        [HttpPost]
-        public IActionResult ZmienDane(string aktualneHaslo, string noweHaslo, string potwierdzNoweHaslo)
+
+        /*[HttpPost]
+        public IActionResult ZmienDane(string nowaNazwa, int timeSpan)
         {
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId");
 
-            if (int.TryParse(userId, out int userIdInt))
+            var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var sessionOptions = _sessionOptionsMonitor.CurrentValue;
+
+            if (uzytkownik == null)
             {
-                var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.Id_uzytkownika == userIdInt);
-
-                if (uzytkownik == null)
-                {
-                    return View(); //gdy użytkownik nie istnieje
-                }
-                else if (uzytkownik != null)
-                {
+                return View(); //gdy użytkownik nie istnieje
+            }
+            else if (uzytkownik != null)
+            {
+                if(nowaNazwa != null)
                     uzytkownik.Nazwa = "NowaNazwaUzytkownika";
-
-                    BazaDanych.SaveChanges();
-
-                    TempData["SuccessMessage"] = "Dane zostały pomyślnie zmienione.";
+                else if(timeSpan != null)
+                {
+                    var minutes = Math.Max(1, timeSpan);
+                    sessionOptions.IdleTimeout = TimeSpan.FromMinutes(minutes);
                 }
+
+
+                BazaDanych.SaveChanges();
+
+                TempData["SuccessMessage"] = "Dane zostały pomyślnie zmienione.";
             }
 
-            return View();
+            RedirectToAction("Index");
         }*/
 
     }

@@ -21,6 +21,7 @@ namespace Projekt_MVC.Models
 
         public virtual ICollection<Odpowiedz>? Odpowiedzi { get; set; }
 
+        [Required]
         [ForeignKey("IdForum")]
         public virtual Forum? Forum { get; set; }
 

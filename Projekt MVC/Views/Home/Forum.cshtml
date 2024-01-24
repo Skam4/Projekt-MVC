@@ -17,6 +17,9 @@
 <h1> Dyskusje: </h1>
 
 <html>
+<form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
+    <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+</form>
 @if (Model == null)
 {
     <p>Brak dyskusji na forum</p>

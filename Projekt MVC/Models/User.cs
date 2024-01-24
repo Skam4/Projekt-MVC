@@ -40,6 +40,7 @@ namespace Projekt_MVC.Models
         public virtual Role Rola { get; set; }
 
         public string? AvatarPath { get; set; }
+        //public int? LogoutTimeSpan { get; set; }
     }
 
 }
