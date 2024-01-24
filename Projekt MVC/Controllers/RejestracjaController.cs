@@ -5,13 +5,21 @@ using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using System.ComponentModel.DataAnnotations;
 using Projekt_MVC.ViewModels;
+using Microsoft.Extensions.Options;
 
 namespace Projekt_MVC.Controllers
 {
     public class RejestracjaController : Controller
     {
+        private readonly IOptionsMonitor<SessionOptions> _sessionOptionsMonitor;
 
         ForumDB BazaDanych = new ForumDB();
+
+        public RejestracjaController(IOptionsMonitor<SessionOptions> sessionOptionsMonitor)
+        {
+            _sessionOptionsMonitor = sessionOptionsMonitor;
+        }
+
         public IActionResult Index()
         {
             return RedirectToAction("Logowanie");
@@ -50,6 +58,7 @@ namespace Projekt_MVC.Controllers
                     uzytkownicy.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Haslo);
                     uzytkownicy.Nazwa = user.Nazwa;
                     uzytkownicy.Email = user.Email;
+                    uzytkownicy.LogoutTimeSpan = 5;
                     BazaDanych.User.Add(uzytkownicy);
                     BazaDanych.SaveChanges();
                     HttpContext.Session.SetInt32("UserId", uzytkownicy.IdUzytkownika);
@@ -92,6 +101,9 @@ namespace Projekt_MVC.Controllers
                     // Logowanie udane
                     HttpContext.Session.SetInt32("UserId", existingUser.IdUzytkownika);
                     HttpContext.Session.SetString("UserRole", existingUser.Rola.Nazwa);
+
+                    var minutes = existingUser.LogoutTimeSpan;
+                    _sessionOptionsMonitor.CurrentValue.IdleTimeout = TimeSpan.FromMinutes((double)minutes);
 
                     return RedirectToAction("Index", "Home");
                 }

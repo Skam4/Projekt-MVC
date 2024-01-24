@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Projekt_MVC.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,10 +11,11 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession(options =>
 {
-    //options.IdleTimeout = TimeSpan.FromSeconds(5);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+    //options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+    //options.Cookie.MaxAge = TimeSpan.FromSeconds(1);
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
 });
 
 var app = builder.Build();
@@ -30,20 +33,29 @@ app.UseSession();
 app.Use(async (context, next) =>
 {
     var userId = context.Session.GetInt32("UserId");
-    var path = context.Request.Path;
 
-    // Jeœli u¿ytkownik jest ju¿ na stronie logowania, nie wykonuj przekierowania
-    if (path.StartsWithSegments("/Rejestracja/Logowanie"))
+
+    if (userId != null)
     {
-        await next();
-        return;
+        context.Session.SetString("LastActivityTime", DateTime.UtcNow.ToString("o"));
     }
 
-/*    if (userId == null && !path.StartsWithSegments("/Home/Index") && !path.StartsWithSegments("/Home/Dyskusja")) //Ten if jest git ale jeszcze to nie dzia³a poprawnie
+    var lastActivityTime = context.Session.GetString("LastActivityTime");
+
+    if (!string.IsNullOrEmpty(lastActivityTime))
     {
-        // Brak sesji, przekieruj do strony logowania
-        context.Response.Redirect("/Rejestracja/Logowanie");
-    }*/
+        var sessionOptions = context.RequestServices.GetRequiredService<IOptions<SessionOptions>>().Value;
+        var idleTimeout = sessionOptions.IdleTimeout;
+        var lastActivity = DateTime.Parse(lastActivityTime);
+
+        if (DateTime.UtcNow - lastActivity > idleTimeout)
+        {
+            // Wyloguj u¿ytkownika
+            context.Session.Clear(); // Wyczyœæ sesjê
+            context.Response.Redirect("/Rejestracja/Logowanie");
+            return;
+        }
+    }
 
     await next();
 });

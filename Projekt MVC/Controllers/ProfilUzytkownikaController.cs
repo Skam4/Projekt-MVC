@@ -9,12 +9,12 @@ namespace Projekt_MVC.Controllers
     public class ProfilUzytkownikaController : Controller
     {
         ForumDB BazaDanych = new ForumDB();
-        /*private readonly IOptionsMonitor<SessionOptions> _sessionOptionsMonitor;
+        private readonly IOptionsMonitor<SessionOptions> _sessionOptionsMonitor;
 
         public ProfilUzytkownikaController(IOptionsMonitor<SessionOptions> sessionOptionsMonitor)
         {
             _sessionOptionsMonitor = sessionOptionsMonitor;
-        }*/
+        }
 
         public IActionResult Index()
         {
@@ -70,8 +70,8 @@ namespace Projekt_MVC.Controllers
             return View();
         }
 
-        /*[HttpPost]
-        public IActionResult ZmienDane(string nowaNazwa, int timeSpan)
+        [HttpPost]
+        public IActionResult ZmienDane(string username, int logoutTime)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
@@ -81,26 +81,28 @@ namespace Projekt_MVC.Controllers
 
             if (uzytkownik == null)
             {
-                return View(); //gdy użytkownik nie istnieje
+                return View("Profil");
             }
-            else if (uzytkownik != null)
+            else
             {
-                if(nowaNazwa != null)
-                    uzytkownik.Nazwa = "NowaNazwaUzytkownika";
-                else if(timeSpan != null)
+                if (username != null)
                 {
-                    var minutes = Math.Max(1, timeSpan);
-                    sessionOptions.IdleTimeout = TimeSpan.FromMinutes(minutes);
+                    uzytkownik.Nazwa = username;
                 }
-
+                else if (logoutTime != 0)
+                {
+                    var minutes = Math.Max(1, logoutTime);
+                    sessionOptions.IdleTimeout = System.TimeSpan.FromMinutes(minutes);
+                    uzytkownik.LogoutTimeSpan = minutes;
+                }
 
                 BazaDanych.SaveChanges();
 
                 TempData["SuccessMessage"] = "Dane zostały pomyślnie zmienione.";
+                return RedirectToAction("Index");
             }
+        }
 
-            RedirectToAction("Index");
-        }*/
 
     }
 }
