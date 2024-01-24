@@ -42,11 +42,11 @@
             <!-- Formularz do zmiany informacji profilowych -->
             <form asp-controller="ProfilUzytkownika" asp-action="ZmienDane" method="post" enctype="multipart/form-data" class="formProfilu">
                 <label for="nazwa-uzytkownika" class="labelProfilu">Nazwa użytkownika:</label>
-                <input class="inputProfilu" type="text" id="nazwa-uzytkownika" name="nazwa-uzytkownika">
+                <input class="inputProfilu" type="text" id="nazwa-uzytkownika" name="username">
                 <!--h2 style="text-align: center">Zmiana zdjęcia profilowego: </!--h2>
                 <input class="inputProfilu" type="file" id="plik-avataru" name="plik-avataru" accept="image/*" -->
                 <label for="czas-wylogowania" class="labelProfilu">Czas wylogowania:</label>
-                <input class="inputProfilu" type="number" id="czas-wylogowania" name="czas-wylogowania">
+                <input class="inputProfilu" type="number" id="czas-wylogowania" name="logoutTime">
                 <button type="submit" class="buttonProfilu">Zapisz zmiany</button>
             </form>
         </section>
