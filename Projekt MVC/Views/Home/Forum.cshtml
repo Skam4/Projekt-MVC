@@ -19,6 +19,7 @@
 <html>
 <form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
     <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+    <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
 </form>
 @if (Model == null)
 {
