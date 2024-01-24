@@ -75,7 +75,7 @@ namespace Projekt_MVC.Controllers
             return View("Profil");
         }
 
-        public IActionResult NapiszOdpowiedz(string odpowiedz, int IdDyskusji)
+        public IActionResult NapiszOdpowiedz(int IdDyskusji, string odpowiedz)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
@@ -225,7 +225,7 @@ namespace Projekt_MVC.Controllers
                     NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 
                     BazaDanych.Dyskusja.Add(NowaDyskusja);
-                    BazaDanych.SaveChanges(); //Tu wywala bo nie podajemy forum jakie to jest
+                    BazaDanych.SaveChanges();
 
                     var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == NowaDyskusja.DyskusjaId);
 

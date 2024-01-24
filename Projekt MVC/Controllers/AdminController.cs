@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Data;
 
 namespace Projekt_MVC.Controllers
@@ -11,7 +12,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZarzadzajDyskusjami()
         {
-            var listaDyskusji = BazaDanych.Dyskusja.ToList();
+            var listaDyskusji = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).ToList();
 
             return View("ZarzadzajDyskusjami", listaDyskusji);
         }
