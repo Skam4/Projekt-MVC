@@ -27,5 +27,8 @@ namespace Projekt_MVC.Models
         [ForeignKey("IdKategorii")]
         public virtual Kategoria Kategoria { get; set; }
 
+        [Required]
+        public virtual ICollection<Dyskusja>? Dyskusje { get; set; }
+
     }
 }

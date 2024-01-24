@@ -19,7 +19,10 @@ namespace Projekt_MVC.Models
         public virtual Dyskusja Dyskusja { get; set; }
 
         [Required]
-        [ForeignKey("IdUzytkownika")]
+        [ForeignKey("UzytkownikId")]
+        public int UzytkownikId { get; set; }
+
+        [Required]
         public virtual User Autor { get; set; }
 
         //ścieżka do załącznika

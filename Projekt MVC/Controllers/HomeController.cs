@@ -80,19 +80,34 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
-            var dyskusja = BazaDanych.Dyskusja.FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
+            var dyskusja = BazaDanych.Dyskusja
+                .Include(x => x.Wlasciciel)
+                .Include(x => x.Odpowiedzi)
+                .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
-            Odpowiedz odp = new Odpowiedz();
-            odp.Tresc = odpowiedz;
-            odp.Autor = user;
-            odp.Dyskusja = dyskusja;
-            odp.DataOdpowiedzi = DateTime.Now;
+            Odpowiedz odp = new Odpowiedz
+            {
+                Tresc = odpowiedz,
+                Autor = user,
+                Dyskusja = dyskusja,
+                DataOdpowiedzi = DateTime.Now,
+                UzytkownikId = user.IdUzytkownika
+            };
 
-            BazaDanych.Odpowiedz.Add(odp);
+            // Check if the entity is already being tracked
+            var existingEntity = BazaDanych.Odpowiedz.Local.FirstOrDefault(e => e.OdpowiedzId == odp.OdpowiedzId);
+
+            if (existingEntity == null)
+            {
+                // If not, add it to the context
+                BazaDanych.Odpowiedz.Add(odp);
+            }
+
             BazaDanych.SaveChanges();
 
-            return RedirectToAction("Dyskusja", IdDyskusji);
+            return RedirectToAction("Dyskusja", new { id = IdDyskusji });
         }
+
 
         public IActionResult Dyskusja(int id)
         {
@@ -109,7 +124,7 @@ namespace Projekt_MVC.Controllers
                 }
             }*/
 
-            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(x => x.Odpowiedzi).FirstOrDefault(i => i.DyskusjaId == id);
 
             if (Dyskusja != null)
             {
@@ -221,6 +236,7 @@ namespace Projekt_MVC.Controllers
                     NowaDyskusja.Temat = dyskusja.Temat;
                     NowaDyskusja.Opis = dyskusja.Opis;
                     NowaDyskusja.Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
+                    NowaDyskusja.UzytkownikId = (int)HttpContext.Session.GetInt32("UserId");
 
                     NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
 

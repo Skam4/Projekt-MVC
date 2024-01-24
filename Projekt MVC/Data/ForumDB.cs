@@ -30,13 +30,13 @@ namespace Projekt_MVC.Data
             modelBuilder.Entity<Odpowiedz>()
                     .HasOne(o => o.Autor)
                     .WithMany(u => u.Odpowiedzi)
-                    .HasForeignKey(o => o.OdpowiedzId)
+                    .HasForeignKey(o => o.UzytkownikId)
                     .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Dyskusja>()
                 .HasOne(d => d.Wlasciciel)
                 .WithMany(u => u.Dyskusje)
-                .HasForeignKey(d => d.DyskusjaId)
+                .HasForeignKey(d => d.UzytkownikId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Moderator>()

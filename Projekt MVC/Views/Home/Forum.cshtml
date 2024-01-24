@@ -31,7 +31,7 @@ else
     <div class="list-group">
         @foreach (var dyskusja in Model)
         {
-            <a href="Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
+            <a href="/Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
                 @dyskusja.Temat
             </a>
         }
