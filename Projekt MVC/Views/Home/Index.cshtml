@@ -17,22 +17,64 @@
 <h1> Fora: </h1>
 
 <html>
-@if (Model == null)
-{
-    <p>Brak forów xd</p>
-}
-else
-{
-    <p>Fora: </p>
-    <div class="list-group">
+    @if (Model == null)
+    {
+        <p>Brak forów xd</p>
+    }
+    else
+    {
+        @if(ViewBag.Rola == "admin")
+        {
+            <p>Dodaj forum: </p>
+            <form method="post" asp-action="DodajForum" asp-controller="Admin">
+                <input type="text" class="forum" name="nazwa" placeholder="Nazwa forum" required>
+                <input type="text" class="forum" name="opis" placeholder="Opis forum" required>
+                <select name="idKategorii">
+                    @foreach (var kategoria in ViewBag.Kategorie)
+                    {
+                        <option value="@kategoria.IdKategorii">@kategoria.Nazwa</option>
+                    }
+                </select>
+                <button type="submit" class="forum">Dodaj</button>
+            </form>
+        }
+    <div class="list-group" style="display: flex; flex-direction: column; margin-top: 30px">
+        <p>Fora: </p>
         @foreach (var forum in Model)
         {
-            <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action">
-                @forum.Nazwa - @forum.Opis
-            </a>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action" style="flex: 1;">
+                    @forum.Nazwa - @forum.Opis
+                </a>
+
+                @if (ViewBag.Rola == "admin")
+                {
+                    <form method="post" asp-action="UsunForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px">
+                        <input type="hidden" name="id" value="@forum.IdForum" />
+                        <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                    </form>
+
+                    <form method="post" asp-action="EdytujForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                        <input type="hidden" name="id" value="@forum.IdForum" />
+                        <button type="submit" class="red-button">Edytuj</button>
+                    </form>
+                }
+            </div>
         }
     </div>
 
-}
+
+    }
 
 </html>
+
+<script>
+    function f(event) {
+
+        var result = confirm("Czy na pewno chcesz usunąć to forum?");
+
+        if (result == false) {
+            event.preventDefault();
+        }
+    }
+</script>

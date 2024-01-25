@@ -44,7 +44,17 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
 
             ViewBag.UserId = userId;
-            
+
+            if(userId != null)
+            {
+                var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+                ViewBag.Rola = user.Rola.Nazwa;
+                if(user.Rola.Nazwa == "admin")
+                {
+                    var kategorie = BazaDanych.Kategoria.ToList();
+                    ViewBag.Kategorie = kategorie;
+                }
+            }
 
             return View("Index", listaZForami);
         }
