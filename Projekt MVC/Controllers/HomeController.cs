@@ -44,6 +44,7 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
 
             ViewBag.UserId = userId;
+            
 
             return View("Index", listaZForami);
         }
@@ -66,6 +67,12 @@ namespace Projekt_MVC.Controllers
 
             ViewBag.UserId = userId;
             ViewBag.ForumId = id;
+
+            if (userId != null)
+            {
+                var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+                ViewBag.Rola = user.Rola.Nazwa;
+            }
 
             return View("Forum", listaDyskusji);
         }

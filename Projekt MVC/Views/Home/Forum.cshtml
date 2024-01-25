@@ -30,11 +30,23 @@ else
     <div class="list-group">
         @foreach (var dyskusja in Model)
         {
-            <a href="/Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
-                @dyskusja.Temat
-            </a>
+            <div class="list-group-item">
+                <a href="/Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item-action">
+                    @dyskusja.Temat
+                
+
+                @if (ViewBag.Rola == "admin")
+                {
+                    <form method="post" asp-action="UsunDyskusje" asp-controller="Admin" style="display: inline; margin-left: 200px">
+                        <input type="hidden" name="id" value="@dyskusja.DyskusjaId" />
+                        <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                    </form>
+                }
+                </a>
+            </div>
         }
     </div>
+
 }
 
 </html>
@@ -49,5 +61,11 @@ else
         }
 
         return true;
+    }
+
+function f(e) {
+        if (!confirm("Czy na pewno chcesz usunąć dyskusję?")) {
+            e.preventDefault();
+        }
     }
 </script>

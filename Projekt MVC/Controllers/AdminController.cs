@@ -10,23 +10,36 @@ namespace Projekt_MVC.Controllers
         ForumDB BazaDanych = new ForumDB();
 
 
-        public IActionResult ZarzadzajDyskusjami()
+        public IActionResult ZarzadzajUżytkownikami()
         {
-            var listaDyskusji = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).ToList();
+            var listaUzytkownikow = BazaDanych.User.Include(x => x.Rola).ToList();
 
-            return View("ZarzadzajDyskusjami", listaDyskusji);
+            return View("ZarzadzajUżytkownikami", listaUzytkownikow);
         }
 
-        public IActionResult UsunDyskusje(int id)
+        public IActionResult UsunUzytkownika(int id)
         {
-            var dyskusjaToDelete = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == id);
+            var userToDelete = BazaDanych.User.FirstOrDefault(r => r.IdUzytkownika == id);
 
-            if (dyskusjaToDelete != null)
+            if (userToDelete != null)
             {
-                BazaDanych.Dyskusja.Remove(dyskusjaToDelete);
+                BazaDanych.User.Remove(userToDelete);
                 BazaDanych.SaveChanges();
             }
-            return RedirectToAction("ZarzadzajDyskusjami");
+            return RedirectToAction("ZarzadzajUżytkownikami");
+        }
+
+        public IActionResult MianujAdminem(int id)
+        {
+            var userToPromote = BazaDanych.User.FirstOrDefault(r => r.IdUzytkownika == id);
+            var role = BazaDanych.Role.FirstOrDefault(r => r.Nazwa == "admin");
+
+            if (userToPromote != null)
+            {
+                userToPromote.Rola = role;
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("ZarzadzajUżytkownikami");
         }
 
         public IActionResult EdytujOdpowiedz(int IdOdpowiedzi)
@@ -34,6 +47,17 @@ namespace Projekt_MVC.Controllers
             return View("EdytujOdpowiedz", IdOdpowiedzi);
         }
 
+        public IActionResult UsunOdpowiedz(int IdOdpowiedzi, int IdDyskusji)
+        {
+            var odpowiedzToDelete = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
+
+            if (odpowiedzToDelete != null)
+            {
+                BazaDanych.Odpowiedz.Remove(odpowiedzToDelete);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("Dyskusja", "Home", new { id = IdDyskusji });
+        }
 
         public IActionResult ZedytowanaOdpowiedz(int IdOdpowiedzi, string Tresc)
         {
