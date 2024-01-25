@@ -1,6 +1,5 @@
 ﻿@model List<Projekt_MVC.Models.Dyskusja>
 
-
 @{
     ViewData["Title"] = "Home Page";
 
@@ -17,9 +16,9 @@
 <h1> Dyskusje: </h1>
 
 <html>
-<form asp-controller="Home" asp-action="StwórzDyskusje" method="post">
+<form asp-controller="Home" asp-action="StwórzDyskusje" method="post" onsubmit="return sprawdzLogowanie()">
     <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
-    <input type="hidden" name="ForumId" value="@ViewBag.ForumId"/>
+    <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
 </form>
 @if (Model == null)
 {
@@ -36,15 +35,19 @@ else
             </a>
         }
     </div>
-
 }
 
 </html>
 
 <script>
+    function sprawdzLogowanie() {
+        var isUserLoggedIn = @(ViewBag.UserId != null ? "true" : "false");
 
-    function f() {
+        if (!isUserLoggedIn) {
+            window.location.href = '../../Rejestracja/Logowanie';
+            return false;
+        }
 
+        return true;
     }
-
 </script>
