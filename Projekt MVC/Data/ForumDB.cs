@@ -28,6 +28,15 @@ namespace Projekt_MVC.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Dyskusja>()
+                .HasKey(x => x.DyskusjaId);
+
+            modelBuilder.Entity<Odpowiedz>()
+                .HasKey(x => x.OdpowiedzId);
+
+            modelBuilder.Entity<Odpowiedz>()
+                .HasOne(d => d.Dyskusja).WithMany(p => p.Odpowiedzi).HasForeignKey(d => d.DyskusjaId);
+
+            modelBuilder.Entity<Dyskusja>()
                 .HasOne(m => m.Wlasciciel)
                 .WithMany(u => u.Dyskusje)
                 .HasForeignKey(u => u.DyskusjaId)

@@ -105,6 +105,8 @@ namespace Projekt_MVC.Controllers
                 .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
 
+            //BazaDanych.Entry(dyskusja).State = EntityState.Detached;
+
             Odpowiedz odp = new Odpowiedz
             {
                 Tresc = odpowiedz,
@@ -113,16 +115,12 @@ namespace Projekt_MVC.Controllers
                 DataOdpowiedzi = DateTime.Now
             };
 
-            var existingEntity = BazaDanych.Odpowiedz.Local.FirstOrDefault(e => e.OdpowiedzId == odp.OdpowiedzId);
+            BazaDanych.Odpowiedz.Add(odp);
 
-            if (existingEntity == null)
-            {
-                BazaDanych.Odpowiedz.Add(odp);
-
-                dyskusja.LiczbaOdpowiedzi++;
-            }
+            dyskusja.LiczbaOdpowiedzi++;
 
             BazaDanych.SaveChanges();
+
 
             return RedirectToAction("Dyskusja", new { id = IdDyskusji });
         }
@@ -150,7 +148,7 @@ namespace Projekt_MVC.Controllers
         }
 
 
-        public IActionResult StwórzDyskusje(int ForumId)
+        public IActionResult StworzDyskusje(int ForumId)
         {
             ViewBag.ForumId = ForumId;
             return View("StwórzDyskusje");

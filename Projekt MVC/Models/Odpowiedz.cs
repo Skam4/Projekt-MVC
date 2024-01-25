@@ -5,7 +5,6 @@ namespace Projekt_MVC.Models
 {
     public class Odpowiedz
     {
-        [Key]
         public int OdpowiedzId { get; set; }
 
         [Required(ErrorMessage = "Napisz treść odpowiedzi")]
@@ -14,15 +13,14 @@ namespace Projekt_MVC.Models
         [DataType(DataType.DateTime)]
         public DateTime DataOdpowiedzi { get; set; }
 
-        [Required]
-        [ForeignKey("IdDyskusji")]
+        public int DyskusjaId { get; set; }
         public virtual Dyskusja Dyskusja { get; set; }
 
-        [Required]
-        [ForeignKey("AutorIdUzytkownika")]
+        [Required(ErrorMessage = "Wybierz autora")]
+        [ForeignKey("Autor")]
+        public int AutorId { get; set; }
         public virtual User Autor { get; set; }
 
-        //ścieżka do załącznika
         public string? ZalacznikPath { get; set; }
     }
 }
