@@ -15,7 +15,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
     //options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
     //options.Cookie.MaxAge = TimeSpan.FromSeconds(1);
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
 });
 
 var app = builder.Build();

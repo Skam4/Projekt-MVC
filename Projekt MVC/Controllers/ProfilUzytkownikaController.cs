@@ -29,6 +29,7 @@ namespace Projekt_MVC.Controllers
                 ViewBag.Email = uzytkownik.Email;
                 ViewBag.Rola = uzytkownik.Rola;
                 ViewBag.Dyskusje = uzytkownik.Dyskusje;
+                ViewBag.LogoutTime = uzytkownik.LogoutTimeSpan;
             }
 
             return View("../Home/Profil");
