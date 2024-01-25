@@ -1,0 +1,64 @@
+﻿@model List<Projekt_MVC.Models.User>
+
+@{
+    ViewData["Title"] = "ZarzadzajDyskusjami";
+}
+
+<hr />
+<div style="font-family: Century Gothic, serif">
+    @if (Model == null)
+    {
+        <p>Model is null!</p>
+    }
+    else
+    {
+        <div class="list-group">
+            <h1 class="title">Użytkownicy</h1>
+
+            @foreach (var uzytkownik in Model)
+            {
+                @if(uzytkownik.Rola.Nazwa != "admin")
+                {
+                    <div class="list-group-item">
+                        <div>
+                            <p> nazwa: <b>@uzytkownik.Nazwa</b>, email: <b>@uzytkownik.Email</b></p>
+                        </div>
+                        <div class="button-container">
+                            <form method="post" asp-action="UsunUzytkownika" asp-controller="Admin" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
+                                <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                            </form>
+
+                            <form method="post" asp-action="MianujAdminem" asp-controller="Admin" style="display: inline-block; margin-left: 10px">
+                                <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
+                                <button type="submit" class="red-button" onclick="f2(event)">Mianuj Adminem</button>
+                            </form>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+    }
+
+    <script>
+        function f(event) {
+
+            var result = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
+            if (result == false) {
+                event.preventDefault();
+            }
+        }
+
+        function f2(event) {
+
+            var result = confirm("Czy na pewno chcesz nadać temu użytkownikowi uprawnienia administratora?");
+            if (result == false) {
+                event.preventDefault();
+            }
+        }
+    </script>
+
+</div>
+

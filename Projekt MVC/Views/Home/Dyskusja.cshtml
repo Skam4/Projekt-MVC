@@ -26,6 +26,11 @@
                     <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
                     <button>Edytuj Odpowiedź</button>
                 </form>
+                <form asp-action="UsunOdpowiedz" asp-controller="Admin">
+                    <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
+                    <input type="hidden" name="IdDyskusji" value="@odpowiedz.Dyskusja.DyskusjaId">
+                    <button>Usuń Odpowiedź</button>
+                </form>
             }
         }
     </ul>
