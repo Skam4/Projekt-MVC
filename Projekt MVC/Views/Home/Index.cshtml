@@ -1,6 +1,5 @@
 ﻿@model List<Projekt_MVC.Models.Forum>
 
-
 @{
     ViewData["Title"] = "Home Page";
 
@@ -17,6 +16,39 @@
 <h1> Fora: </h1>
 
 <html>
+@if(ViewBag.Rola != "admin")
+{
+    @if (Model == null)
+{
+    <p>Brak forów xd</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa Forum</th>
+                <th>Opis</th>
+                <th>Liczba Dyskusji</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forum in Model)
+            {
+                <tr>
+                    <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
+                    <td>@forum.Opis</td>
+                    <td>@(forum.Dyskusje != null ? forum.Dyskusje.Count : 0)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+</html>
+}
+    else
+    {
+    <html>
     @if (Model == null)
     {
         <p>Brak forów xd</p>
@@ -78,3 +110,4 @@
         }
     }
 </script>
+    }

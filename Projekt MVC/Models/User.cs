@@ -26,6 +26,7 @@ namespace Projekt_MVC.Models
 
         public virtual ICollection<Dyskusja> Dyskusje { get; set; }
 
+        [InverseProperty("Autor")]
         public virtual ICollection<Odpowiedz> Odpowiedzi { get; set; }
 
         public virtual ICollection<Ogloszenie> Ogloszenia { get; set; }

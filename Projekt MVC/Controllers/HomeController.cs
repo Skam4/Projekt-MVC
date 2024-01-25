@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projekt_MVC.Data;
@@ -21,6 +22,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Index()
         {
+
             if (!BazaDanych.Forum.Any())
             {
                 var kategoria = new Kategoria { Nazwa = "Kategoria1" };
@@ -102,22 +104,22 @@ namespace Projekt_MVC.Controllers
                 .Include(x => x.Odpowiedzi)
                 .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
+
             Odpowiedz odp = new Odpowiedz
             {
                 Tresc = odpowiedz,
                 Autor = user,
                 Dyskusja = dyskusja,
-                DataOdpowiedzi = DateTime.Now,
-                UzytkownikId = user.IdUzytkownika
+                DataOdpowiedzi = DateTime.Now
             };
 
-            // Check if the entity is already being tracked
             var existingEntity = BazaDanych.Odpowiedz.Local.FirstOrDefault(e => e.OdpowiedzId == odp.OdpowiedzId);
 
             if (existingEntity == null)
             {
-                // If not, add it to the context
                 BazaDanych.Odpowiedz.Add(odp);
+
+                dyskusja.LiczbaOdpowiedzi++;
             }
 
             BazaDanych.SaveChanges();
@@ -128,41 +130,25 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
-            //Dyskusja Dyskusja = null;
-
-
-            //po cholere to robić, skoro można to zrobić w jednej linijce
-            /*foreach (var dyskusja in BazaDanych.dyskusja)
-            {
-                if(dyskusja.DyskusjaId == id)
-                {
-                    Dyskusja = dyskusja;
-                    break;
-                }
-            }*/
-
             Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(x => x.Odpowiedzi).FirstOrDefault(i => i.DyskusjaId == id);
 
             if (Dyskusja != null)
             {
-
-                //to też jest niepotrzebne
-                /*User Użytkownik = Dyskusja.Owner;
-                string Temat = Dyskusja.Temat;
-                string Opis = Dyskusja.Opis;
-
-                //Przekażemy te dane do widoku poprzez model
-                Dyskusja model = new Dyskusja
+                if (Dyskusja.LiczbaOdwiedzen == null)
                 {
-                    Owner = Użytkownik,
-                    Temat = Temat,
-                    Opis = Opis
-                };*/
+                    Dyskusja.LiczbaOdwiedzen = 1;
+                }
+                else
+                {
+                    Dyskusja.LiczbaOdwiedzen++;
+                }
 
+                BazaDanych.SaveChanges();
                 return View("Dyskusja", Dyskusja);
             }
             return View("Index");
         }
+
 
         public IActionResult StwórzDyskusje(int ForumId)
         {
@@ -174,70 +160,6 @@ namespace Projekt_MVC.Controllers
         {
             return View();
         }
-
-        /*        public IActionResult Logowanie()
-                {
-                    HttpContext.Session.Clear();
-                    return View("Logowanie");
-                }
-
-                [HttpPost]
-                public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
-                {
-
-                        // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
-                        var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
-                        if (existingUser != null)
-                        {
-                            // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
-                            if (existingUser.Password == Password)
-                            {
-                                // Logowanie udane
-                                HttpContext.Session.SetInt32("UserId", existingUser.UserId);
-
-                                return RedirectToAction("Index"); // Przekierowanie do strony głównej po zalogowaniu
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("Password", "Nieprawidłowe hasło.");
-                            }
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Email", "Użytkownik o podanym emailu nie istnieje.");
-                        }
-
-                    return View("Logowanie");
-                }
-
-
-                public IActionResult Rejestracja()
-                {
-                    return View("Rejestracja");
-                }*/
-
-        /*        [HttpPost]
-                public IActionResult Rejestracja(User user, string confirmPassword)
-                {
-                    var czyEmailByl = BazaDanych.User.FirstOrDefault(d => d.Email == user.Email);
-
-                    if (ModelState.IsValid && czyEmailByl == null)
-                    {
-                        if (user.Password != confirmPassword)
-                        {
-                            ModelState.AddModelError("ConfirmPassword", "Hasło i potwierdzenie hasła nie są identyczne.");
-                            return View("Rejestracja", user);
-                        }
-
-                        BazaDanych.user.Add(user);
-                        BazaDanych.SaveChanges();
-                        HttpContext.Session.SetInt32("UserId", user.UserId);
-                        return RedirectToAction("Index");
-                    }
-
-
-                    return View("Rejestracja");
-                }*/
 
 
         [HttpPost]
