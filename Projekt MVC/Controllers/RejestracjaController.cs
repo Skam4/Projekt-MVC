@@ -55,6 +55,13 @@ namespace Projekt_MVC.Controllers
                         uzytkownicy.Rola = role;
                     }
 
+                    if (!BazaDanych.Role.Any(r => r.Nazwa == "admin"))
+                    {
+                        var adminRole = new Role { Nazwa = "admin" };
+                        BazaDanych.Role.Add(adminRole);
+                        BazaDanych.SaveChanges();
+                    }
+
                     uzytkownicy.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Haslo);
                     uzytkownicy.Nazwa = user.Nazwa;
                     uzytkownicy.Email = user.Email;

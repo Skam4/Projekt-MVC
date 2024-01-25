@@ -26,14 +26,16 @@
 }
 else
 {
-    <p>Dyskusje: </p>
     <div class="list-group">
         @foreach (var dyskusja in Model)
         {
             <a href="/Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item list-group-item-action">
-                @dyskusja.Temat
+                @dyskusja.Temat Opis: @dyskusja.Opis
+                Liczba odpowiedzi: @(dyskusja.Odpowiedzi != null ? dyskusja.Odpowiedzi.Count : 0)
+                Liczba odsłon: @dyskusja.LiczbaOdwiedzen
             </a>
         }
+
     </div>
 }
 
