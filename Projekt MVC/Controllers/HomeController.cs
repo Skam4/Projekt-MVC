@@ -115,9 +115,9 @@ namespace Projekt_MVC.Controllers
                 DataOdpowiedzi = DateTime.Now
             };
 
-            BazaDanych.Odpowiedz.Add(odp);
-
             dyskusja.LiczbaOdpowiedzi++;
+
+            BazaDanych.Odpowiedz.Add(odp);
 
             BazaDanych.SaveChanges();
 
@@ -166,38 +166,32 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && HttpContext.Session.GetInt32("UserId") != null)
             {
-                if (HttpContext.Session.GetInt32("UserId") != null)
+                Dyskusja nowaDyskusja = new Dyskusja
                 {
-                    Dyskusja NowaDyskusja = new Dyskusja();
+                    Temat = dyskusja.Temat,
+                    Opis = dyskusja.Opis,
+                    Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId),
+                    Wlasciciel = user
+                };
 
-                    NowaDyskusja.Temat = dyskusja.Temat;
-                    NowaDyskusja.Opis = dyskusja.Opis;
-                    NowaDyskusja.Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
-                    NowaDyskusja.Wlasciciel = user;
+                BazaDanych.Dyskusja.Add(nowaDyskusja);
+                user.Dyskusje.Add(nowaDyskusja);
+                BazaDanych.SaveChanges();
 
-                    NowaDyskusja.Wlasciciel = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == (int)HttpContext.Session.GetInt32("UserId"));
+                var forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
+                forum.LiczbaWatkow++;
 
-                    BazaDanych.Dyskusja.Add(NowaDyskusja);
-
-                    user.Dyskusje.Add(NowaDyskusja);
-
-                    BazaDanych.SaveChanges();
-
-
-
-                    var savedDyskusja = BazaDanych.Dyskusja.FirstOrDefault(d => d.DyskusjaId == NowaDyskusja.DyskusjaId);
-
-                    return RedirectToAction("Dyskusja", new { id = savedDyskusja.DyskusjaId });
-                }
-                else
-                {
-                    return View("Index");
-                }
+                return RedirectToAction("Dyskusja", new { id = nowaDyskusja.DyskusjaId });
+            }
+            else
+            {
+                return View("Index");
             }
             return View("StwórzDyskusje");
         }
+
 
 
 

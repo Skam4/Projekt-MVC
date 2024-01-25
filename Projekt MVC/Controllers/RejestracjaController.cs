@@ -6,6 +6,8 @@ using Projekt_MVC.Models;
 using System.ComponentModel.DataAnnotations;
 using Projekt_MVC.ViewModels;
 using Microsoft.Extensions.Options;
+using System.Net.Mail;
+using System.Net;
 
 namespace Projekt_MVC.Controllers
 {
@@ -127,6 +129,77 @@ namespace Projekt_MVC.Controllers
             }
 
             return View("Logowanie");
+        }
+
+        public IActionResult PrzypomnijHaslo()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult PrzypomnijHaslo(string Email)
+        {
+            var existingUser = BazaDanych.User.FirstOrDefault(u => u.Email == Email);
+            if (existingUser != null)
+            {
+                // Generowanie nowego hasła
+                string newPassword = GenerateRandomPassword();
+
+                // Aktualizacja hasła w bazie danych
+                existingUser.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword);
+                BazaDanych.SaveChanges();
+
+                // Wysyłanie e-maila z nowym hasłem
+                SendPasswordResetEmail(Email, newPassword);
+
+                TempData["Message"] = "Nowe hasło zostało wysłane na podany adres email.";
+            }
+            else
+            {
+                TempData["Error"] = "Podany adres email nie istnieje.";
+            }
+
+            return RedirectToAction("PrzypomnijHaslo");
+        }
+
+        private string GenerateRandomPassword()
+        {
+            // Generowanie losowego ciągu znaków jako nowe hasło
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var newPassword = new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
+            return newPassword;
+        }
+
+        private void SendPasswordResetEmail(string recipientEmail, string newPassword)
+        {
+            string senderEmail = "trzebastworzycemaila@gmail.com"; // Twój adres e-mail
+            string senderPassword = "niewpiszetuswojegohasla"; // Hasło do konta e-mail
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(senderEmail, senderPassword),
+                EnableSsl = true,
+            };
+
+            // Utwórz wiadomość e-mail
+            MailMessage mailMessage = new MailMessage(senderEmail, recipientEmail)
+            {
+                Subject = "Resetowanie hasła",
+                Body = "Twoje nowe hasło: " + newPassword,
+            };
+
+            try
+            {
+                // Wyślij wiadomość
+                smtpClient.Send(mailMessage);
+                Console.WriteLine("Wiadomość e-mail została wysłana pomyślnie.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Wystąpił błąd podczas wysyłania wiadomości e-mail: " + ex.Message);
+            }
         }
 
 

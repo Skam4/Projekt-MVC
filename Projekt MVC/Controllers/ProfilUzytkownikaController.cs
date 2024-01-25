@@ -45,31 +45,33 @@ namespace Projekt_MVC.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
+            if (userId == null)
+            {
+                return RedirectToAction("Logowanie", "Rejestracja");
+            }
+
             var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
-            if(uzytkownik == null) 
+            if (uzytkownik == null)
             {
-               return View(); //W sumie nwm co tu dać, bo to nie powinno sie wydarzyc                
-            }
-            else if(uzytkownik != null)
-            {
-                if(uzytkownik.Haslo == aktualneHaslo) 
-                {
-                    //Aktualizacja nowego hasła
-                    uzytkownik.Haslo = noweHaslo;
-
-                    BazaDanych.SaveChanges();
-
-                    TempData["SuccessMessage"] = "Hasło zostało pomyślnie zmienione.";
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Błędne aktualne hasło");
-                }
+                return NotFound();
             }
 
-            return View();
+            if (BCrypt.Net.BCrypt.EnhancedVerify(aktualneHaslo, uzytkownik.Haslo))
+            {
+                uzytkownik.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(noweHaslo);
+                BazaDanych.SaveChanges();
+
+                TempData["SuccessMessage"] = "Hasło zostało pomyślnie zmienione.";
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Błędne aktualne hasło");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
+
 
         [HttpPost]
         public IActionResult ZmienDane(string username, int logoutTime)
