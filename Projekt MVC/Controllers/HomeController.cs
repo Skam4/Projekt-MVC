@@ -115,7 +115,14 @@ namespace Projekt_MVC.Controllers
                 DataOdpowiedzi = DateTime.Now
             };
 
-            dyskusja.LiczbaOdpowiedzi++;
+            if (dyskusja.LiczbaOdpowiedzi == null)
+            {
+                dyskusja.LiczbaOdpowiedzi = 1;
+            }
+            else
+            {
+                dyskusja.LiczbaOdpowiedzi++;
+            }
 
             BazaDanych.Odpowiedz.Add(odp);
 
@@ -128,7 +135,7 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
-            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(x => x.Odpowiedzi).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(o => o.Odpowiedzi).FirstOrDefault(i => i.DyskusjaId == id);
 
             if (Dyskusja != null)
             {
