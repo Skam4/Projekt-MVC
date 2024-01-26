@@ -41,6 +41,10 @@ namespace Projekt_MVC.Controllers
                 BazaDanych.SaveChanges();
             }
 
+            var uzytkownicy = BazaDanych.User.ToList();
+
+            ViewBag.LiczbaUżytkownikow = uzytkownicy.Count;
+
             var listaZForami = BazaDanych.Forum.ToList();
 
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -102,6 +106,7 @@ namespace Projekt_MVC.Controllers
             var dyskusja = BazaDanych.Dyskusja
                 .Include(x => x.Wlasciciel)
                 .Include(x => x.Odpowiedzi)
+                .Include(x => x.Forum)
                 .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
 
@@ -124,6 +129,9 @@ namespace Projekt_MVC.Controllers
                 dyskusja.LiczbaOdpowiedzi++;
             }
 
+            var forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.Forum.IdForum);
+            forum.LiczbaWiadomosci++;
+
             BazaDanych.Odpowiedz.Add(odp);
 
             BazaDanych.SaveChanges();
@@ -135,7 +143,14 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
-            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(o => o.Odpowiedzi).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
+
+            var odpowiedzi = BazaDanych.Odpowiedz
+                .Include(x => x.Autor)
+                .Where(x => x.Dyskusja.DyskusjaId == id)
+                .ToList();
+
+            Dyskusja.Odpowiedzi = odpowiedzi;
 
             if (Dyskusja != null)
             {
@@ -185,10 +200,11 @@ namespace Projekt_MVC.Controllers
 
                 BazaDanych.Dyskusja.Add(nowaDyskusja);
                 user.Dyskusje.Add(nowaDyskusja);
-                BazaDanych.SaveChanges();
 
                 var forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
                 forum.LiczbaWatkow++;
+
+                BazaDanych.SaveChanges();
 
                 return RedirectToAction("Dyskusja", new { id = nowaDyskusja.DyskusjaId });
             }

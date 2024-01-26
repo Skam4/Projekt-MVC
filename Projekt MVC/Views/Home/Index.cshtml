@@ -12,6 +12,11 @@
         Layout = "_LayoutNieWForum";
     }
 }
+<div style="text-align: right; margin-top: 10px">
+    <p>Liczba zarejestrowanych użytkowników: @ViewBag.LiczbaUżytkownikow</p>
+</div>
+
+
 
 <h1> Fora: </h1>
 
@@ -30,6 +35,7 @@ else
                 <th>Nazwa Forum</th>
                 <th>Opis</th>
                 <th>Liczba Dyskusji</th>
+                <th>Liczba Wiadomości</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +45,7 @@ else
                     <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
                     <td>@forum.Opis</td>
                     <td>@forum.LiczbaWatkow</td>
+                    <td>@forum.LiczbaWiadomosci</td>
                 </tr>
             }
         </tbody>
