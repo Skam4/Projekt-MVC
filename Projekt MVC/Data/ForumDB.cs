@@ -28,31 +28,16 @@ namespace Projekt_MVC.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Dyskusja>()
-                .HasKey(x => x.DyskusjaId);
-
             modelBuilder.Entity<Odpowiedz>()
-                .HasKey(x => x.OdpowiedzId);
-
-            modelBuilder.Entity<Odpowiedz>()
-                .HasOne(d => d.Dyskusja).WithMany(p => p.Odpowiedzi).HasForeignKey(d => d.DyskusjaId);
-
-            modelBuilder.Entity<Dyskusja>()
-                .HasOne(m => m.Wlasciciel)
-                .WithMany(u => u.Dyskusje)
-                .HasForeignKey(u => u.DyskusjaId)
-                .IsRequired();
+                    .HasOne(o => o.Autor)
+                    .WithMany(u => u.Odpowiedzi)
+                    .HasForeignKey(o => o.AutorId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Moderator>()
                 .HasOne(m => m.Uzytkownik)
                 .WithMany(u => u.Moderatorzy)
                 .HasForeignKey(m => m.IdUzytkownika)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.Odpowiedzi)
-                .WithOne(o => o.Autor)
-                .HasForeignKey(o => o.OdpowiedzId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
 
