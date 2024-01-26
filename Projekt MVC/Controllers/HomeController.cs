@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using Projekt_MVC.ViewModels;
 using System.Diagnostics;
+using HtmlAgilityPack;
 
 namespace Projekt_MVC.Controllers
 {
@@ -140,7 +142,7 @@ namespace Projekt_MVC.Controllers
 
             Odpowiedz odp = new Odpowiedz
             {
-                Tresc = odpowiedz,
+                Tresc = FilterHtml(odpowiedz),
                 Autor = user,
                 Dyskusja = dyskusja,
                 DataOdpowiedzi = DateTime.Now
@@ -231,7 +233,7 @@ namespace Projekt_MVC.Controllers
                 Dyskusja nowaDyskusja = new Dyskusja
                 {
                     Temat = dyskusja.Temat,
-                    Opis = dyskusja.Opis,
+                    Opis = FilterHtml(dyskusja.Opis),
                     Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId),
                     Wlasciciel = user
                 };
@@ -262,5 +264,27 @@ namespace Projekt_MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        // Funkcja do filtrowania niedozwolonych znaczników HTML
+        private string FilterHtml(string htmlContent)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(htmlContent);
+
+            // Lista dozwolonych znaczników HTML
+            var allowedTags = new List<string> { "b", "i", "u", "p", "a" };
+
+            // Usuwanie znaczników spoza listy dozwolonych
+            foreach (var node in doc.DocumentNode.SelectNodes("//node()"))
+            {
+                if (node.NodeType == HtmlNodeType.Element && !allowedTags.Contains(node.Name.ToLower()))
+                {
+                    node.Remove();
+                }
+            }
+
+            return doc.DocumentNode.OuterHtml;
+        }
+
     }
 }
