@@ -11,10 +11,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
+
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+
 </head>
 <body>
     <h1 style="text-align: center">Stwórz Dyskusję</h1>
-    <div class ="formDyskusja">
+    <div class="formDyskusja">
         <form method="post" asp-action="TworzenieDyskusji">
 
             <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
@@ -23,7 +26,7 @@
             <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
             <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
 
-            <input type="hidden" name="ForumId" value="@ViewBag.ForumId"/>
+            <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
 
             <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
         </form>

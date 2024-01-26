@@ -14,6 +14,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZarzadzajUżytkownikami()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             var listaUzytkownikow = BazaDanych.User.Include(x => x.Rola).ToList();
 
             return View("ZarzadzajUżytkownikami", listaUzytkownikow);
@@ -46,6 +52,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZarządzajKategoriami()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             var listaKategorii = BazaDanych.Kategoria.ToList();
 
             return View("ZarządzajKategoriami", listaKategorii);
@@ -115,6 +127,9 @@ namespace Projekt_MVC.Controllers
             var kategorie = BazaDanych.Kategoria.ToList();
 
             var forum = BazaDanych.Forum.Include(x => x.Kategoria).FirstOrDefault(r => r.IdForum == id);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
             ViewBag.Rola = rola;
             ViewBag.Kategorie = kategorie;

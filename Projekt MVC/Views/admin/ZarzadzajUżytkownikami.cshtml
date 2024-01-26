@@ -4,61 +4,70 @@
     ViewData["Title"] = "ZarzadzajUżytkownikami";
 }
 
-<hr />
-<div style="font-family: Century Gothic, serif">
-    @if (Model == null)
-    {
-        <p>Model is null!</p>
-    }
-    else
-    {
-        <div class="list-group">
-            <h1 class="title">Użytkownicy</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
 
-            @foreach (var uzytkownik in Model)
-            {
-                @if(uzytkownik.Rola.Nazwa != "admin")
+    <hr />
+    <div style="font-family: Century Gothic, serif">
+        @if (Model == null)
+        {
+            <p>Model is null!</p>
+        }
+        else
+        {
+            <div class="list-group">
+                <h1 class="title">Użytkownicy</h1>
+
+                @foreach (var uzytkownik in Model)
                 {
-                    <div class="list-group-item">
-                        <div>
-                            <p> nazwa: <b>@uzytkownik.Nazwa</b>, email: <b>@uzytkownik.Email</b></p>
-                        </div>
-                        <div class="button-container">
-                            <form method="post" asp-action="UsunUzytkownika" asp-controller="Admin" style="display: inline-block;">
-                                <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
-                                <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
-                            </form>
+                    @if (uzytkownik.Rola.Nazwa != "admin")
+                    {
+                        <div class="list-group-item">
+                            <div>
+                                <p> nazwa: <b>@uzytkownik.Nazwa</b>, email: <b>@uzytkownik.Email</b></p>
+                            </div>
+                            <div class="button-container">
+                                <form method="post" asp-action="UsunUzytkownika" asp-controller="Admin" style="display: inline-block;">
+                                    <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
+                                    <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                                </form>
 
-                            <form method="post" asp-action="MianujAdminem" asp-controller="Admin" style="display: inline-block; margin-left: 10px">
-                                <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
-                                <button type="submit" class="red-button" onclick="f2(event)">Mianuj Adminem</button>
-                            </form>
+                                <form method="post" asp-action="MianujAdminem" asp-controller="Admin" style="display: inline-block; margin-left: 10px">
+                                    <input type="hidden" name="id" value="@uzytkownik.IdUzytkownika" />
+                                    <button type="submit" class="red-button" onclick="f2(event)">Mianuj Adminem</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
 
+                    }
+                }
+
+            </div>
+        }
+
+        <script>
+            function f(event) {
+
+                var result = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
+                if (result == false) {
+                    event.preventDefault();
                 }
             }
 
-        </div>
-    }
+            function f2(event) {
 
-    <script>
-        function f(event) {
-
-            var result = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
-            if (result == false) {
-                event.preventDefault();
+                var result = confirm("Czy na pewno chcesz nadać temu użytkownikowi uprawnienia administratora?");
+                if (result == false) {
+                    event.preventDefault();
+                }
             }
-        }
+        </script>
 
-        function f2(event) {
+    </div>
 
-            var result = confirm("Czy na pewno chcesz nadać temu użytkownikowi uprawnienia administratora?");
-            if (result == false) {
-                event.preventDefault();
-            }
-        }
-    </script>
-
-</div>
-
+</body>
+</html>

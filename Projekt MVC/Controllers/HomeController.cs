@@ -70,8 +70,7 @@ namespace Projekt_MVC.Controllers
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
                 var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
-
-                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+                ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
                 ViewBag.Rola = user.Rola.Nazwa;
                 if (user.Rola.Nazwa == "admin")
@@ -108,8 +107,7 @@ namespace Projekt_MVC.Controllers
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
                 var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
-
-                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+                ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
                 ViewBag.Rola = user.Rola.Nazwa;
             }
@@ -167,6 +165,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
 
             var odpowiedzi = BazaDanych.Odpowiedz
@@ -196,6 +200,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult StworzDyskusje(int ForumId)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             ViewBag.ForumId = ForumId;
             return View("StwórzDyskusje");
         }

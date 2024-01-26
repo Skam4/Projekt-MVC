@@ -43,13 +43,27 @@
         <form asp-controller="ProfilUzytkownika" asp-action="ZmienSkorke" method="post">
             <label for="skorki">Wybierz skórkę:</label>
             <select name="skorki" id="skorki">
+                @{
+                    var currentSkinId = ViewBag.CurrentSkinId ?? 0; // Jeśli brak, przyjmij domyślną wartość
+                }
+
                 @foreach (var skin in ViewBag.AvailableSkins)
                 {
-                    <option value="@skin.Id">@skin.Nazwa</option>
+                    if (skin.Id == currentSkinId)
+                    {
+                        <option value="@skin.Id" selected>@skin.Nazwa</option>
+                    }
+                    else
+                    {
+                        <option value="@skin.Id">@skin.Nazwa</option>
+                    }
                 }
             </select>
+
+
             <button type="submit">Zmień skórkę</button>
         </form>
+
 
         <section id="informacje" class="sectionProfilu">
             <h2 style="text-align: center">Zmiana danych</h2>

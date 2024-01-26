@@ -4,28 +4,37 @@
     ViewData["Title"] = "EdytujOdpowiedz";
 }
 
-<h1>EdytujOdpowiedz</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
 
-<h4>Odpowiedz</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EdytujOdpowiedz" asp-controller="Admin">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OdpowiedzId" />
-            <div class="form-group">
-                <label asp-for="Tresc" class="control-label"></label>
-                <input asp-for="Tresc" class="form-control" />
-                <span asp-validation-for="Tresc" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <h1>EdytujOdpowiedz</h1>
+
+    <h4>Odpowiedz</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EdytujOdpowiedz" asp-controller="Admin">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="OdpowiedzId" />
+                <div class="form-group">
+                    <label asp-for="Tresc" class="control-label"></label>
+                    <input asp-for="Tresc" class="form-control" />
+                    <span asp-validation-for="Tresc" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
+</body>
+</html>
