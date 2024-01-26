@@ -179,5 +179,45 @@ namespace Projekt_MVC.Controllers
 
             //return RedirectToAction("Dyskusja", ) TUTAJ TRZEBA POWRÓCIĆ DO DYSKUSJI
         }
+
+
+
+        public IActionResult ZarzadzajOgloszeniami()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var ogloszenie = BazaDanych.Ogloszenie.ToList();
+            return View(ogloszenie);
+        }
+
+        [HttpPost]
+        public IActionResult DodajOgloszenie(string tresc)
+        {
+            var ogloszenie = new Ogloszenie
+            {
+                Tresc = tresc,
+                DataDodania = DateTime.Now
+            };
+
+            BazaDanych.Ogloszenie.Add(ogloszenie);
+            BazaDanych.SaveChanges();
+
+            return RedirectToAction("ZarzadzajOgloszeniami");
+        }
+
+        public IActionResult UsunOgloszenie(int id)
+        {
+            var ogloszenie = BazaDanych.Ogloszenie.Find(id);
+            if (ogloszenie != null)
+            {
+                BazaDanych.Ogloszenie.Remove(ogloszenie);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("ZarzadzajOgloszeniami");
+        }
     }
 }

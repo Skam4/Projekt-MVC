@@ -43,11 +43,15 @@
 
             <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
 
+            <form asp-controller="Admin" asp-action="ZarzadzajOgloszeniami" method="post">
+                <button type="submit" class="StworzDyskusje">Zarządzaj Ogloszeniami</button>
+            </form>
+
             <form asp-controller="Admin" asp-action="ZarządzajKategoriami" method="post">
                 <button type="submit" class="StworzDyskusje">Zarządzaj Kategoriami</button>
             </form>
 
-            <form asp-controller="Home" asp-action="Profil" method="post">
+            <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
                 <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
             </form>
 

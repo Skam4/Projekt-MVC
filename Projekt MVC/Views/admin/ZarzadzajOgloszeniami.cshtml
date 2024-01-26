@@ -1,0 +1,43 @@
+﻿@model List<Ogloszenie>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
+
+    <h2>Zarządzaj ogłoszeniami</h2>
+
+    <form method="post" asp-action="DodajOgloszenie" asp-controller="Admin">
+        <input type="text" name="tresc" placeholder="Treść ogłoszenia" required>
+        <button type="submit">Dodaj ogłoszenie</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Treść</th>
+                <th>Data dodania</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ogloszenie in Model)
+            {
+                <tr>
+                    <td>@ogloszenie.Tresc</td>
+                    <td>@ogloszenie.DataDodania.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <form method="post" asp-action="UsunOgloszenie" asp-controller="Admin">
+                            <input type="hidden" name="id" value="@ogloszenie.IdOgloszenia" />
+                            <button type="submit">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>

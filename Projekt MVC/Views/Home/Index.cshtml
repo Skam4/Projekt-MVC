@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
 </head>
 <body>
+    @if (!string.IsNullOrEmpty(ViewBag.Ogloszenie))
+    {
+        <div style="background-color: yellow; padding: 10px; text-align: center;">
+            <p>@ViewBag.Ogloszenie</p>
+            <p>Data: @ViewBag.OgloszenieData</p>
+        </div>
+    }
 
     <div style="text-align: right; margin-top: 10px">
         <p>Liczba zarejestrowanych użytkowników: @ViewBag.LiczbaUżytkownikow</p>

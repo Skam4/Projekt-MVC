@@ -80,6 +80,10 @@ namespace Projekt_MVC.Controllers
                 }
             }
 
+            var ostatnieOgloszenie = BazaDanych.Ogloszenie.OrderByDescending(o => o.DataDodania).LastOrDefault();
+            ViewBag.Ogloszenie = ostatnieOgloszenie != null ? ostatnieOgloszenie.Tresc : string.Empty;
+            ViewBag.OgloszenieData = ostatnieOgloszenie.DataDodania;
+
             return View("Index", listaZForami);
         }
 
