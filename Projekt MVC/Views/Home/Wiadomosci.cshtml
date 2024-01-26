@@ -1,0 +1,45 @@
+﻿@model List<Projekt_MVC.Models.Wiadomosc>
+
+@{
+    ViewData["Title"] = "Wiadomości";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
+
+    <h1>Wiadomości</h1>
+
+    <form asp-controller="Home" asp-action="WyslijWiadomosc" method="post">
+        <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wyslij Wiadomość</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nadawca</th>
+                <th>Odbiorca</th>
+                <th>Treść</th>
+                <th>Data wysłania</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var wiadomosc in Model)
+            {
+                <tr>
+                    <td>@wiadomosc.Nadawca.Nazwa</td>
+                    <td>@wiadomosc.Odbiorca.Nazwa</td>
+                    <td>@wiadomosc.Tresc</td>
+                    <td>@wiadomosc.DataWyslania</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

@@ -84,7 +84,11 @@ namespace Projekt_MVC.Controllers
 
             var ostatnieOgloszenie = BazaDanych.Ogloszenie.OrderByDescending(o => o.DataDodania).LastOrDefault();
             ViewBag.Ogloszenie = ostatnieOgloszenie != null ? ostatnieOgloszenie.Tresc : string.Empty;
-            ViewBag.OgloszenieData = ostatnieOgloszenie.DataDodania;
+            if (ostatnieOgloszenie != null)
+            {
+                ViewBag.OgloszenieData = ostatnieOgloszenie.DataDodania;
+            }
+
 
             return View("Index", listaZForami);
         }
@@ -255,7 +259,59 @@ namespace Projekt_MVC.Controllers
             return View("StwórzDyskusje");
         }
 
+        public IActionResult WyslijWiadomosc()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
 
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var users = BazaDanych.User.Where(u => u.IdUzytkownika != userId).ToList();
+
+            ViewBag.Users = users;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult WykonajWiadomosc(int odbiorcaId, string tresc)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var wiadomosc = new Wiadomosc
+            {
+                NadawcaId = (int)userId,
+                OdbiorcaId = odbiorcaId,
+                Tresc = tresc,
+                DataWyslania = DateTime.Now
+            };
+
+            BazaDanych.Wiadomosci.Add(wiadomosc);
+            BazaDanych.SaveChanges();
+
+            return RedirectToAction("Wiadomosci");
+        }
+
+        public IActionResult Wiadomosci()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var wiadomosci = BazaDanych.Wiadomosci
+                                .Where(w => w.NadawcaId == userId || w.OdbiorcaId == userId)
+                                .Include(w => w.Nadawca)
+                                .Include(w => w.Odbiorca)
+                                .OrderByDescending(w => w.DataWyslania)
+                                .ToList();
+
+            return View(wiadomosci);
+        }
 
 
 
