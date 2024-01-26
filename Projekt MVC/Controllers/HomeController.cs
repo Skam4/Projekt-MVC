@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using Projekt_MVC.ViewModels;
@@ -37,7 +38,20 @@ namespace Projekt_MVC.Controllers
 
                 };
 
+
                 BazaDanych.Forum.AddRange(fora);
+                BazaDanych.SaveChanges();
+            }
+            if (!BazaDanych.Skin.Any())
+            {
+                var style = new List<Skin>
+                {
+                    new Skin {Nazwa = "Jasny", CssPath = "~/css/light.css"},
+                    new Skin {Nazwa = "Ciemny", CssPath = "~/css/dark.css"},
+                    new Skin {Nazwa = "Niebieski", CssPath = "~/css/blue.css"}
+                };
+
+                BazaDanych.Skin.AddRange(style);
                 BazaDanych.SaveChanges();
             }
 
@@ -47,11 +61,16 @@ namespace Projekt_MVC.Controllers
 
             ViewBag.UserId = userId;
 
-            if(userId != null)
+            if (userId != null)
             {
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+                var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+
+                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+
                 ViewBag.Rola = user.Rola.Nazwa;
-                if(user.Rola.Nazwa == "admin")
+                if (user.Rola.Nazwa == "admin")
                 {
                     var kategorie = BazaDanych.Kategoria.ToList();
                     ViewBag.Kategorie = kategorie;
@@ -83,6 +102,11 @@ namespace Projekt_MVC.Controllers
             if (userId != null)
             {
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+                var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+
+                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+
                 ViewBag.Rola = user.Rola.Nazwa;
             }
 

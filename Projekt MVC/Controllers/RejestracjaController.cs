@@ -67,6 +67,7 @@ namespace Projekt_MVC.Controllers
                     uzytkownicy.Haslo = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Haslo);
                     uzytkownicy.Nazwa = user.Nazwa;
                     uzytkownicy.Email = user.Email;
+                    uzytkownicy.SkinId = 1;
                     uzytkownicy.LogoutTimeSpan = 5;
                     BazaDanych.User.Add(uzytkownicy);
                     BazaDanych.SaveChanges();

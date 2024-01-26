@@ -8,6 +8,7 @@ namespace Projekt_MVC.Data
         public DbSet<User> User { get; set; }
         public DbSet<Dyskusja> Dyskusja { get; set; }
         public DbSet<Role> Role { get; set; }
+        public DbSet<Skin> Skin { get; set; }
         public DbSet<Odpowiedz> Odpowiedz { get; set; }
         public DbSet<Forum> Forum { get; set; }
         public DbSet<Kategoria> Kategoria { get; set; }

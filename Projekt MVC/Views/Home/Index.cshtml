@@ -12,10 +12,14 @@
         Layout = "_LayoutNieWForum";
     }
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
 
 <h1> Fora: </h1>
 
-<html>
 @if(ViewBag.Rola != "admin")
 {
     @if (Model == null)

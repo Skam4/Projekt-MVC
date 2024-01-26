@@ -42,6 +42,9 @@ namespace Projekt_MVC.Models
 
         public string? AvatarPath { get; set; }
         public int? LogoutTimeSpan { get; set; }
+
+
+        public int SkinId { get; set; }
     }
 
 }

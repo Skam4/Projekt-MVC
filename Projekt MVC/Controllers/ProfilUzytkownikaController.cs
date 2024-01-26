@@ -22,7 +22,13 @@ namespace Projekt_MVC.Controllers
 
             var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.IdUzytkownika == userId);
 
-            if(uzytkownik != null)
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == uzytkownik.SkinId);
+
+            ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+
+            ViewBag.AvailableSkins = BazaDanych.Skin.ToList();
+
+            if (uzytkownik != null)
             {
                 ViewBag.UserId = userId;
                 ViewBag.Nazwa = uzytkownik.Nazwa;
@@ -105,6 +111,19 @@ namespace Projekt_MVC.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public IActionResult ZmienSkorke(int skorki)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            uzytkownik.SkinId = skorki;
+            BazaDanych.Update(uzytkownik);
+
+            return RedirectToAction("Index");
+        }
+
 
 
     }
