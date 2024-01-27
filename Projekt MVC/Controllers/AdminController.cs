@@ -219,5 +219,38 @@ namespace Projekt_MVC.Controllers
             }
             return RedirectToAction("ZarzadzajOgloszeniami");
         }
+
+        public IActionResult ZarzadzajZakazanymiSlowami()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var forbiddenWords = BazaDanych.ZakazaneSlowa.ToList();
+            return View("ZarzadzajZakazanymiSlowami", forbiddenWords);
+        }
+
+        public IActionResult DodajZakazaneSlowo(string slowo)
+        {
+            var newForbiddenWord = new ZakazaneSlowo { Slowo = slowo };
+            BazaDanych.ZakazaneSlowa.Add(newForbiddenWord);
+            BazaDanych.SaveChanges();
+            return RedirectToAction("ZarzadzajZakazanymiSlowami");
+        }
+
+        public IActionResult UsunZakazaneSlowo(int ZakazaneSlowoId)
+        {
+            var wordToRemove = BazaDanych.ZakazaneSlowa.FirstOrDefault(zs => zs.ZakazaneSlowoId == ZakazaneSlowoId);
+            if (wordToRemove != null)
+            {
+                BazaDanych.ZakazaneSlowa.Remove(wordToRemove);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("ZarzadzajZakazanymiSlowami");
+        }
+
+
     }
 }

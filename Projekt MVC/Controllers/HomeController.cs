@@ -142,7 +142,12 @@ namespace Projekt_MVC.Controllers
                 .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
 
-            //BazaDanych.Entry(dyskusja).State = EntityState.Detached;
+            if (ContainsForbiddenWords(odpowiedz))
+            {
+                TempData["ErrorMessage"] = "Nie udalo sie utworzyc dyskusji. Uzyles niedozwolonych slow.";
+
+                return RedirectToAction("Dyskusja", new { id = IdDyskusji });
+            }
 
             Odpowiedz odp = new Odpowiedz
             {
@@ -364,6 +369,22 @@ namespace Projekt_MVC.Controllers
             }
 
             return doc.DocumentNode.OuterHtml;
+        }
+
+        private bool ContainsForbiddenWords(string content)
+        {
+            var forbiddenWords = BazaDanych.ZakazaneSlowa.Select(zs => zs.Slowo).ToList();
+
+            // Sprawdź czy treść zawiera zakazane słowa
+            foreach (var word in forbiddenWords)
+            {
+                if (content.Contains(word))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     }

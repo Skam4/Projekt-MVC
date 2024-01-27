@@ -48,7 +48,12 @@
             }
         </ul>
     }
-
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            alert('@TempData["ErrorMessage"]');
+        </script>
+    }
 
     <form asp-controller="Home" asp-action="NapiszOdpowiedz" method="post">
         <div>

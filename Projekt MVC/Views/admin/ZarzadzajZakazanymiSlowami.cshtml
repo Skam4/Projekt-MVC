@@ -1,0 +1,44 @@
+﻿@model List<Projekt_MVC.Models.ZakazaneSlowo>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
+
+    <h1>Zarządzaj Słowami Zakazanymi</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Słowo Zakazane</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var word in Model)
+            {
+                <tr>
+                    <td>@word.Slowo</td>
+                    <td>
+                        <form asp-action="UsunZakazaneSlowo" asp-controller="Admin">
+                            <input type="hidden" name="ZakazaneSlowoId" value="@word.ZakazaneSlowoId" />
+                            <button type="submit">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="DodajZakazaneSlowo" asp-controller="Admin">
+        <input type="text" name="Slowo" />
+        <button type="submit">Dodaj Słowo Zakazane</button>
+    </form>
+
+</body>
+</html>
