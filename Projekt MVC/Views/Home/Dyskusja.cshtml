@@ -23,7 +23,14 @@
             {
 
                 <li>
-                    <b>@odpowiedz.Autor.Nazwa </b> <p>@Html.Raw(odpowiedz.Tresc) </p>
+                    <b>@odpowiedz.Autor.Nazwa</b> <p>@Html.Raw(odpowiedz.Tresc)</p>
+                    @if (!odpowiedz.ZgloszenieModeracji)
+                    {
+                        <form asp-action="ZglosOdpowiedzDoModeracji" asp-controller="Home" method="post">
+                            <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId" />
+                            <button type="submit">Zgłoś do moderacji</button>
+                        </form>
+                    }
                 </li>
 
                 if (userRole == "admin")

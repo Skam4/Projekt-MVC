@@ -74,6 +74,7 @@ header {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-right: 3px;
 }
 
 .StworzDyskusje {

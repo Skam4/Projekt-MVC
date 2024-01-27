@@ -174,14 +174,13 @@ namespace Projekt_MVC.Controllers
 
         private void SendPasswordResetEmail(string recipientEmail, string newPassword)
         {
-            string senderEmail = "trzebastworzycemaila@gmail.com"; // Twój adres e-mail
-            string senderPassword = "niewpiszetuswojegohasla"; // Hasło do konta e-mail
+            string senderEmail = "makskubamvcprojekt@gmail.com"; // Twój adres e-mail
+            string senderPassword = "MaksKuba123"; // Hasło do konta e-mail
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+            SmtpClient smtpClient = new SmtpClient("smtp-mail.gmail.com", 587)
             {
-                Port = 587,
                 Credentials = new NetworkCredential(senderEmail, senderPassword),
-                EnableSsl = true,
+                EnableSsl = true
             };
 
             // Utwórz wiadomość e-mail

@@ -309,10 +309,34 @@ namespace Projekt_MVC.Controllers
                                 .Include(w => w.Odbiorca)
                                 .OrderByDescending(w => w.DataWyslania)
                                 .ToList();
+            ViewBag.ZgloszoneOdpowiedzi = BazaDanych.Odpowiedz
+                .Where(w => w.ZgloszenieModeracji == true)
+                .ToList();
 
             return View(wiadomosci);
         }
 
+        [HttpPost]
+        public IActionResult ZglosOdpowiedzDoModeracji(int IdOdpowiedzi)
+        {
+            var odpowiedz = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
+
+            if (odpowiedz != null)
+            {
+                odpowiedz.ZgloszenieModeracji = true;
+                BazaDanych.SaveChanges();
+            }
+
+            return RedirectToAction("Dyskusja", new { id = odpowiedz.DyskusjaId });
+        }
+
+        [HttpPost]
+        public IActionResult PrzejdzDoZgloszonejDyskusji(int id)
+        {
+            return RedirectToAction("Dyskusja", id);
+
+            //Można dodać usuwanie automatyczne przejrzanych odpowiedzi
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

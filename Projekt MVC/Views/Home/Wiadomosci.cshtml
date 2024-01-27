@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Wiadomości";
+    var userRole = Context.Session.GetString("UserRole");
+
 }
 
 <!DOCTYPE html>
@@ -19,6 +21,29 @@
     <form asp-controller="Home" asp-action="WyslijWiadomosc" method="post">
         <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wyslij Wiadomość</button>
     </form>
+
+    @if (userRole == "admin" && ViewBag.ZgloszoneOdpowiedzi != null)
+    {
+        <h2>Wiadomości z zgłoszeniem do moderacji: NIE KLIKAĆ; PRZEKAZYWANE ID JEST W KONTROLERZE ZAWSZE = SIĘ 0 I NWM DLACZEGO</h2>
+
+        <ul>
+            @foreach (var wiadomosc in ViewBag.ZgloszoneOdpowiedzi)
+            {
+                <li>
+                    <form asp-controller="Home" asp-action="PrzejdzDoZgloszonejDyskusji" method="post">
+                        <div class="container" style="text-align: center">
+                            <h5>@Html.Raw(wiadomosc.Tresc)</h5>
+                            <input type="hidden" value="@wiadomosc.DyskusjaId" name="id" />
+                            <button class="btn" type="submit" style="margin-left: 30px;">Sprawdź</button>
+                        </div>
+                    </form>
+                </li>
+            }
+
+        </ul>
+
+        <hr />
+    }
 
     <table class="table">
         <thead>

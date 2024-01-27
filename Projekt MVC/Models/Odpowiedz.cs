@@ -22,5 +22,7 @@ namespace Projekt_MVC.Models
         public virtual User Autor { get; set; }
 
         public string? ZalacznikPath { get; set; }
+
+        public bool ZgloszenieModeracji { get; set; }
     }
 }
