@@ -17,13 +17,21 @@
 <head>
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
 </head>
+<body>
+    @if (!string.IsNullOrEmpty(ViewBag.Ogloszenie))
+    {
+        <div style="background-color: yellow; padding: 10px; text-align: center;">
+            <p>@ViewBag.Ogloszenie</p>
+            <p>Data: @ViewBag.OgloszenieData</p>
+        </div>
+    }
 
-<div style="text-align: right; margin-top: 10px">
-    <p>Liczba zarejestrowanych użytkowników: @ViewBag.LiczbaUżytkownikow</p>
-</div>
+    <div style="text-align: right; margin-top: 10px">
+        <p>Liczba zarejestrowanych użytkowników: @ViewBag.LiczbaUżytkownikow</p>
+    </div>
 
 
-<h1> Fora: </h1>
+    <h1> Fora: </h1>
 
 @if(ViewBag.Rola != "admin")
 {
@@ -33,7 +41,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="tabela">
         <thead>
             <tr>
                 <th>Nazwa Forum</th>
@@ -60,55 +68,59 @@ else
 }
     else
     {
-    @if (Model == null)
-    {
-        <p>Brak forów xd</p>
-    }
-    else
-    {
-        @if(ViewBag.Rola == "admin")
+        @if (Model == null)
         {
-            <p>Dodaj forum: </p>
-            <form method="post" asp-action="DodajForum" asp-controller="Admin">
-                <input type="text" class="forum" name="nazwa" placeholder="Nazwa forum" required>
-                <input type="text" class="forum" name="opis" placeholder="Opis forum" required>
-                <select name="idKategorii">
-                    @foreach (var kategoria in ViewBag.Kategorie)
-                    {
-                        <option value="@kategoria.IdKategorii">@kategoria.Nazwa</option>
-                    }
-                </select>
-                <button type="submit" class="forum">Dodaj</button>
-            </form>
+            <p>Brak forów xd</p>
         }
-    <div class="list-group" style="display: flex; flex-direction: column; margin-top: 30px">
-        <p>Fora: </p>
-        @foreach (var forum in Model)
+        else
         {
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action" style="flex: 1;">
-                    @forum.Nazwa - @forum.Opis
-                </a>
-
-                @if (ViewBag.Rola == "admin")
+            @if (ViewBag.Rola == "admin")
+            {
+                <p>Dodaj forum: </p>
+                <form method="post" asp-action="DodajForum" asp-controller="Admin">
+                    <input type="text" class="forum" name="nazwa" placeholder="Nazwa forum" required>
+                    <input type="text" class="forum" name="opis" placeholder="Opis forum" required>
+                    <select name="idKategorii">
+                        @foreach (var kategoria in ViewBag.Kategorie)
+                        {
+                            <option value="@kategoria.IdKategorii">@kategoria.Nazwa</option>
+                        }
+                    </select>
+                    <button type="submit" class="forum">Dodaj</button>
+                </form>
+            }
+            <div class="list-group" style="display: flex; flex-direction: column; margin-top: 30px">
+                <p>Fora: </p>
+                @foreach (var forum in Model)
                 {
-                    <form method="post" asp-action="UsunForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px">
-                        <input type="hidden" name="id" value="@forum.IdForum" />
-                        <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
-                    </form>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action" style="flex: 1;">
+                            @forum.Nazwa - @forum.Opis
+                        </a>
 
-                    <form method="post" asp-action="EdytujForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
-                        <input type="hidden" name="id" value="@forum.IdForum" />
-                        <button type="submit" class="red-button">Edytuj</button>
-                    </form>
+                        @if (ViewBag.Rola == "admin")
+                        {
+                            <form method="post" asp-action="UsunForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px">
+                                <input type="hidden" name="id" value="@forum.IdForum" />
+                                <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                            </form>
+
+                            <form method="post" asp-action="EdytujForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                                <input type="hidden" name="id" value="@forum.IdForum" />
+                                <button type="submit" class="red-button">Edytuj</button>
+                            </form>
+                        }
+                    </div>
                 }
             </div>
+
+
         }
-    </div>
-
-
     }
-}
+
+</body>
+
+
 
 </html>
 

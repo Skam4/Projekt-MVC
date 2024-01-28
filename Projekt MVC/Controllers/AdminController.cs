@@ -14,6 +14,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZarzadzajUżytkownikami()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             var listaUzytkownikow = BazaDanych.User.Include(x => x.Rola).ToList();
 
             return View("ZarzadzajUżytkownikami", listaUzytkownikow);
@@ -46,6 +52,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult ZarządzajKategoriami()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             var listaKategorii = BazaDanych.Kategoria.ToList();
 
             return View("ZarządzajKategoriami", listaKategorii);
@@ -118,6 +130,9 @@ namespace Projekt_MVC.Controllers
 
             var forum = BazaDanych.Forum.Include(x => x.Kategoria).FirstOrDefault(r => r.IdForum == id);
 
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             ViewBag.Rola = rola;
             ViewBag.Kategorie = kategorie;
 
@@ -168,5 +183,78 @@ namespace Projekt_MVC.Controllers
 
             //return RedirectToAction("Dyskusja", ) TUTAJ TRZEBA POWRÓCIĆ DO DYSKUSJI
         }
+
+
+
+        public IActionResult ZarzadzajOgloszeniami()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var ogloszenie = BazaDanych.Ogloszenie.ToList();
+            return View(ogloszenie);
+        }
+
+        [HttpPost]
+        public IActionResult DodajOgloszenie(string tresc)
+        {
+            var ogloszenie = new Ogloszenie
+            {
+                Tresc = tresc,
+                DataDodania = DateTime.Now
+            };
+
+            BazaDanych.Ogloszenie.Add(ogloszenie);
+            BazaDanych.SaveChanges();
+
+            return RedirectToAction("ZarzadzajOgloszeniami");
+        }
+
+        public IActionResult UsunOgloszenie(int id)
+        {
+            var ogloszenie = BazaDanych.Ogloszenie.Find(id);
+            if (ogloszenie != null)
+            {
+                BazaDanych.Ogloszenie.Remove(ogloszenie);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("ZarzadzajOgloszeniami");
+        }
+
+        public IActionResult ZarzadzajZakazanymiSlowami()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var forbiddenWords = BazaDanych.ZakazaneSlowa.ToList();
+            return View("ZarzadzajZakazanymiSlowami", forbiddenWords);
+        }
+
+        public IActionResult DodajZakazaneSlowo(string slowo)
+        {
+            var newForbiddenWord = new ZakazaneSlowo { Slowo = slowo };
+            BazaDanych.ZakazaneSlowa.Add(newForbiddenWord);
+            BazaDanych.SaveChanges();
+            return RedirectToAction("ZarzadzajZakazanymiSlowami");
+        }
+
+        public IActionResult UsunZakazaneSlowo(int ZakazaneSlowoId)
+        {
+            var wordToRemove = BazaDanych.ZakazaneSlowa.FirstOrDefault(zs => zs.ZakazaneSlowoId == ZakazaneSlowoId);
+            if (wordToRemove != null)
+            {
+                BazaDanych.ZakazaneSlowa.Remove(wordToRemove);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("ZarzadzajZakazanymiSlowami");
+        }
+
+
     }
 }

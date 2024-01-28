@@ -11,8 +11,6 @@ namespace Projekt_MVC.Models
         [Required]
         public string Tresc { get; set; }
 
-        [Required]
-        [ForeignKey("IdUzytkownika")]
-        public virtual User Uzytkownik { get; set; }
+        public DateTime DataDodania { get; set; }
     }
 }

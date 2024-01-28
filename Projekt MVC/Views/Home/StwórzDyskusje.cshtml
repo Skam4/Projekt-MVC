@@ -11,22 +11,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
+
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+
 </head>
 <body>
     <h1 style="text-align: center">Stwórz Dyskusję</h1>
-    <div class ="formDyskusja">
+    <div class="formDyskusja">
         <form method="post" asp-action="TworzenieDyskusji">
 
             <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
             <input type="text" asp-for="Temat" class="inputTematDyskusji" required><br>
 
             <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
-            <textarea id="message" asp-for="Opis" class="inputTematDyskusji" required></textarea><br>
+            <textarea id="opis" asp-for="Opis" class="inputTematDyskusji" required></textarea>
 
-            <input type="hidden" name="ForumId" value="@ViewBag.ForumId"/>
+            <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
 
             <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
         </form>
     </div>
 </body>
 </html>
+
+<script src="https://cdn.tiny.cloud/1/qsdgw82hvfxv3yn9g35x7lslfh8cgs9ng1qeua0h3wgwbuxy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'emoticons',
+        toolbar: 'emoticons',
+        toolbar_location: 'bottom',
+        menubar: false,
+        statusbar: false,
+        width: '100%',
+        height: 300,
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save();
+            });
+        }
+    });
+</script>

@@ -23,8 +23,9 @@ namespace Projekt_MVC.Controllers
             var uzytkownik = BazaDanych.User.Include(u => u.Dyskusje).FirstOrDefault(x => x.IdUzytkownika == userId);
 
             var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == uzytkownik.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
-            ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+            ViewBag.CurrentSkinId = uzytkownik.SkinId;
 
             ViewBag.AvailableSkins = BazaDanych.Skin.ToList();
 
@@ -112,18 +113,38 @@ namespace Projekt_MVC.Controllers
             }
         }
 
+        [HttpPost]
         public IActionResult ZmienSkorke(int skorki)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
+            if (userId == null)
+            {
+                return RedirectToAction("Logowanie", "Rejestracja");
+            }
+
             var uzytkownik = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
+            if (uzytkownik == null)
+            {
+                return NotFound();
+            }
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == skorki);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+
+            if (wybranaSkorka == null)
+            {
+                TempData["ErrorMessage"] = "Nieprawidłowa skórka.";
+                return RedirectToAction("Index");
+            }
+
             uzytkownik.SkinId = skorki;
-            BazaDanych.Update(uzytkownik);
+            BazaDanych.SaveChanges();
 
             return RedirectToAction("Index");
         }
-
 
 
     }

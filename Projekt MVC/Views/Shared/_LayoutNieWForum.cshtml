@@ -21,10 +21,12 @@
                 <button type="submit" class="ForumOdnosnik">Forum</button>
             </form>
 
-            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
-
             <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
                 <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
+            </form>
+
+            <form asp-controller="Home" asp-action="Wiadomosci" method="post">
+                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wiadomosci</button>
             </form>
 
             <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
@@ -41,13 +43,23 @@
                 <button type="submit" class="StworzDyskusje">Zarządzaj Użytkownikami</button>
             </form>
 
-            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
+            <form asp-controller="Admin" asp-action="ZarzadzajOgloszeniami" method="post">
+                <button type="submit" class="StworzDyskusje">Zarządzaj Ogloszeniami</button>
+            </form>
 
             <form asp-controller="Admin" asp-action="ZarządzajKategoriami" method="post">
                 <button type="submit" class="StworzDyskusje">Zarządzaj Kategoriami</button>
             </form>
 
-            <form asp-controller="Home" asp-action="Profil" method="post">
+            <form asp-controller="Admin" asp-action="ZarzadzajZakazanymiSlowami" method="post">
+                <button type="submit" class="StworzDyskusje">Zarządzaj Zakazanymi Słowami</button>
+            </form>
+
+            <form asp-controller="Home" asp-action="Wiadomosci" method="post">
+                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wiadomosci</button>
+            </form>
+
+            <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
                 <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
             </form>
 
@@ -61,11 +73,6 @@
                 <button type="submit" class="ForumOdnosnik">Forum</button>
             </form>
 
-            <input type="text" placeholder="Wyszukaj Dyskusji" class="form-control ml-2" style="width: 700px; margin-right: 100px ; margin-left: 85px">
-
-            <form asp-controller="Rejestracja" asp-action="Index" method="post">
-                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
-            </form>
 
             <form asp-controller="Rejestracja" asp-action="Index" method="post">
                 <button type="submit" class="loginPrzycisk">Zaloguj Się</button>

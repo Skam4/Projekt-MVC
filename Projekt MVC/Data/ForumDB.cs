@@ -9,6 +9,8 @@ namespace Projekt_MVC.Data
         public DbSet<Dyskusja> Dyskusja { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Skin> Skin { get; set; }
+        public DbSet<Wiadomosc> Wiadomosci { get; set; }
+        public DbSet<ZakazaneSlowo> ZakazaneSlowa { get; set; }
         public DbSet<Odpowiedz> Odpowiedz { get; set; }
         public DbSet<Forum> Forum { get; set; }
         public DbSet<Kategoria> Kategoria { get; set; }
@@ -39,6 +41,12 @@ namespace Projekt_MVC.Data
                 .WithMany(u => u.Moderatorzy)
                 .HasForeignKey(m => m.IdUzytkownika)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Wiadomosc>()
+                .HasOne(w => w.Odbiorca)
+                .WithMany()
+                .HasForeignKey(w => w.OdbiorcaId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
 

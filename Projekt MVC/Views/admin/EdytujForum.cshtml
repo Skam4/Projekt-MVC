@@ -4,26 +4,32 @@
     ViewData["Title"] = "EdycjaForum";
 }
 
-<h1>EdytujForum</h1>
-
-<h4>Forum</h4>
-<hr />
-
+<!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
+
+    <h1>EdytujForum</h1>
+
+    <h4>Forum</h4>
+    <hr />
+
     <div>
         <form method="post" asp-action="EdycjaForum" asp-controller="Admin" style="width: 300px;">
             <input type="hidden" name="id" value="@Model.IdForum" />
             <input type="text" class="forum" name="nazwa" placeholder="Nazwa forum" required value="@Model.Nazwa" style="width: 100%;">
             <input type="text" class="forum" name="opis" placeholder="Opis forum" required value="@Model.Opis" style="width: 100%; margin-top: 30px">
-        <select name="idKategorii" style="width: 100%; margin-top: 30px">
+            <select name="idKategorii" style="width: 100%; margin-top: 30px">
                 @foreach (var kategoria in ViewBag.Kategorie)
                 {
                     <option value="@kategoria.IdKategorii">@kategoria.Nazwa</option>
                 }
             </select>
-        <button type="submit" class="forum" style="width: 100%; margin-top: 30px">Edytuj</button>
+            <button type="submit" class="forum" style="width: 100%; margin-top: 30px">Edytuj</button>
         </form>
     </div>
-
+</body>
 
 </html>

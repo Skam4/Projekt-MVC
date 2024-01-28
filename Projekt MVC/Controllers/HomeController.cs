@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Projekt_MVC.Data;
 using Projekt_MVC.Models;
 using Projekt_MVC.ViewModels;
 using System.Diagnostics;
+using HtmlAgilityPack;
 
 namespace Projekt_MVC.Controllers
 {
@@ -70,8 +72,7 @@ namespace Projekt_MVC.Controllers
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
                 var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
-
-                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+                ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
                 ViewBag.Rola = user.Rola.Nazwa;
                 if (user.Rola.Nazwa == "admin")
@@ -80,6 +81,14 @@ namespace Projekt_MVC.Controllers
                     ViewBag.Kategorie = kategorie;
                 }
             }
+
+            var ostatnieOgloszenie = BazaDanych.Ogloszenie.OrderByDescending(o => o.DataDodania).LastOrDefault();
+            ViewBag.Ogloszenie = ostatnieOgloszenie != null ? ostatnieOgloszenie.Tresc : string.Empty;
+            if (ostatnieOgloszenie != null)
+            {
+                ViewBag.OgloszenieData = ostatnieOgloszenie.DataDodania;
+            }
+
 
             return View("Index", listaZForami);
         }
@@ -108,8 +117,7 @@ namespace Projekt_MVC.Controllers
                 var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
                 var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
-
-                ViewBag.CurrentSkinCssFilePath = wybranaSkorka.CssPath;
+                ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
                 ViewBag.Rola = user.Rola.Nazwa;
             }
@@ -134,11 +142,16 @@ namespace Projekt_MVC.Controllers
                 .FirstOrDefault(x => x.DyskusjaId == IdDyskusji);
 
 
-            //BazaDanych.Entry(dyskusja).State = EntityState.Detached;
+            if (ContainsForbiddenWords(odpowiedz))
+            {
+                TempData["ErrorMessage"] = "Nie udalo sie utworzyc dyskusji. Uzyles niedozwolonych slow.";
+
+                return RedirectToAction("Dyskusja", new { id = IdDyskusji });
+            }
 
             Odpowiedz odp = new Odpowiedz
             {
-                Tresc = odpowiedz,
+                Tresc = FilterHtml(odpowiedz),
                 Autor = user,
                 Dyskusja = dyskusja,
                 DataOdpowiedzi = DateTime.Now
@@ -167,6 +180,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult Dyskusja(int id)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
 
             var odpowiedzi = BazaDanych.Odpowiedz
@@ -196,6 +215,12 @@ namespace Projekt_MVC.Controllers
 
         public IActionResult StworzDyskusje(int ForumId)
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
             ViewBag.ForumId = ForumId;
             return View("StwórzDyskusje");
         }
@@ -217,7 +242,7 @@ namespace Projekt_MVC.Controllers
                 Dyskusja nowaDyskusja = new Dyskusja
                 {
                     Temat = dyskusja.Temat,
-                    Opis = dyskusja.Opis,
+                    Opis = FilterHtml(dyskusja.Opis),
                     Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId),
                     Wlasciciel = user,
                     LiczbaOdpowiedzi = 0,
@@ -241,8 +266,84 @@ namespace Projekt_MVC.Controllers
             return View("StwórzDyskusje");
         }
 
+        public IActionResult WyslijWiadomosc()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
 
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var users = BazaDanych.User.Where(u => u.IdUzytkownika != userId).ToList();
+
+            ViewBag.Users = users;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult WykonajWiadomosc(int odbiorcaId, string tresc)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var wiadomosc = new Wiadomosc
+            {
+                NadawcaId = (int)userId,
+                OdbiorcaId = odbiorcaId,
+                Tresc = tresc,
+                DataWyslania = DateTime.Now
+            };
+
+            BazaDanych.Wiadomosci.Add(wiadomosc);
+            BazaDanych.SaveChanges();
+
+            return RedirectToAction("Wiadomosci");
+        }
+
+        public IActionResult Wiadomosci()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
+
+            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
+
+            var wiadomosci = BazaDanych.Wiadomosci
+                                .Where(w => w.NadawcaId == userId || w.OdbiorcaId == userId)
+                                .Include(w => w.Nadawca)
+                                .Include(w => w.Odbiorca)
+                                .OrderByDescending(w => w.DataWyslania)
+                                .ToList();
+            ViewBag.ZgloszoneOdpowiedzi = BazaDanych.Odpowiedz
+                .Where(w => w.ZgloszenieModeracji == true)
+                .ToList();
+
+            return View(wiadomosci);
+        }
+
+        [HttpPost]
+        public IActionResult ZglosOdpowiedzDoModeracji(int IdOdpowiedzi)
+        {
+            var odpowiedz = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
+
+            if (odpowiedz != null)
+            {
+                odpowiedz.ZgloszenieModeracji = true;
+                BazaDanych.SaveChanges();
+            }
+
+            return RedirectToAction("Dyskusja", new { id = odpowiedz.DyskusjaId });
+        }
+
+        [HttpPost]
+        public IActionResult PrzejdzDoZgloszonejDyskusji(int id)
+        {
+            return RedirectToAction("Dyskusja", id);
+
+            //Można dodać usuwanie automatyczne przejrzanych odpowiedzi
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -250,5 +351,43 @@ namespace Projekt_MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        // Funkcja do filtrowania niedozwolonych znaczników HTML
+        private string FilterHtml(string htmlContent)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(htmlContent);
+
+            // Lista dozwolonych znaczników HTML
+            var allowedTags = new List<string> { "b", "i", "u", "p", "a" };
+
+            // Usuwanie znaczników spoza listy dozwolonych
+            foreach (var node in doc.DocumentNode.SelectNodes("//node()"))
+            {
+                if (node.NodeType == HtmlNodeType.Element && !allowedTags.Contains(node.Name.ToLower()))
+                {
+                    node.Remove();
+                }
+            }
+
+            return doc.DocumentNode.OuterHtml;
+        }
+
+        private bool ContainsForbiddenWords(string content)
+        {
+            var forbiddenWords = BazaDanych.ZakazaneSlowa.Select(zs => zs.Slowo).ToList();
+
+            // Sprawdź czy treść zawiera zakazane słowa
+            foreach (var word in forbiddenWords)
+            {
+                if (content.Contains(word))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

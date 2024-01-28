@@ -4,59 +4,68 @@
     ViewData["Title"] = "ZarzadzajKategoriami";
 }
 
-<hr />
-<div style="font-family: Century Gothic, serif">
-    @if (Model == null)
-    {
-        <p>Model is null!</p>
-    }
-    else
-    {
-        <p>Dodaj kategorię: </p>
-        <form method="post" asp-action="DodajKategorie" asp-controller="Admin">
-            <input type="text" class="kategoria" name="nazwa" placeholder="Nazwa kategorii" required>
-            <button type="submit" class="kategoria">Dodaj</button>
-        </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+</head>
+<body>
 
-        <div class="list-group">
-            <h1 class="title" style="margin-top: 30px;">Kategorie</h1>
+    <hr />
+    <div style="font-family: Century Gothic, serif">
+        @if (Model == null)
+        {
+            <p>Model is null!</p>
+        }
+        else
+        {
+            <p>Dodaj kategorię: </p>
+            <form method="post" asp-action="DodajKategorie" asp-controller="Admin">
+                <input type="text" class="kategoria" name="nazwa" placeholder="Nazwa kategorii" required>
+                <button type="submit" class="kategoria">Dodaj</button>
+            </form>
 
-            @foreach (var kategoria in Model)
-            {
-                <div class="list-group-item" style="display: flex; justify-content: space-between;">
-                    <div>
-                        <p> nazwa: <b>@kategoria.Nazwa</b></p>
+            <div class="list-group">
+                <h1 class="title" style="margin-top: 30px;">Kategorie</h1>
+
+                @foreach (var kategoria in Model)
+                {
+                    <div class="list-group-item" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p> nazwa: <b>@kategoria.Nazwa</b></p>
+                        </div>
+                        <div class="button-container">
+                            <form method="post" asp-action="UsunKategorie" asp-controller="Admin" style="display: inline-block;">
+                                <input type="hidden" name="id" value="@kategoria.IdKategorii" />
+                                <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="button-container">
-                        <form method="post" asp-action="UsunKategorie" asp-controller="Admin" style="display: inline-block;">
-                            <input type="hidden" name="id" value="@kategoria.IdKategorii" />
-                            <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
-                        </form>
-                    </div>
-                </div>
 
-            }
+                }
 
-        </div>
-    }
-
-    <script>
-        function f(event) {
-
-            var result = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
-            if (result == false) {
-                event.preventDefault();
-            }
+            </div>
         }
 
-        function f2(event) {
+        <script>
+            function f(event) {
 
-            var result = confirm("Czy na pewno chcesz nadać temu użytkownikowi uprawnienia administratora?");
-            if (result == false) {
-                event.preventDefault();
+                var result = confirm("Czy na pewno chcesz usunąć tego użytkownika?");
+                if (result == false) {
+                    event.preventDefault();
+                }
             }
-        }
-    </script>
 
-</div>
+            function f2(event) {
 
+                var result = confirm("Czy na pewno chcesz nadać temu użytkownikowi uprawnienia administratora?");
+                if (result == false) {
+                    event.preventDefault();
+                }
+            }
+        </script>
+
+    </div>
+
+</body>
+</html>
