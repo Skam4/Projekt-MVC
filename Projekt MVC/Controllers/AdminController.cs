@@ -256,6 +256,14 @@ namespace Projekt_MVC.Controllers
         }
 
         [HttpPost]
+        public IActionResult PrzejdzDoZgloszonejDyskusji(int id)
+        {
+            return RedirectToAction("Dyskusja", "Home", new { id });
+
+            //Można dodać usuwanie automatyczne przejrzanych odpowiedzi
+        }
+
+        [HttpPost]
         public IActionResult PrzypiszModeratora(int idForum, int idUzytkownika)
         {
             var forum = BazaDanych.Forum.Include(f => f.Moderatorzy).FirstOrDefault(f => f.IdForum == idForum);
@@ -291,6 +299,32 @@ namespace Projekt_MVC.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult UsunWiadomosc(int id)
+        {
+            var wiadomoscToDelete = BazaDanych.Wiadomosci.FirstOrDefault(w => w.Id == id);
+
+            if (wiadomoscToDelete != null)
+            {
+                BazaDanych.Wiadomosci.Remove(wiadomoscToDelete);
+                BazaDanych.SaveChanges();
+            }
+
+            return RedirectToAction("Wiadomosci", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult UsunZgloszonaOdpowiedz(int IdOdpowiedzi)
+        {
+            var odpowiedzToDelete = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
+            if (odpowiedzToDelete != null)
+            {
+                BazaDanych.Odpowiedz.Remove(odpowiedzToDelete);
+                BazaDanych.SaveChanges();
+            }
+            return RedirectToAction("Wiadomosci", "Home");
         }
 
 
