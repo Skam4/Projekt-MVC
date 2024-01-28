@@ -24,26 +24,30 @@
 
     @if (userRole == "admin" && ViewBag.ZgloszoneOdpowiedzi != null)
     {
-        <h2>Wiadomości z zgłoszeniem do moderacji: NIE KLIKAĆ; PRZEKAZYWANE ID JEST W KONTROLERZE ZAWSZE = SIĘ 0 I NWM DLACZEGO</h2>
+        <h2>Wiadomości zgłoszone do moderacji:</h2>
 
         <ul>
             @foreach (var wiadomosc in ViewBag.ZgloszoneOdpowiedzi)
             {
                 <li>
-                    <form asp-controller="Home" asp-action="PrzejdzDoZgloszonejDyskusji" method="post">
-                        <div class="container" style="text-align: center">
+                    <form asp-controller="Admin" asp-action="PrzejdzDoZgloszonejDyskusji" method="post">
+                        <div class="container" style="text-align: center ; display: inline-block; width: 50%; box-sizing: border-box; display:flex; vertical-align: top;">
                             <h5>@Html.Raw(wiadomosc.Tresc)</h5>
-                            <input type="hidden" value="@wiadomosc.DyskusjaId" name="id" />
+                            <input type="hidden" name="id" value="@wiadomosc.DyskusjaId" />
                             <button class="btn" type="submit" style="margin-left: 30px;">Sprawdź</button>
                         </div>
                     </form>
+                    <form asp-controller="Admin" asp-action="UsunZgloszonaOdpowiedz" method="post">
+                        <input type="hidden" name="IdOdpowiedzi" value="@wiadomosc.OdpowiedzId" />
+                        <button class="btn btn-danger" type="submit" style="margin-left: 10px;">Usuń</button>
+                    </form>
                 </li>
             }
-
         </ul>
 
         <hr />
     }
+
 
     <table class="table">
         <thead>
@@ -62,6 +66,12 @@
                     <td>@wiadomosc.Odbiorca.Nazwa</td>
                     <td>@wiadomosc.Tresc</td>
                     <td>@wiadomosc.DataWyslania</td>
+                    <td>
+                        <form asp-controller="Admin" asp-action="UsunWiadomosc" method="post">
+                            <input type="hidden" name="id" value="@wiadomosc.Id" />
+                            <button type="submit" class="btn btn-danger">Usuń</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

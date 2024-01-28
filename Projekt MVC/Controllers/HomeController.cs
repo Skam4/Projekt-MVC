@@ -355,14 +355,6 @@ namespace Projekt_MVC.Controllers
             return RedirectToAction("Dyskusja", new { id = odpowiedz.DyskusjaId });
         }
 
-        [HttpPost]
-        public IActionResult PrzejdzDoZgloszonejDyskusji(int id)
-        {
-            return RedirectToAction("Dyskusja", id);
-
-            //Można dodać usuwanie automatyczne przejrzanych odpowiedzi
-        }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
