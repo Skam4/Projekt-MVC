@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Projekt_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class jj : Migration
+    public partial class xx : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,6 +52,20 @@ namespace Projekt_MVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nazwa = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CssPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skin", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UprawnienieAnonimowych",
                 columns: table => new
                 {
@@ -65,6 +79,19 @@ namespace Projekt_MVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ZakazaneSlowa",
+                columns: table => new
+                {
+                    ZakazaneSlowoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Slowo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ZakazaneSlowa", x => x.ZakazaneSlowoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -74,7 +101,9 @@ namespace Projekt_MVC.Migrations
                     Haslo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IdRoli = table.Column<int>(type: "int", nullable: false),
-                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogoutTimeSpan = table.Column<int>(type: "int", nullable: true),
+                    SkinId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,17 +153,17 @@ namespace Projekt_MVC.Migrations
                     IdOgloszenia = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Tresc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdUzytkownika = table.Column<int>(type: "int", nullable: false)
+                    DataDodania = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserIdUzytkownika = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ogloszenie", x => x.IdOgloszenia);
                     table.ForeignKey(
-                        name: "FK_Ogloszenie_User_IdUzytkownika",
-                        column: x => x.IdUzytkownika,
+                        name: "FK_Ogloszenie_User_UserIdUzytkownika",
+                        column: x => x.UserIdUzytkownika,
                         principalTable: "User",
-                        principalColumn: "IdUzytkownika",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdUzytkownika");
                 });
 
             migrationBuilder.CreateTable(
@@ -164,17 +193,46 @@ namespace Projekt_MVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Wiadomosci",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tresc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataWyslania = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NadawcaId = table.Column<int>(type: "int", nullable: false),
+                    OdbiorcaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Wiadomosci", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Wiadomosci_User_NadawcaId",
+                        column: x => x.NadawcaId,
+                        principalTable: "User",
+                        principalColumn: "IdUzytkownika",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Wiadomosci_User_OdbiorcaId",
+                        column: x => x.OdbiorcaId,
+                        principalTable: "User",
+                        principalColumn: "IdUzytkownika",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Dyskusja",
                 columns: table => new
                 {
-                    DyskusjaId = table.Column<int>(type: "int", nullable: false),
+                    DyskusjaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Temat = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Opis = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdForum = table.Column<int>(type: "int", nullable: true),
+                    IdUzytkownika = table.Column<int>(type: "int", nullable: false),
+                    IdForum = table.Column<int>(type: "int", nullable: false),
                     LiczbaOdwiedzen = table.Column<int>(type: "int", nullable: true),
                     LiczbaOdpowiedzi = table.Column<int>(type: "int", nullable: true),
-                    CzyPrzyklejony = table.Column<bool>(type: "bit", nullable: true),
-                    IdUzytkownika = table.Column<int>(type: "int", nullable: false)
+                    CzyPrzyklejony = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -183,12 +241,14 @@ namespace Projekt_MVC.Migrations
                         name: "FK_Dyskusja_Forum_IdForum",
                         column: x => x.IdForum,
                         principalTable: "Forum",
-                        principalColumn: "IdForum");
+                        principalColumn: "IdForum",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Dyskusja_User_DyskusjaId",
-                        column: x => x.DyskusjaId,
+                        name: "FK_Dyskusja_User_IdUzytkownika",
+                        column: x => x.IdUzytkownika,
                         principalTable: "User",
-                        principalColumn: "IdUzytkownika");
+                        principalColumn: "IdUzytkownika",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,25 +281,27 @@ namespace Projekt_MVC.Migrations
                 name: "Odpowiedz",
                 columns: table => new
                 {
-                    OdpowiedzId = table.Column<int>(type: "int", nullable: false),
+                    OdpowiedzId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Tresc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataOdpowiedzi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdDyskusji = table.Column<int>(type: "int", nullable: false),
+                    DyskusjaId = table.Column<int>(type: "int", nullable: false),
+                    AutorId = table.Column<int>(type: "int", nullable: false),
                     ZalacznikPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdUzytkownika = table.Column<int>(type: "int", nullable: false)
+                    ZgloszenieModeracji = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Odpowiedz", x => x.OdpowiedzId);
                     table.ForeignKey(
-                        name: "FK_Odpowiedz_Dyskusja_IdDyskusji",
-                        column: x => x.IdDyskusji,
+                        name: "FK_Odpowiedz_Dyskusja_DyskusjaId",
+                        column: x => x.DyskusjaId,
                         principalTable: "Dyskusja",
                         principalColumn: "DyskusjaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Odpowiedz_User_OdpowiedzId",
-                        column: x => x.OdpowiedzId,
+                        name: "FK_Odpowiedz_User_AutorId",
+                        column: x => x.AutorId,
                         principalTable: "User",
                         principalColumn: "IdUzytkownika",
                         onDelete: ReferentialAction.Restrict);
@@ -249,6 +311,11 @@ namespace Projekt_MVC.Migrations
                 name: "IX_Dyskusja_IdForum",
                 table: "Dyskusja",
                 column: "IdForum");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dyskusja_IdUzytkownika",
+                table: "Dyskusja",
+                column: "IdUzytkownika");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Forum_IdKategorii",
@@ -271,14 +338,19 @@ namespace Projekt_MVC.Migrations
                 column: "IdUzytkownika");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Odpowiedz_IdDyskusji",
+                name: "IX_Odpowiedz_AutorId",
                 table: "Odpowiedz",
-                column: "IdDyskusji");
+                column: "AutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ogloszenie_IdUzytkownika",
+                name: "IX_Odpowiedz_DyskusjaId",
+                table: "Odpowiedz",
+                column: "DyskusjaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ogloszenie_UserIdUzytkownika",
                 table: "Ogloszenie",
-                column: "IdUzytkownika");
+                column: "UserIdUzytkownika");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RangaUzytkownika_IdRangi",
@@ -294,6 +366,16 @@ namespace Projekt_MVC.Migrations
                 name: "IX_User_IdRoli",
                 table: "User",
                 column: "IdRoli");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wiadomosci_NadawcaId",
+                table: "Wiadomosci",
+                column: "NadawcaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wiadomosci_OdbiorcaId",
+                table: "Wiadomosci",
+                column: "OdbiorcaId");
         }
 
         /// <inheritdoc />
@@ -310,6 +392,15 @@ namespace Projekt_MVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "RangaUzytkownika");
+
+            migrationBuilder.DropTable(
+                name: "Skin");
+
+            migrationBuilder.DropTable(
+                name: "Wiadomosci");
+
+            migrationBuilder.DropTable(
+                name: "ZakazaneSlowa");
 
             migrationBuilder.DropTable(
                 name: "Dyskusja");

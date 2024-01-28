@@ -33,6 +33,7 @@
                     <form asp-controller="Home" asp-action="PrzejdzDoZgloszonejDyskusji" method="post">
                         <div class="container" style="text-align: center">
                             <h5>@Html.Raw(wiadomosc.Tresc)</h5>
+                            <p>@wiadomosc.DyskusjaId</p>
                             <input type="hidden" value="@wiadomosc.DyskusjaId" name="id" />
                             <button class="btn" type="submit" style="margin-left: 30px;">Sprawdź</button>
                         </div>

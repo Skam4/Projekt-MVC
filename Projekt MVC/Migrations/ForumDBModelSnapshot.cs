@@ -70,6 +70,9 @@ namespace Projekt_MVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdForum"));
 
+                    b.Property<int>("IdKategorii")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdUprawnien")
                         .HasColumnType("int");
 
@@ -88,20 +91,71 @@ namespace Projekt_MVC.Migrations
 
                     b.HasKey("IdForum");
 
+                    b.HasIndex("IdKategorii");
+
                     b.HasIndex("IdUprawnien");
 
                     b.ToTable("Forum");
                 });
 
-            modelBuilder.Entity("Projekt_MVC.Models.Odpowiedz", b =>
+            modelBuilder.Entity("Projekt_MVC.Models.Kategoria", b =>
                 {
-                    b.Property<int>("OdpowiedzId")
+                    b.Property<int>("IdKategorii")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("IdDyskusji")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdKategorii"));
+
+                    b.Property<string>("Nazwa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdKategorii");
+
+                    b.ToTable("Kategoria");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Moderator", b =>
+                {
+                    b.Property<int>("IdModeratora")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdModeratora"));
+
+                    b.Property<int>("ForumIdForum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdForum")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUzytkownika")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdModeratora");
+
+                    b.HasIndex("ForumIdForum");
+
+                    b.HasIndex("IdUzytkownika");
+
+                    b.ToTable("Moderator");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Odpowiedz", b =>
+                {
+                    b.Property<int>("OdpowiedzId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OdpowiedzId"));
+
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataOdpowiedzi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DyskusjaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Tresc")
@@ -109,14 +163,18 @@ namespace Projekt_MVC.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZalacznikPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ZgloszenieModeracji")
+                        .HasColumnType("bit");
 
                     b.HasKey("OdpowiedzId");
 
-                    b.HasIndex("IdDyskusji");
+                    b.HasIndex("AutorId");
 
-                    b.ToTable("Odpowiedzi");
+                    b.HasIndex("DyskusjaId");
+
+                    b.ToTable("Odpowiedz");
                 });
 
             modelBuilder.Entity("Projekt_MVC.Models.Ogloszenie", b =>
@@ -127,18 +185,64 @@ namespace Projekt_MVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOgloszenia"));
 
-                    b.Property<int>("IdUzytkownika")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("DataDodania")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Tresc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserIdUzytkownika")
+                        .HasColumnType("int");
+
                     b.HasKey("IdOgloszenia");
+
+                    b.HasIndex("UserIdUzytkownika");
+
+                    b.ToTable("Ogloszenie");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Ranga", b =>
+                {
+                    b.Property<int>("IdRangi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRangi"));
+
+                    b.Property<string>("Nazwa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PotrzebnaLiczbaWiadomosci")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdRangi");
+
+                    b.ToTable("Ranga");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.RangaUzytkownika", b =>
+                {
+                    b.Property<int>("IdRangiUzytkownika")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRangiUzytkownika"));
+
+                    b.Property<int>("IdRangi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUzytkownika")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdRangiUzytkownika");
+
+                    b.HasIndex("IdRangi");
 
                     b.HasIndex("IdUzytkownika");
 
-                    b.ToTable("Ogloszenie");
+                    b.ToTable("RangaUzytkownika");
                 });
 
             modelBuilder.Entity("Projekt_MVC.Models.Role", b =>
@@ -157,6 +261,27 @@ namespace Projekt_MVC.Migrations
                     b.HasKey("IdRoli");
 
                     b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Skin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CssPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nazwa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Skin");
                 });
 
             modelBuilder.Entity("Projekt_MVC.Models.UprawnienieAnonimowych", b =>
@@ -200,10 +325,16 @@ namespace Projekt_MVC.Migrations
                     b.Property<int>("IdRoli")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LogoutTimeSpan")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nazwa")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("SkinId")
+                        .HasColumnType("int");
 
                     b.HasKey("IdUzytkownika");
 
@@ -212,10 +343,57 @@ namespace Projekt_MVC.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Projekt_MVC.Models.Wiadomosc", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataWyslania")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NadawcaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OdbiorcaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tresc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NadawcaId");
+
+                    b.HasIndex("OdbiorcaId");
+
+                    b.ToTable("Wiadomosci");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.ZakazaneSlowo", b =>
+                {
+                    b.Property<int>("ZakazaneSlowoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ZakazaneSlowoId"));
+
+                    b.Property<string>("Slowo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ZakazaneSlowoId");
+
+                    b.ToTable("ZakazaneSlowa");
+                });
+
             modelBuilder.Entity("Projekt_MVC.Models.Dyskusja", b =>
                 {
                     b.HasOne("Projekt_MVC.Models.Forum", "Forum")
-                        .WithMany()
+                        .WithMany("Dyskusje")
                         .HasForeignKey("IdForum")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -233,27 +411,54 @@ namespace Projekt_MVC.Migrations
 
             modelBuilder.Entity("Projekt_MVC.Models.Forum", b =>
                 {
+                    b.HasOne("Projekt_MVC.Models.Kategoria", "Kategoria")
+                        .WithMany()
+                        .HasForeignKey("IdKategorii")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Projekt_MVC.Models.UprawnienieAnonimowych", "UprawnienieAnonimowych")
                         .WithMany("Forum")
                         .HasForeignKey("IdUprawnien")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Kategoria");
+
                     b.Navigation("UprawnienieAnonimowych");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Moderator", b =>
+                {
+                    b.HasOne("Projekt_MVC.Models.Forum", "Forum")
+                        .WithMany("Moderatorzy")
+                        .HasForeignKey("ForumIdForum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Projekt_MVC.Models.User", "Uzytkownik")
+                        .WithMany("Moderatorzy")
+                        .HasForeignKey("IdUzytkownika")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Forum");
+
+                    b.Navigation("Uzytkownik");
                 });
 
             modelBuilder.Entity("Projekt_MVC.Models.Odpowiedz", b =>
                 {
-                    b.HasOne("Projekt_MVC.Models.Dyskusja", "Dyskusja")
-                        .WithMany("Odpowiedzi")
-                        .HasForeignKey("IdDyskusji")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Projekt_MVC.Models.User", "Autor")
                         .WithMany("Odpowiedzi")
-                        .HasForeignKey("OdpowiedzId")
+                        .HasForeignKey("AutorId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Projekt_MVC.Models.Dyskusja", "Dyskusja")
+                        .WithMany("Odpowiedzi")
+                        .HasForeignKey("DyskusjaId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Autor");
@@ -263,11 +468,26 @@ namespace Projekt_MVC.Migrations
 
             modelBuilder.Entity("Projekt_MVC.Models.Ogloszenie", b =>
                 {
-                    b.HasOne("Projekt_MVC.Models.User", "Uzytkownik")
+                    b.HasOne("Projekt_MVC.Models.User", null)
                         .WithMany("Ogloszenia")
+                        .HasForeignKey("UserIdUzytkownika");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.RangaUzytkownika", b =>
+                {
+                    b.HasOne("Projekt_MVC.Models.Ranga", "Ranga")
+                        .WithMany()
+                        .HasForeignKey("IdRangi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Projekt_MVC.Models.User", "Uzytkownik")
+                        .WithMany()
                         .HasForeignKey("IdUzytkownika")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ranga");
 
                     b.Navigation("Uzytkownik");
                 });
@@ -283,9 +503,35 @@ namespace Projekt_MVC.Migrations
                     b.Navigation("Rola");
                 });
 
+            modelBuilder.Entity("Projekt_MVC.Models.Wiadomosc", b =>
+                {
+                    b.HasOne("Projekt_MVC.Models.User", "Nadawca")
+                        .WithMany()
+                        .HasForeignKey("NadawcaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Projekt_MVC.Models.User", "Odbiorca")
+                        .WithMany()
+                        .HasForeignKey("OdbiorcaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Nadawca");
+
+                    b.Navigation("Odbiorca");
+                });
+
             modelBuilder.Entity("Projekt_MVC.Models.Dyskusja", b =>
                 {
                     b.Navigation("Odpowiedzi");
+                });
+
+            modelBuilder.Entity("Projekt_MVC.Models.Forum", b =>
+                {
+                    b.Navigation("Dyskusje");
+
+                    b.Navigation("Moderatorzy");
                 });
 
             modelBuilder.Entity("Projekt_MVC.Models.Role", b =>
@@ -301,6 +547,8 @@ namespace Projekt_MVC.Migrations
             modelBuilder.Entity("Projekt_MVC.Models.User", b =>
                 {
                     b.Navigation("Dyskusje");
+
+                    b.Navigation("Moderatorzy");
 
                     b.Navigation("Odpowiedzi");
 
