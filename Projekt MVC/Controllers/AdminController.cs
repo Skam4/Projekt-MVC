@@ -103,7 +103,7 @@ namespace Projekt_MVC.Controllers
         public IActionResult DodajForum(string nazwa, string opis, int idKategorii)
         {
             var kategoria = BazaDanych.Kategoria.FirstOrDefault(r => r.IdKategorii == idKategorii);
-            var uprawnienie = BazaDanych.UprawnienieAnonimowych.FirstOrDefault(r => r.IdUprawnienia == 2);
+            var uprawnienie = BazaDanych.UprawnienieAnonimowych.FirstOrDefault(r => r.IdUprawnienia == 1);
 
             var forum = new Forum
             {
@@ -111,6 +111,8 @@ namespace Projekt_MVC.Controllers
                 Opis = opis,
                 Kategoria = kategoria,
                 UprawnienieAnonimowych = uprawnienie,
+                LiczbaWatkow = 0,
+                LiczbaWiadomosci = 0
             };
 
             BazaDanych.Forum.Add(forum);
@@ -159,9 +161,11 @@ namespace Projekt_MVC.Controllers
         public IActionResult UsunOdpowiedz(int IdOdpowiedzi, int IdDyskusji)
         {
             var odpowiedzToDelete = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
+            var dyskusja = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == IdDyskusji);
 
             if (odpowiedzToDelete != null)
             {
+                dyskusja.LiczbaOdpowiedzi--;
                 BazaDanych.Odpowiedz.Remove(odpowiedzToDelete);
                 BazaDanych.SaveChanges();
             }

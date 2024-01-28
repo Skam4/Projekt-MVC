@@ -33,37 +33,39 @@
 
     <h1> Fora: </h1>
 
-    @if (ViewBag.Rola != "admin")
-    {
-        @if (Model == null)
-        {
-            <p>Brak forów xd</p>
-        }
-        else
-        {
-            <table class="tabela">
-                <thead>
-                    <tr>
-                        <th>Nazwa Forum</th>
-                        <th>Opis</th>
-                        <th>Liczba Dyskusji</th>
-                        <th>Liczba Wiadomości</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var forum in Model)
-                    {
-                        <tr>
-                            <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
-                            <td>@forum.Opis</td>
-                            <td>@forum.LiczbaWatkow</td>
-                            <td>@forum.LiczbaWiadomosci</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    }
+@if(ViewBag.Rola != "admin")
+{
+    @if (Model == null)
+{
+    <p>Brak forów xd</p>
+}
+else
+{
+    <table class="tabela">
+        <thead>
+            <tr>
+                <th>Nazwa Forum</th>
+                <th>Opis</th>
+                <th>Kategoria</th>
+                <th>Liczba Dyskusji</th>
+                <th>Liczba Wiadomości</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forum in Model)
+            {
+                <tr>
+                    <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
+                    <td>@forum.Opis</td>
+                    <td>@forum.Kategoria.Nazwa</td>
+                    <td>@forum.LiczbaWatkow</td>
+                    <td>@forum.LiczbaWiadomosci</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+}
     else
     {
         @if (Model == null)
