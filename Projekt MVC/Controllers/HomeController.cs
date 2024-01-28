@@ -59,7 +59,7 @@ namespace Projekt_MVC.Controllers
 
             ViewBag.LiczbaUżytkownikow = uzytkownicy.Count;
 
-            var listaZForami = BazaDanych.Forum.ToList();
+            var listaZForami = BazaDanych.Forum.Include(x => x.Kategoria).ToList();
 
             var userId = HttpContext.Session.GetInt32("UserId");
 
@@ -219,7 +219,9 @@ namespace Projekt_MVC.Controllers
                     Temat = dyskusja.Temat,
                     Opis = dyskusja.Opis,
                     Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId),
-                    Wlasciciel = user
+                    Wlasciciel = user,
+                    LiczbaOdpowiedzi = 0,
+                    LiczbaOdwiedzen = 0,
                 };
 
                 BazaDanych.Dyskusja.Add(nowaDyskusja);
