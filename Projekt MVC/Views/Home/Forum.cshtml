@@ -43,7 +43,7 @@
                         Liczba odsłon: @dyskusja.LiczbaOdwiedzen
                     </a>
 
-                    @if (ViewBag.Rola == "admin")
+                    @if (ViewBag.Rola == "admin" || ViewBag.CzyMod == 1)
                     {
                         <form method="post" asp-action="UsunDyskusje" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
                             <input type="hidden" name="id" value="@dyskusja.DyskusjaId" />

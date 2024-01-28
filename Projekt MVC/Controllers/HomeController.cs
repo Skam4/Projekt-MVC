@@ -82,6 +82,8 @@ namespace Projekt_MVC.Controllers
                 }
             }
 
+            ViewBag.Users = BazaDanych.User.ToList();
+
             var ostatnieOgloszenie = BazaDanych.Ogloszenie.OrderByDescending(o => o.DataDodania).LastOrDefault();
             ViewBag.Ogloszenie = ostatnieOgloszenie != null ? ostatnieOgloszenie.Tresc : string.Empty;
             if (ostatnieOgloszenie != null)
@@ -121,6 +123,14 @@ namespace Projekt_MVC.Controllers
 
                 ViewBag.Rola = user.Rola.Nazwa;
             }
+
+            var Mod = BazaDanych.Moderator
+                .Where(m => m.IdForum == id)
+                .Where(m => m.IdUzytkownika == userId)
+                .Any();
+
+            ViewBag.CzyMod = Mod ? 1 : 0;
+
 
             return View("Forum", listaDyskusji);
         }
@@ -195,6 +205,13 @@ namespace Projekt_MVC.Controllers
 
             Dyskusja.Odpowiedzi = odpowiedzi;
 
+            var Mod = BazaDanych.Moderator
+                .Where(m => m.IdForum == id)
+                .Where(m => m.IdUzytkownika == userId)
+                .Any();
+
+            ViewBag.CzyMod = Mod ? 1 : 0;
+
             if (Dyskusja != null)
             {
                 if (Dyskusja.LiczbaOdwiedzen == null)
@@ -209,6 +226,7 @@ namespace Projekt_MVC.Controllers
                 BazaDanych.SaveChanges();
                 return View("Dyskusja", Dyskusja);
             }
+
             return View("Index");
         }
 

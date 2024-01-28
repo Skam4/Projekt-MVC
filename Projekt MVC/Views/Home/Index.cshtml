@@ -98,6 +98,17 @@
 
                         @if (ViewBag.Rola == "admin")
                         {
+                            <form method="post" asp-action="PrzypiszModeratora" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                                <input type="hidden" name="idForum" value="@forum.IdForum" />
+                                <select name="idUzytkownika">
+                                    @foreach (var user in ViewBag.Users)
+                                    {
+                                        <option value="@user.IdUzytkownika">@user.Nazwa</option>
+                                    }
+                                </select>
+                                <button type="submit" class="red-button">Przydziel moderatora</button>
+                            </form>
+
                             <form method="post" asp-action="UsunForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px">
                                 <input type="hidden" name="id" value="@forum.IdForum" />
                                 <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
@@ -110,6 +121,7 @@
                         }
                     </div>
                 }
+
             </div>
 
 

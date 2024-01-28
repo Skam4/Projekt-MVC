@@ -251,6 +251,45 @@ namespace Projekt_MVC.Controllers
             return RedirectToAction("ZarzadzajZakazanymiSlowami");
         }
 
+        [HttpPost]
+        public IActionResult PrzypiszModeratora(int idForum, int idUzytkownika)
+        {
+            var forum = BazaDanych.Forum.Include(f => f.Moderatorzy).FirstOrDefault(f => f.IdForum == idForum);
+            var user = BazaDanych.User.FirstOrDefault(u => u.IdUzytkownika == idUzytkownika);
+
+            if (forum != null && user != null)
+            {
+                if (forum.Moderatorzy == null)
+                    forum.Moderatorzy = new List<Moderator>();
+
+                Moderator moderator = new Moderator();
+                moderator.IdForum = idForum;
+                moderator.Forum = forum;
+                moderator.Uzytkownik = user;
+                moderator.IdUzytkownika = idUzytkownika;
+
+
+                forum.Moderatorzy.Add(moderator);
+                BazaDanych.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult UsunDyskusje(int id)
+        {
+            var dyskusjaToDelete = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == id);
+
+            if (dyskusjaToDelete != null)
+            {
+                BazaDanych.Dyskusja.Remove(dyskusjaToDelete);
+                BazaDanych.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
 
     }
 }
