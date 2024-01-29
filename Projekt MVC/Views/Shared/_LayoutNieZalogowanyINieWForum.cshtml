@@ -10,14 +10,13 @@
 </head>
 <body>
     <header style="border-bottom ; box-shadow">
-        <form asp-controller="Home" asp-action="Index" method="post">
-            <button type="submit" class="ForumOdnosnik">Forum</button>
+        <form asp-controller="Home" asp-action="Index" method="post" class="nav-link">
+            <button type="submit" class="btn" style="color: white;">Forum</button>
         </form>
 
         <form asp-controller="Rejestracja" asp-action="Index" method="post">
-            <button type="submit" class="loginPrzycisk">Zaloguj Się</button>
+            <button type="submit" class="btn" style="color: white; margin-right: 5px">Zaloguj się</button>
         </form>
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">

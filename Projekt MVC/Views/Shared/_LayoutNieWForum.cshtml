@@ -17,17 +17,19 @@
 
         @if (userRole == "uzytkownik")
         {
-            <form asp-controller="Home" asp-action="Index" method="post">
-                <button type="submit" class="ForumOdnosnik">Forum</button>
+            <form asp-controller="Home" asp-action="Index" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Forum</button>
             </form>
 
-            <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
-                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
-            </form>
+            <div style="display: flex; justify-content: flex-end; margin-right: 10px" class="container">
+                <form asp-controller="Home" asp-action="Wiadomosci" method="post">
+                    <button type="submit" style="margin-right: 15px;" class="btn btn-outline-secondary">Wiadomości</button>
+                </form>
 
-            <form asp-controller="Home" asp-action="Wiadomosci" method="post">
-                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wiadomosci</button>
-            </form>
+                <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
+                    <button type="submit" class="btn btn-outline-secondary">Twój profil</button>
+                </form>
+            </div>
 
             <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
                 <button type="submit" class="Wyloguj">Wyloguj</button>
@@ -35,33 +37,35 @@
         }
         else if (userRole == "admin")
         {
-            <form asp-controller="Home" asp-action="Index" method="post">
-                <button type="submit" class="ForumOdnosnik">Forum</button>
+            <form asp-controller="Home" asp-action="Index" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Forum</button>
             </form>
 
-            <form asp-controller="Admin" asp-action="ZarzadzajUżytkownikami" method="post">
-                <button type="submit" class="StworzDyskusje">Zarządzaj Użytkownikami</button>
+            <form asp-controller="Admin" asp-action="ZarzadzajUzytkownikami" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Zarządzaj użytkownikami</button>
             </form>
 
-            <form asp-controller="Admin" asp-action="ZarzadzajOgloszeniami" method="post">
-                <button type="submit" class="StworzDyskusje">Zarządzaj Ogloszeniami</button>
+            <form asp-controller="Admin" asp-action="ZarzadzajOgloszeniami" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Zarządzaj Ogloszeniami</button>
             </form>
 
-            <form asp-controller="Admin" asp-action="ZarządzajKategoriami" method="post">
-                <button type="submit" class="StworzDyskusje">Zarządzaj Kategoriami</button>
+            <form asp-controller="Admin" asp-action="ZarzadzajKategoriami" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Zarządzaj kategoriami</button>
             </form>
 
-            <form asp-controller="Admin" asp-action="ZarzadzajZakazanymiSlowami" method="post">
-                <button type="submit" class="StworzDyskusje">Zarządzaj Zakazanymi Słowami</button>
+            <form asp-controller="Admin" asp-action="ZarzadzajZakazanymiSlowami" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Zarządzaj zakazanymi słowami</button>
             </form>
 
-            <form asp-controller="Home" asp-action="Wiadomosci" method="post">
-                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wiadomosci</button>
-            </form>
+            <div style="display: flex; justify-content: flex-end; margin-right: 10px" class="container">
+                <form asp-controller="Home" asp-action="Wiadomosci" method="post">
+                    <button type="submit" style="margin-right: 15px;" class="btn btn-outline-secondary">Wiadomości</button>
+                </form>
 
-            <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
-                <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Twój profil</button>
-            </form>
+                <form asp-controller="ProfilUzytkownika" asp-action="Index" method="post">
+                    <button type="submit" class="btn btn-outline-secondary">Twój profil</button>
+                </form>
+            </div>
 
             <form asp-controller="Rejestracja" asp-action="Logowanie" method="post">
                 <button type="submit" class="Wyloguj">Wyloguj</button>
@@ -69,13 +73,12 @@
         }
         else
         {
-            <form asp-controller="Home" asp-action="Index" method="post">
-                <button type="submit" class="ForumOdnosnik">Forum</button>
+            <form asp-controller="Home" asp-action="Index" method="post" class="nav-link">
+                <button type="submit" class="btn" style="color: white;">Forum</button>
             </form>
 
-
             <form asp-controller="Rejestracja" asp-action="Index" method="post">
-                <button type="submit" class="loginPrzycisk">Zaloguj Się</button>
+                <button type="submit" class="btn" style="color: white; margin-right: 5px">Zaloguj się</button>
             </form>
 
         }
