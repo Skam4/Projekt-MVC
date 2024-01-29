@@ -196,7 +196,7 @@ namespace Projekt_MVC.Controllers
             var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
             ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
-            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).FirstOrDefault(i => i.DyskusjaId == id);
+            Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(x => x.Forum).FirstOrDefault(i => i.DyskusjaId == id);
 
             var odpowiedzi = BazaDanych.Odpowiedz
                 .Include(x => x.Autor)
@@ -205,8 +205,10 @@ namespace Projekt_MVC.Controllers
 
             Dyskusja.Odpowiedzi = odpowiedzi;
 
+            var forumId = Dyskusja.Forum.IdForum;
+
             var Mod = BazaDanych.Moderator
-                .Where(m => m.IdForum == id)
+                .Where(m => m.IdForum == forumId)
                 .Where(m => m.IdUzytkownika == userId)
                 .Any();
 
@@ -336,6 +338,7 @@ namespace Projekt_MVC.Controllers
                                 .ToList();
             ViewBag.ZgloszoneOdpowiedzi = BazaDanych.Odpowiedz
                 .Where(w => w.ZgloszenieModeracji == true)
+                .Include(w => w.Dyskusja)
                 .ToList();
 
             return View(wiadomosci);
@@ -353,6 +356,14 @@ namespace Projekt_MVC.Controllers
             }
 
             return RedirectToAction("Dyskusja", new { id = odpowiedz.DyskusjaId });
+        }
+
+        [HttpPost]
+        public IActionResult PrzejdzDoZgloszonejDyskusji(int id)
+        {
+            return RedirectToAction("Dyskusja", new { id = id });
+
+            //Można dodać usuwanie automatyczne przejrzanych odpowiedzi
         }
 
 
