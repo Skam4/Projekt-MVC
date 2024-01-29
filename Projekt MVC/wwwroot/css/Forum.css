@@ -1,0 +1,58 @@
+﻿
+.StworzDyskusjeButton {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+    .StworzDyskusjeButton:hover {
+        background-color: #0056b3;
+    }
+
+.list-group {
+    margin-top: 20px;
+}
+
+.list-group-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.list-group-item-action {
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .list-group-item-action:hover {
+        text-decoration: underline;
+    }
+
+.delete-form {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.delete-button {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: red;
+    border: none;
+    cursor: pointer;
+}
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+
+.list-group-item button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    text-align: left;
+}

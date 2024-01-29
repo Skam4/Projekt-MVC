@@ -3,43 +3,41 @@
 @{
     ViewData["Title"] = "Wiadomości";
     var userRole = Context.Session.GetString("UserRole");
-
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+    <link rel="stylesheet" href="~/css/Wiadomosci.css">
 </head>
 <body>
 
     <h1>Wiadomości</h1>
 
     <form asp-controller="Home" asp-action="WyslijWiadomosc" method="post">
-        <button type="submit" class="btn btn-outline-secondary" style="margin-left: 40px; margin-right: 100px">Wyslij Wiadomość</button>
+        <button type="submit" class="btn btn-outline-secondary">Wyślij Wiadomość</button>
     </form>
 
     @if (userRole == "admin" && ViewBag.ZgloszoneOdpowiedzi != null)
     {
         <h2>Wiadomości zgłoszone do moderacji:</h2>
 
-        <ul>
+        <ul class="zgloszone-wiadomosci">
             @foreach (var wiadomosc in ViewBag.ZgloszoneOdpowiedzi)
             {
                 <li>
                     <form asp-controller="Admin" asp-action="PrzejdzDoZgloszonejDyskusji" method="post">
-                        <div class="container" style="text-align: center ; display: inline-block; width: 50%; box-sizing: border-box; display:flex; vertical-align: top;">
+                        <div class="zgloszona-wiadomosc">
                             <h5>@Html.Raw(wiadomosc.Tresc)</h5>
                             <input type="hidden" name="id" value="@wiadomosc.DyskusjaId" />
-                            <button class="btn" type="submit" style="margin-left: 30px;">Sprawdź</button>
+                            <button class="btn btn-secondary" type="submit">Sprawdź</button>
                         </div>
                     </form>
                     <form asp-controller="Admin" asp-action="UsunZgloszonaOdpowiedz" method="post">
                         <input type="hidden" name="IdOdpowiedzi" value="@wiadomosc.OdpowiedzId" />
-                        <button class="btn btn-danger" type="submit" style="margin-left: 10px;">Usuń</button>
+                        <button class="btn btn-danger" type="submit">Usuń</button>
                     </form>
                 </li>
             }
@@ -48,7 +46,6 @@
         <hr />
     }
 
-
     <table class="table">
         <thead>
             <tr>
@@ -56,6 +53,7 @@
                 <th>Odbiorca</th>
                 <th>Treść</th>
                 <th>Data wysłania</th>
+                <th>Akcje</th>
             </tr>
         </thead>
         <tbody>

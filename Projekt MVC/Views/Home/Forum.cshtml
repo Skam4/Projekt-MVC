@@ -16,6 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="~/css/Forum.css">
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
 </head>
 <body>
@@ -23,7 +24,7 @@
     <h1>Dyskusje:</h1>
 
     <form asp-controller="Home" asp-action="StworzDyskusje" method="post" onsubmit="return sprawdzLogowanie()">
-        <button type="submit" class="StworzDyskusje">Stwórz Dyskusję</button>
+        <button type="submit" class="StworzDyskusjeButton">Stwórz Dyskusję</button>
         <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
     </form>
 
@@ -37,17 +38,20 @@
             @foreach (var dyskusja in Model)
             {
                 <div class="list-group-item">
-                    <a href="/Home/Dyskusja/@dyskusja.DyskusjaId" class="list-group-item-action">
-                        @dyskusja.Temat
-                        Liczba odpowiedzi: @dyskusja.LiczbaOdpowiedzi
-                        Liczba odsłon: @dyskusja.LiczbaOdwiedzen
-                    </a>
+                    <form method="post" asp-action="Dyskusja" asp-controller="Home">
+                        <input type="hidden" name="id" value="@dyskusja.DyskusjaId">
+                        <button class="list-group-item-action" type="submit">
+                            @dyskusja.Temat,
+                            Liczba odpowiedzi: @dyskusja.LiczbaOdpowiedzi,
+                            Liczba odsłon: @dyskusja.LiczbaOdwiedzen
+                        </button>
+                    </form>
 
                     @if (ViewBag.Rola == "admin" || ViewBag.CzyMod == 1)
                     {
-                        <form method="post" asp-action="UsunDyskusje" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                        <form method="post" asp-action="UsunDyskusje" asp-controller="Admin" class="delete-form">
                             <input type="hidden" name="id" value="@dyskusja.DyskusjaId" />
-                            <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                            <button type="submit" class="delete-button" onclick="confirmDelete(event)">Usuń</button>
                         </form>
                     }
                 </div>
@@ -67,9 +71,9 @@
             return true;
         }
 
-        function f(e) {
+        function confirmDelete(event) {
             if (!confirm("Czy na pewno chcesz usunąć dyskusję?")) {
-                e.preventDefault();
+                event.preventDefault();
             }
         }
     </script>

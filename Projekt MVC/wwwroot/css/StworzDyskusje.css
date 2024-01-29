@@ -1,0 +1,42 @@
+﻿
+.heading {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.form-container {
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.input-field,
+.textarea-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .submit-button:hover {
+        background-color: #0056b3;
+    }

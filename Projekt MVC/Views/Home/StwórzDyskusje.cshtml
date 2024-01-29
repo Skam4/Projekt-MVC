@@ -1,9 +1,8 @@
 ﻿@model Projekt_MVC.ViewModels.DodawanieDyskusji
 
 @{
-    ViewData["Title"] = "Stwórz Dyskusje";
+    ViewData["Title"] = "Stwórz Dyskusję";
 }
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,24 +10,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
-
+    <link rel="stylesheet" href="~/css/StworzDyskusje.css">
 </head>
 <body>
-    <h1 style="text-align: center">Stwórz Dyskusję</h1>
-    <div class="formDyskusja">
+    <h1 class="heading">Stwórz Dyskusję</h1>
+    <div class="form-container">
         <form method="post" asp-action="TworzenieDyskusji">
 
-            <label for="topic" class="inputTematDyskusji">Temat dyskusji:</label>
-            <input type="text" asp-for="Temat" class="inputTematDyskusji" required><br>
+            <label for="topic" class="input-label">Temat dyskusji:</label>
+            <input type="text" asp-for="Temat" class="input-field" required><br>
 
-            <label for="message" class="inputTematDyskusji">Twoja wiadomość:</label><br>
-            <textarea id="opis" asp-for="Opis" class="inputTematDyskusji" required></textarea>
+            <label for="message" class="input-label">Twoja wiadomość:</label><br>
+            <textarea id="opis" asp-for="Opis" class="textarea-field" required></textarea>
 
             <input type="hidden" name="ForumId" value="@ViewBag.ForumId" />
 
-            <button type="submit" class="buttonRozpocznijDyskusje">Rozpocznij dyskusję</button>
+            <button type="submit" class="submit-button">Rozpocznij dyskusję</button>
         </form>
     </div>
 </body>

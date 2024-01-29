@@ -1,0 +1,97 @@
+﻿
+/* Stylizacja ogłoszenia */
+.announcement {
+    background-color: yellow;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Liczba zarejestrowanych użytkowników */
+.user-count {
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* Stylizacja tabeli forum */
+.forum-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .forum-table th, .forum-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .forum-table th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+
+/* Stylizacja inputów i przycisków w formularzu dodawania forum */
+.forum-input {
+    margin-right: 10px;
+    padding: 8px;
+}
+
+.forum-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+    .forum-button:hover {
+        background-color: #0056b3;
+    }
+
+/* Stylizacja listy forum */
+.forum-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+/* Stylizacja pojedynczego forum */
+.forum-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+/* Stylizacja linku do forum */
+.forum-link {
+    flex: 1;
+    color: #007bff;
+    text-decoration: none;
+}
+
+    .forum-link:hover {
+        text-decoration: underline;
+    }
+
+/* Stylizacja formularza administratora */
+.admin-form {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* Stylizacja przycisku administratora */
+.admin-button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+    .admin-button:hover {
+        background-color: #c82333;
+    }

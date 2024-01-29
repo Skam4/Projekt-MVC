@@ -1,71 +1,66 @@
 ﻿@model List<Projekt_MVC.Models.Forum>
-
 @{
     ViewData["Title"] = "Home Page";
-
-    if (ViewBag.UserId == null)
-    {
-        Layout = "_LayoutNieZalogowanyINieWForum";
-    }
-    else
-    {
-        Layout = "_LayoutNieWForum";
-    }
+    string layout = ViewBag.UserId == null ? "_LayoutNieZalogowanyINieWForum" : "_LayoutNieWForum";
+    Layout = layout;
 }
+
 <!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/css/Index.css">
+
 </head>
 <body>
     @if (!string.IsNullOrEmpty(ViewBag.Ogloszenie))
     {
-        <div style="background-color: yellow; padding: 10px; text-align: center;">
+        <div class="announcement">
             <p>@ViewBag.Ogloszenie</p>
             <p>Data: @ViewBag.OgloszenieData</p>
         </div>
     }
 
-    <div style="text-align: right; margin-top: 10px">
+    <div class="user-count">
         <p>Liczba zarejestrowanych użytkowników: @ViewBag.LiczbaUżytkownikow</p>
     </div>
 
-
     <h1> Fora: </h1>
 
-@if(ViewBag.Rola != "admin")
-{
-    @if (Model == null)
-{
-    <p>Brak forów xd</p>
-}
-else
-{
-    <table class="tabela">
-        <thead>
-            <tr>
-                <th>Nazwa Forum</th>
-                <th>Opis</th>
-                <th>Kategoria</th>
-                <th>Liczba Dyskusji</th>
-                <th>Liczba Wiadomości</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forum in Model)
-            {
-                <tr>
-                    <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
-                    <td>@forum.Opis</td>
-                    <td>@forum.Kategoria.Nazwa</td>
-                    <td>@forum.LiczbaWatkow</td>
-                    <td>@forum.LiczbaWiadomosci</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-}
+    @if (ViewBag.Rola != "admin")
+    {
+        @if (Model == null)
+        {
+            <p>Brak forów xd</p>
+        }
+        else
+        {
+            <table class="forum-table">
+                <thead>
+                    <tr>
+                        <th>Nazwa Forum</th>
+                        <th>Opis</th>
+                        <th>Kategoria</th>
+                        <th>Liczba Dyskusji</th>
+                        <th>Liczba Wiadomości</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forum in Model)
+                    {
+                        <tr>
+                            <td><a href="Home/PrzejdzDoFora/@forum.IdForum">@forum.Nazwa</a></td>
+                            <td>@forum.Opis</td>
+                            <td>@forum.Kategoria.Nazwa</td>
+                            <td>@forum.LiczbaWatkow</td>
+                            <td>@forum.LiczbaWiadomosci</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
     else
     {
         @if (Model == null)
@@ -78,29 +73,28 @@ else
             {
                 <p>Dodaj forum: </p>
                 <form method="post" asp-action="DodajForum" asp-controller="Admin">
-                    <input type="text" class="forum" name="nazwa" placeholder="Nazwa forum" required>
-                    <input type="text" class="forum" name="opis" placeholder="Opis forum" required>
+                    <input type="text" class="forum-input" name="nazwa" placeholder="Nazwa forum" required>
+                    <input type="text" class="forum-input" name="opis" placeholder="Opis forum" required>
                     <select name="idKategorii">
                         @foreach (var kategoria in ViewBag.Kategorie)
                         {
                             <option value="@kategoria.IdKategorii">@kategoria.Nazwa</option>
                         }
                     </select>
-                    <button type="submit" class="forum">Dodaj</button>
+                    <button type="submit" class="forum-button">Dodaj</button>
                 </form>
             }
-            <div class="list-group" style="display: flex; flex-direction: column; margin-top: 30px">
+
+            <div class="forum-list">
                 <p>Fora: </p>
                 @foreach (var forum in Model)
                 {
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <a href="Home/PrzejdzDoFora/@forum.IdForum" class="list-group-item list-group-item-action" style="flex: 1;">
-                            @forum.Nazwa - @forum.Opis
-                        </a>
+                    <div class="forum-item">
+                        <a href="Home/PrzejdzDoFora/@forum.IdForum" class="forum-link">@forum.Nazwa - @forum.Opis</a>
 
                         @if (ViewBag.Rola == "admin")
                         {
-                            <form method="post" asp-action="PrzypiszModeratora" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                            <form method="post" asp-action="PrzypiszModeratora" asp-controller="Admin" class="admin-form">
                                 <input type="hidden" name="idForum" value="@forum.IdForum" />
                                 <select name="idUzytkownika">
                                     @foreach (var user in ViewBag.Users)
@@ -108,40 +102,31 @@ else
                                         <option value="@user.IdUzytkownika">@user.Nazwa</option>
                                     }
                                 </select>
-                                <button type="submit" class="red-button">Przydziel moderatora</button>
+                                <button type="submit" class="admin-button">Przydziel moderatora</button>
                             </form>
 
-                            <form method="post" asp-action="UsunForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px">
+                            <form method="post" asp-action="UsunForum" asp-controller="Admin" class="admin-form">
                                 <input type="hidden" name="id" value="@forum.IdForum" />
-                                <button type="submit" class="red-button" onclick="f(event)">Usuń</button>
+                                <button type="submit" class="admin-button" onclick="confirmDelete(event)">Usuń</button>
                             </form>
 
-                            <form method="post" asp-action="EdytujForum" asp-controller="Admin" style="display: flex; align-items: center; margin-left: 10px;">
+                            <form method="post" asp-action="EdytujForum" asp-controller="Admin" class="admin-form">
                                 <input type="hidden" name="id" value="@forum.IdForum" />
-                                <button type="submit" class="red-button">Edytuj</button>
+                                <button type="submit" class="admin-button">Edytuj</button>
                             </form>
                         }
                     </div>
                 }
-
             </div>
-
-
         }
     }
-
 </body>
-
-
-
 </html>
 
 <script>
-    function f(event) {
-
+    function confirmDelete(event) {
         var result = confirm("Czy na pewno chcesz usunąć to forum?");
-
-        if (result == false) {
+        if (!result) {
             event.preventDefault();
         }
     }

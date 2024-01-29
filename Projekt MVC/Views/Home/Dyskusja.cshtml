@@ -8,46 +8,48 @@
 <html>
 <head>
     <link rel="stylesheet" href="@ViewBag.CurrentSkinCssFilePath">
+    <link rel="stylesheet" href="dyskusja.css"> <!-- Dodany plik CSS -->
 </head>
 <body>
 
-    <h3 style="text-align: center; margin-top: 50px">@Model.Temat</h3>
-    <span style="margin-left: 300px; margin-right: 300px; margin-top: 100px">@Html.Raw(Model.Opis)</span>
-
+    <h3 class="temat">@Model.Temat</h3>
+    <div class="opis">@Html.Raw(Model.Opis)</div>
 
     @if (Model.Odpowiedzi != null && Model.Odpowiedzi.Any())
     {
         <h4>Odpowiedzi:</h4>
-        <ul>
+        <ul class="odpowiedzi">
             @foreach (var odpowiedz in Model.Odpowiedzi)
             {
-
                 <li>
-                    <b>@odpowiedz.Autor.Nazwa</b> <p>@Html.Raw(odpowiedz.Tresc)</p>
+                    <div class="autor">@odpowiedz.Autor.Nazwa</div>
+                    <div class="tresc">@Html.Raw(odpowiedz.Tresc)</div>
                     @if (!odpowiedz.ZgloszenieModeracji && userRole != "admin" && ViewBag.CzyMod != 1)
                     {
                         <form asp-action="ZglosOdpowiedzDoModeracji" asp-controller="Home" method="post">
                             <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId" />
-                            <button type="submit">Zgłoś do moderacji</button>
+                            <button type="submit" class="zglos-btn">Zgłoś do moderacji</button>
                         </form>
                     }
+                    @if (userRole == "admin" || ViewBag.CzyMod == 1)
+                    {
+                        <div class="admin-options">
+                            <form asp-action="EdytujOdpowiedz" asp-controller="Admin">
+                                <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
+                                <button type="submit" class="admin-btn">Edytuj Odpowiedź</button>
+                            </form>
+                            <form asp-action="UsunOdpowiedz" asp-controller="Admin">
+                                <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
+                                <input type="hidden" name="IdDyskusji" value="@odpowiedz.Dyskusja.DyskusjaId">
+                                <button type="submit" class="admin-btn">Usuń Odpowiedź</button>
+                            </form>
+                        </div>
+                    }
                 </li>
-
-                if (userRole == "admin" || ViewBag.CzyMod == 1)
-                {
-                    <form asp-action="EdytujOdpowiedz" asp-controller="Admin">
-                        <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
-                        <button>Edytuj Odpowiedź</button>
-                    </form>
-                    <form asp-action="UsunOdpowiedz" asp-controller="Admin">
-                        <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
-                        <input type="hidden" name="IdDyskusji" value="@odpowiedz.Dyskusja.DyskusjaId">
-                        <button>Usuń Odpowiedź</button>
-                    </form>
-                }
             }
         </ul>
     }
+
     @if (TempData["ErrorMessage"] != null)
     {
         <script>
@@ -56,13 +58,12 @@
     }
 
     <form asp-controller="Home" asp-action="NapiszOdpowiedz" method="post">
-        <div>
+        <div class="odpowiedz-form">
             <input type="hidden" name="IdDyskusji" value="@Model.DyskusjaId">
             <textarea type="text" name="odpowiedz" placeholder="Napisz odpowiedź..." class="OdpowiedzTextArea"></textarea>
-            <button type="submit">Odpowiedz</button>
+            <button type="submit" class="odpowiedz-btn">Odpowiedz</button>
         </div>
     </form>
-
 
 </body>
 
@@ -85,3 +86,4 @@
         }
     });
 </script>
+</html>
