@@ -193,7 +193,17 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
 
-            var wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            Skin wybranaSkorka;
+
+            if (user == null)
+            {
+                wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == 1);
+            }
+            else
+            {
+                wybranaSkorka = BazaDanych.Skin.FirstOrDefault(x => x.Id == user.SkinId);
+            }
+
             ViewBag.CurrentSkinCssFilePath = Url.Content(wybranaSkorka.CssPath);
 
             Dyskusja Dyskusja = BazaDanych.Dyskusja.Include(x => x.Wlasciciel).Include(x => x.Forum).FirstOrDefault(i => i.DyskusjaId == id);
@@ -231,6 +241,7 @@ namespace Projekt_MVC.Controllers
 
             return View("Index");
         }
+
 
 
         public IActionResult StworzDyskusje(int ForumId)
