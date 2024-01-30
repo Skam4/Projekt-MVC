@@ -12,7 +12,7 @@ namespace Projekt_MVC.Controllers
         ForumDB BazaDanych = new ForumDB();
 
 
-        public IActionResult ZarzadzajUżytkownikami()
+        public IActionResult ZarzadzajUzytkownikami()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
@@ -22,7 +22,7 @@ namespace Projekt_MVC.Controllers
 
             var listaUzytkownikow = BazaDanych.User.Include(x => x.Rola).ToList();
 
-            return View("ZarzadzajUżytkownikami", listaUzytkownikow);
+            return View("ZarzadzajUzytkownikami", listaUzytkownikow);
         }
 
         public IActionResult UsunUzytkownika(int id)
@@ -34,7 +34,7 @@ namespace Projekt_MVC.Controllers
                 BazaDanych.User.Remove(userToDelete);
                 BazaDanych.SaveChanges();
             }
-            return RedirectToAction("ZarzadzajUżytkownikami");
+            return RedirectToAction("ZarzadzajUzytkownikami");
         }
 
         public IActionResult MianujAdminem(int id)
@@ -47,10 +47,10 @@ namespace Projekt_MVC.Controllers
                 userToPromote.Rola = role;
                 BazaDanych.SaveChanges();
             }
-            return RedirectToAction("ZarzadzajUżytkownikami");
+            return RedirectToAction("ZarzadzajUzytkownikami");
         }
 
-        public IActionResult ZarządzajKategoriami()
+        public IActionResult ZarzadzajKategoriami()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.Include(x => x.Rola).FirstOrDefault(x => x.IdUzytkownika == userId);
@@ -60,7 +60,7 @@ namespace Projekt_MVC.Controllers
 
             var listaKategorii = BazaDanych.Kategoria.ToList();
 
-            return View("ZarządzajKategoriami", listaKategorii);
+            return View("ZarzadzajKategoriami", listaKategorii);
         }
 
         public IActionResult UsunKategorie(int id)
@@ -72,7 +72,7 @@ namespace Projekt_MVC.Controllers
                 BazaDanych.Kategoria.Remove(kategoriaToDelete);
                 BazaDanych.SaveChanges();
             }
-            return RedirectToAction("ZarządzajKategoriami");
+            return RedirectToAction("ZarzadzajKategoriami");
         }
 
         public IActionResult DodajKategorie(string nazwa)
@@ -85,7 +85,7 @@ namespace Projekt_MVC.Controllers
             BazaDanych.Kategoria.Add(kategoria);
             BazaDanych.SaveChanges();
 
-            return RedirectToAction("ZarządzajKategoriami");
+            return RedirectToAction("ZarzadzajKategoriami");
         }
 
         public IActionResult UsunForum(int id)
