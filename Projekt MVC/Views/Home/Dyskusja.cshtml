@@ -12,8 +12,10 @@
 </head>
 <body>
 
-    <h3 class="temat">@Model.Temat</h3>
-    <div class="opis">@Html.Raw(Model.Opis)</div>
+    <div class="dyskusjaContainer">
+        <h3 class="temat">@Model.Temat</h3>
+        <div class="opis"><b>Opis: </b>@Html.Raw(Model.Opis)</div>
+    </div>
 
     @if (Model.Odpowiedzi != null && Model.Odpowiedzi.Any())
     {

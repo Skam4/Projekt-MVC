@@ -287,6 +287,7 @@ namespace Projekt_MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
         public IActionResult UsunDyskusje(int id)
         {
             var dyskusjaToDelete = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == id);
@@ -294,6 +295,7 @@ namespace Projekt_MVC.Controllers
 /*            var forum = dyskusjaToDelete.Forum;
 
             forum.LiczbaWatkow = forum.LiczbaWatkow - 1;
+
 
             BazaDanych.Update(forum);*/
 
