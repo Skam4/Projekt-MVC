@@ -24,7 +24,7 @@
                 <li>
                     <div class="autor">@odpowiedz.Autor.Nazwa</div>
                     <div class="tresc">@Html.Raw(odpowiedz.Tresc)</div>
-                    @if (!odpowiedz.ZgloszenieModeracji && userRole != "admin" && ViewBag.CzyMod != 1)
+                    @if (!odpowiedz.ZgloszenieModeracji && userRole != "admin" && ViewBag.CzyMod != 1 && userRole != null)
                     {
                         <form asp-action="ZglosOdpowiedzDoModeracji" asp-controller="Home" method="post">
                             <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId" />
@@ -37,7 +37,7 @@
                             <form asp-action="UsunOdpowiedz" asp-controller="Admin">
                                 <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
                                 <input type="hidden" name="IdDyskusji" value="@odpowiedz.Dyskusja.DyskusjaId">
-                                <button type="submit" class="admin-btn">Usuń Odpowiedź</button>
+                                <button type="submit" class="admin-btn" style="margin-top: 10px" >Usuń Odpowiedź</button>
                             </form>
                         </div>
                     }
@@ -53,13 +53,26 @@
         </script>
     }
 
-    <form asp-controller="Home" asp-action="NapiszOdpowiedz" method="post">
-        <div class="odpowiedz-form">
-            <input type="hidden" name="IdDyskusji" value="@Model.DyskusjaId">
-            <textarea type="text" name="odpowiedz" placeholder="Napisz odpowiedź..." class="OdpowiedzTextArea"></textarea>
-            <button type="submit" class="odpowiedz-btn">Odpowiedz</button>
-        </div>
-    </form>
+    @if(userRole != null)
+    {
+        <form asp-controller="Home" asp-action="NapiszOdpowiedz" method="post">
+            <div class="odpowiedz-form">
+                <input type="hidden" name="IdDyskusji" value="@Model.DyskusjaId">
+                <textarea type="text" name="odpowiedz" placeholder="Napisz odpowiedź..." class="OdpowiedzTextArea"></textarea>
+                <button type="submit" class="odpowiedz-btn" style="margin-top: 10px">Odpowiedz</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Rejestracja" asp-action="Index" method="post">
+            <div class="odpowiedz-form">
+                <input type="hidden" name="IdDyskusji" value="@Model.DyskusjaId">
+                <textarea type="text" name="odpowiedz" placeholder="Napisz odpowiedź..." class="OdpowiedzTextArea"></textarea>
+                <button type="submit" class="odpowiedz-btn" style="margin-top: 10px">Odpowiedz</button>
+            </div>
+        </form>
+    }
 
 </body>
 

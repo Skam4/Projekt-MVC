@@ -20,7 +20,7 @@
         <div class="content">
             <!-- Sekcja dla dyskusji użytkownika -->
             <section id="dyskusjeUzytkownika" class="section">
-                <h2>Twoje dyskusje</h2>
+                <h2 style="color:black ">Twoje dyskusje</h2>
                 <ul class="discussion-list">
                     @if (ViewBag.Dyskusje != null)
                     {
@@ -36,7 +36,7 @@
                     }
                     else
                     {
-                        <li>Brak dostępnych dyskusji</li>
+                        <li style="color:black ">Brak dostępnych dyskusji</li>
                     }
                 </ul>
             </section>
@@ -66,26 +66,26 @@
 
 
             <section id="informacje" class="section">
-                <h2>Zmiana danych</h2>
+                <h2 style="color:black">Zmiana danych</h2>
                 <!-- Formularz do zmiany informacji profilowych -->
                 <form asp-controller="ProfilUzytkownika" asp-action="ZmienDane" method="post" enctype="multipart/form-data" class="form">
-                    <label for="nazwa-uzytkownika">Nazwa użytkownika:</label>
+                    <label for="nazwa-uzytkownika" style="color:black !important">Nazwa użytkownika:</label>
                     <input type="text" id="nazwa-uzytkownika" name="username" class="input">
-                    <label style="margin-top: 25px" for="czas-wylogowania">Czas nieaktywności do wylogowania: (obecnie <b>@ViewBag.LogoutTime minut</b>)</label>
+                    <label style="margin-top: 25px ; color:black !important" for="czas-wylogowania">Czas nieaktywności do wylogowania: (obecnie <b>@ViewBag.LogoutTime minut</b>)</label>
                     <input type="number" id="czas-wylogowania" name="logoutTime" class="input">
                     <button type="submit" class="button">Zapisz zmiany</button>
                 </form>
             </section>
 
             <section id="haslo" class="section">
-                <h2>Zmiana hasła</h2>
+                <h2 style="color:black ">Zmiana hasła</h2>
                 <!-- Formularz do zmiany hasła -->
                 <form asp-controller="ProfilUzytkownika" asp-action="ZmienHaslo" method="post" enctype="multipart/form-data" class="form">
-                    <label for="aktualne-haslo">Aktualne hasło:</label>
+                    <label for="aktualne-haslo" style="color:black !important">Aktualne hasło:</label>
                     <input type="password" id="aktualne-haslo" name="aktualne-haslo" class="input" required>
-                    <label for="nowe-haslo">Nowe hasło:</label>
+                    <label for="nowe-haslo" style="color:black !important">Nowe hasło:</label>
                     <input type="password" id="nowe-haslo" name="nowe-haslo" class="input" required>
-                    <label for="potwierdz-nowe-haslo">Potwierdź nowe hasło:</label>
+                    <label for="potwierdz-nowe-haslo" style="color:black !important">Potwierdź nowe hasło:</label>
                     <input type="password" id="potwierdz-nowe-haslo" name="potwierdz-nowe-haslo" class="input" required>
                     <button type="submit" class="button">Zmień hasło</button>
                 </form>
