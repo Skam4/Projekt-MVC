@@ -86,7 +86,6 @@
             }
 
             <div class="forum-list">
-                <p>Fora: </p>
                 @foreach (var forum in Model)
                 {
                     <div class="forum-item">
@@ -94,6 +93,7 @@
 
                         @if (ViewBag.Rola == "admin")
                         {
+                            <p style="margin: auto; margin-left: 25px">Kategoria: @forum.Kategoria.Nazwa</p>
                             <form method="post" asp-action="PrzypiszModeratora" asp-controller="Admin" class="admin-form">
                                 <input type="hidden" name="idForum" value="@forum.IdForum" />
                                 <select name="idUzytkownika">
