@@ -291,6 +291,12 @@ namespace Projekt_MVC.Controllers
         {
             var dyskusjaToDelete = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == id);
 
+/*            var forum = dyskusjaToDelete.Forum;
+
+            forum.LiczbaWatkow = forum.LiczbaWatkow - 1;
+
+            BazaDanych.Update(forum);*/
+
             if (dyskusjaToDelete != null)
             {
                 BazaDanych.Dyskusja.Remove(dyskusjaToDelete);

@@ -263,7 +263,7 @@ namespace Projekt_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult TworzenieDyskusji(DodawanieDyskusji dyskusja)
+        public IActionResult TworzenieDyskusji(DodawanieDyskusji dyskusja, int ForumId)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
@@ -274,7 +274,7 @@ namespace Projekt_MVC.Controllers
                 {
                     Temat = dyskusja.Temat,
                     Opis = FilterHtml(dyskusja.Opis),
-                    Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId),
+                    Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == ForumId),
                     Wlasciciel = user,
                     LiczbaOdpowiedzi = 0,
                     LiczbaOdwiedzen = 0,
