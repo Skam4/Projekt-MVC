@@ -33,11 +33,18 @@ app.UseSession();
 app.Use(async (context, next) =>
 {
     var userId = context.Session.GetInt32("UserId");
+    var userRole = context.Session.GetString("UserRole");
+    var path = context.Request.Path;
 
 
     if (userId != null)
     {
         context.Session.SetString("LastActivityTime", DateTime.UtcNow.ToString("o"));
+    }
+
+    if (userRole != "admin" && path.StartsWithSegments("/Admin"))
+    {
+        context.Response.Redirect("/Home");
     }
 
     var lastActivityTime = context.Session.GetString("LastActivityTime");

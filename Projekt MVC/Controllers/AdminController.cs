@@ -160,11 +160,13 @@ namespace Projekt_MVC.Controllers
         public IActionResult UsunOdpowiedz(int IdOdpowiedzi, int IdDyskusji)
         {
             var odpowiedzToDelete = BazaDanych.Odpowiedz.FirstOrDefault(r => r.OdpowiedzId == IdOdpowiedzi);
-            var dyskusja = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == IdDyskusji);
+            var dyskusja = BazaDanych.Dyskusja.Include(r => r.Forum).FirstOrDefault(r => r.DyskusjaId == IdDyskusji);
+            var forum = dyskusja.Forum;
 
             if (odpowiedzToDelete != null)
             {
                 dyskusja.LiczbaOdpowiedzi--;
+                forum.LiczbaWiadomosci--;
                 BazaDanych.Odpowiedz.Remove(odpowiedzToDelete);
                 BazaDanych.SaveChanges();
             }
@@ -290,14 +292,14 @@ namespace Projekt_MVC.Controllers
         [HttpPost]
         public IActionResult UsunDyskusje(int id)
         {
-            var dyskusjaToDelete = BazaDanych.Dyskusja.FirstOrDefault(r => r.DyskusjaId == id);
+            var dyskusjaToDelete = BazaDanych.Dyskusja.Include(x => x.Forum).FirstOrDefault(r => r.DyskusjaId == id);
 
-/*            var forum = dyskusjaToDelete.Forum;
+            var forum = dyskusjaToDelete.Forum;
 
             forum.LiczbaWatkow = forum.LiczbaWatkow - 1;
+            forum.LiczbaWiadomosci -= dyskusjaToDelete.LiczbaOdpowiedzi;
 
-
-            BazaDanych.Update(forum);*/
+            BazaDanych.Update(forum);
 
             if (dyskusjaToDelete != null)
             {
