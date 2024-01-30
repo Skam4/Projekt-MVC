@@ -268,13 +268,15 @@ namespace Projekt_MVC.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = BazaDanych.User.FirstOrDefault(x => x.IdUzytkownika == userId);
 
+            var forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == ForumId);
+
             if (ModelState.IsValid && HttpContext.Session.GetInt32("UserId") != null)
             {
                 Dyskusja nowaDyskusja = new Dyskusja
                 {
                     Temat = dyskusja.Temat,
                     Opis = FilterHtml(dyskusja.Opis),
-                    Forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == ForumId),
+                    Forum = forum,
                     Wlasciciel = user,
                     LiczbaOdpowiedzi = 0,
                     LiczbaOdwiedzen = 0,
@@ -283,7 +285,6 @@ namespace Projekt_MVC.Controllers
                 BazaDanych.Dyskusja.Add(nowaDyskusja);
                 user.Dyskusje.Add(nowaDyskusja);
 
-                var forum = BazaDanych.Forum.FirstOrDefault(f => f.IdForum == dyskusja.ForumId);
                 forum.LiczbaWatkow++;
 
                 BazaDanych.SaveChanges();
