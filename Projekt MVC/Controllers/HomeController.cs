@@ -336,10 +336,29 @@ namespace Projekt_MVC.Controllers
                                 .Include(w => w.Odbiorca)
                                 .OrderByDescending(w => w.DataWyslania)
                                 .ToList();
-            ViewBag.ZgloszoneOdpowiedzi = BazaDanych.Odpowiedz
+
+            var zgloszone = BazaDanych.Odpowiedz
                 .Where(w => w.ZgloszenieModeracji == true)
-                .Include(w => w.Dyskusja)
                 .ToList();
+
+            List<Odpowiedz> doUsuniecia = new List<Odpowiedz>();
+
+            foreach(var item in zgloszone)
+            {
+                var dyskusja = BazaDanych.Dyskusja.Include(x => x.Forum).FirstOrDefault(d => d.DyskusjaId == item.DyskusjaId);
+
+                var mod = BazaDanych.Moderator.Where(m => m.IdUzytkownika == userId && m.IdForum == dyskusja.Forum.IdForum).Any();
+
+                if (mod)
+                {
+                    doUsuniecia.Add(item);
+                }
+            }
+
+            if(doUsuniecia.Count > 0)
+            {
+                ViewBag.ZgloszoneOdpowiedzi = doUsuniecia;
+            }
 
             return View(wiadomosci);
         }

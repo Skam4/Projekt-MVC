@@ -34,10 +34,6 @@
                     @if (userRole == "admin" || ViewBag.CzyMod == 1)
                     {
                         <div class="admin-options">
-                            <form asp-action="EdytujOdpowiedz" asp-controller="Admin">
-                                <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
-                                <button type="submit" class="admin-btn">Edytuj Odpowiedź</button>
-                            </form>
                             <form asp-action="UsunOdpowiedz" asp-controller="Admin">
                                 <input type="hidden" name="IdOdpowiedzi" value="@odpowiedz.OdpowiedzId">
                                 <input type="hidden" name="IdDyskusji" value="@odpowiedz.Dyskusja.DyskusjaId">
