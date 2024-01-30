@@ -98,39 +98,33 @@ namespace Projekt_MVC.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public IActionResult SprawdzanieDanychLogowania(string Email, string Password)
         {
-
-            // Sprawdź, czy użytkownik o podanym emailu istnieje w bazie danych
+            ModelState.Clear();
             var existingUser = BazaDanych.User.Include(u => u.Rola).FirstOrDefault(u => u.Email == Email);
             if (existingUser != null)
             {
-                // Jeśli użytkownik o podanym emailu istnieje, sprawdź, czy hasło jest poprawne
-                if (BCrypt.Net.BCrypt.EnhancedVerify(Password, existingUser.Haslo) == true)
+                if (BCrypt.Net.BCrypt.EnhancedVerify(Password, existingUser.Haslo))
                 {
-                    // Logowanie udane
                     HttpContext.Session.SetInt32("UserId", existingUser.IdUzytkownika);
                     HttpContext.Session.SetString("UserRole", existingUser.Rola.Nazwa);
-
                     var minutes = existingUser.LogoutTimeSpan;
                     _sessionOptionsMonitor.CurrentValue.IdleTimeout = TimeSpan.FromMinutes((double)minutes);
-
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    TempData["BladLogowania"] = "Nieprawidłowa nazwa użytkownika lub hasło.";
-                    ModelState.AddModelError("Password", "Nieprawidłowe hasło.");
+                    ModelState.AddModelError("", "Nieprawidłowa nazwa użytkownika lub hasło.");
                 }
             }
             else
             {
-                TempData["BladLogowania"] = "Nieprawidłowa nazwa użytkownika lub hasło.";
-                ModelState.AddModelError("Email", "Użytkownik o podanym emailu nie istnieje.");
+                ModelState.AddModelError("", "Nieprawidłowa nazwa użytkownika lub hasło.");
             }
-
             return View("Logowanie");
         }
+
 
         public IActionResult PrzypomnijHaslo()
         {

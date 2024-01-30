@@ -10,8 +10,9 @@
             <input type="password" class="login" name="Password" placeholder="Hasło" required>
             <button type="submit" class="loginPrzycisk">Zaloguj się</button>
         </form>
-
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <a href="Rejestracja">Zarejestruj się</a>
         <a href="PrzypomnijHaslo">Zapomniałeś hasła?</a>
     </div>
 </div>
+
